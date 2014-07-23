@@ -1,5 +1,15 @@
 #include "main.h"
 
+void InitialiseGyro();
+{
+	SensorType[Gyro] = sensorNone;
+	wait1Msec(500);
+	SensorType[Gyro] = sensorGyro;
+	wait1Msec(2000);
+	SensorScale[Gyro] = 260;
+  	SensorFullCount[Gyro] = 3600;
+}
+
 /////////////////////////////////////////////////////////////////////////////////////////
 //
 //                          Pre-Autonomous Functions
@@ -17,4 +27,6 @@ void pre_auton()
 
 	// All activities that occur before the competition starts
 	// Example: clearing encoders, setting servo positions, ...
+	
+	InitialiseGyro();
 }

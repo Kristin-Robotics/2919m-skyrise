@@ -1,12 +1,17 @@
 #pragma config(I2C_Usage, I2C1, i2cSensors)
 #pragma config(Sensor, in1,    PotentiometerLL, sensorPotentiometer)
 #pragma config(Sensor, in2,    PotentiometerRL, sensorPotentiometer)
-#pragma config(Sensor, in3,    Gyro,           sensorGyro)
-#pragma config(Sensor, dgtl1,  Ultrasonic,     sensorSONAR_mm)
-#pragma config(Sensor, I2C_1,  EncoderRDB,     sensorQuadEncoderOnI2CPort,    , AutoAssign)
-#pragma config(Sensor, I2C_2,  EncoderRDF,     sensorQuadEncoderOnI2CPort,    , AutoAssign)
-#pragma config(Sensor, I2C_3,  EncoderLDF,     sensorQuadEncoderOnI2CPort,    , AutoAssign)
-#pragma config(Sensor, I2C_4,  EncoderLDB,     sensorQuadEncoderOnI2CPort,    , AutoAssign)
+#pragma config(Sensor, in3,    ,           sensorGyro)
+#pragma config(Sensor, in4,    LineL,          sensorLineFollower)
+#pragma config(Sensor, in5,    LineM,          sensorLineFollower)
+#pragma config(Sensor, in6,    LineR,          sensorLineFollower)
+#pragma config(Sensor, dgtl1,  UltrasonicL, sensorSONAR_mm)
+#pragma config(Sensor, dgtl3,  UltrasonicR, sensorSONAR_mm)
+#pragma config(Sensor, dgtl5,  PistonClaw,    sensorDigitalIn)
+#pragma config(Sensor, I2C_1,  ,               sensorQuadEncoderOnI2CPort,    , AutoAssign)
+#pragma config(Sensor, I2C_2,  ,               sensorQuadEncoderOnI2CPort,    , AutoAssign)
+#pragma config(Sensor, I2C_3,  ,               sensorQuadEncoderOnI2CPort,    , AutoAssign)
+#pragma config(Sensor, I2C_4,  ,               sensorQuadEncoderOnI2CPort,    , AutoAssign)
 #pragma config(Motor,  port1,           RDF,           tmotorVex393, openLoop, encoder, encoderPort, I2C_2, 1000)
 #pragma config(Motor,  port2,           RDB,           tmotorVex393, openLoop, encoder, encoderPort, I2C_1, 1000)
 #pragma config(Motor,  port3,           LLU,           tmotorVex393, openLoop, reversed)
@@ -29,8 +34,6 @@
 //Main Header
 #include "main.h"
 
-//Definitions
-#include "definitions.c"
 
 #include "Vex_Competition_Includes.c"   //Main competition background code...do not modify!
 

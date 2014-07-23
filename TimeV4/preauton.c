@@ -1,6 +1,6 @@
 #include "main.h"
 
-void InitialiseGyro();
+void InitialiseGyro()
 {
 	SensorType[Gyro] = sensorNone;
 	wait1Msec(500);

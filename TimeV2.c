@@ -645,7 +645,7 @@ void lift_auton_monitor()
 	}
 }
 
-void intake(int speed)
+void Intake(int speed)
 {
 	motor[LIN] = speed;
 	motor[RIN] = speed;

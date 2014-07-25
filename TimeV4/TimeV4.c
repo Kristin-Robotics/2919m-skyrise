@@ -34,7 +34,6 @@
 //Main Header
 #include "main.h"
 
-
 #include "Vex_Competition_Includes.c"   //Main competition background code...do not modify!
 
 //Pre Auton

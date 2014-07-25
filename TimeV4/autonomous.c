@@ -1,5 +1,6 @@
 #include "main.h"
 
+//Autonomous functions
 void Drive(int EncoderDistance,int SpeedLDB,int SpeedLDF,int SpeedRDB,int SpeedRDF)
 {
 	ClearEncoders();
@@ -15,53 +16,68 @@ void Drive(int EncoderDistance,int SpeedLDB,int SpeedLDF,int SpeedRDB,int SpeedR
 	//Set Drive to Active
 	DriveActive = true;
 
-	while (((DriveLBGoalReached == false)||(DriveRBGoalReached == false)||(DriveRFGoalReached == false)||(DriveLFGoalReached == false)) && (DriveActive == true))
+	while (((DriveLBGoalReached == false)||(DriveRBGoalReached == false)||(DriveRFGoalReached == false)||(DriveLFGoalReached == false)) && (DriveActive))
 	{
 		if ( Encoder(LDB) < EncoderDistance )
 		{
 		
-			DriveLB = SpeedLDB;
+			motor[LDB] = SpeedLDB;
 		}
 		else
 		{
-			DriveLB = 0;
+			motor[LDB] = 0;
 			DriveLBGoalReached=true;
 		}
 
 		if ( Encoder(RDB) < EncoderDistance )
 		{
-			DriveRB = SpeedRDB;
+			motor[RDB] = SpeedRDB;
 		}
 		else
 		{
-			DriveRB = 0;
+			motor[RDB] = 0;
 			DriveRBGoalReached=true;
 		}
 
 		if ( Encoder(LDF) < EncoderDistance )
 		{
-			DriveLF = SpeedLDF;
+			motor[LDF] = SpeedLDF;
 		}
 		else
 		{
-			DriveLF = 0;
+			motor[LDF] = 0;
 			DriveLFGoalReached=true;
 		}
 
 		if ( Encoder(RDF) < EncoderDistance )
 		{
-			DriveRF = SpeedRDF;
+			motor[RDF] = SpeedRDF;
 		}
 		else
 		{
-			DriveRF = 0;
+			motor[RDF] = 0;
 			DriveRFGoalReached=true;
 		}
+		
+		EndTimeSlice();
 	}
 	
 	//Set Drive to inactive
 	DriveActive = false;
 	
+}
+
+void Lift(int PotLT,int PotRT,int Speed)
+{
+	PotLTarget = PotLT;
+	PotRTarget = PotRT;
+	LiftTargetSpeed = Speed;
+}
+
+void Intake(int Speed)
+{
+	motor[LIN] = Speed;
+	motor[RIN] = Speed;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -73,31 +89,14 @@ void Drive(int EncoderDistance,int SpeedLDB,int SpeedLDF,int SpeedRDB,int SpeedR
 //
 /////////////////////////////////////////////////////////////////////////////////////////
 
-task MotorController()
-{
-	while(true)
-	{
-		motor[LDF] = DriveLF;
-		motor[LDB] = DriveLB;
-		motor[RDF] = DriveRF;
-		motor[RDB] = DriveRB;
-		
-		motor[LLU] = LiftLU;
-		motor[LLD] = LiftLD;
-		motor[RLU] = LiftRU;
-		motor[RLD] = LiftRD;
-		
-		wait1Msec(20);
-	}
-}
-
 task autonomous()
 {
 	//Initialise Autonomous
-	StartTask(MotorController);
+	StartTask(LiftController);
+	StartTask(PIDController);
 	StartTask(AntiJam);
 	InitialiseDrive();
 	
 	//Autonomous Routine
-	DriveStraightForward(200,127)
+	DriveStraightForward(200,127);
 }

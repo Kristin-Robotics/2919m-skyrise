@@ -149,17 +149,23 @@ task AntiJam()
 
 	while(true)
 	{
-		if (DriveActive == true)
+		if (DriveActive)
 		{
-			
+			if (motor[LDF] == 0 || motor[LDB] == 0 || motor[RDF] == 0 || motor[RDB] == 0)
+			{
+				DriveActive = false;
+			}
 		}
 		
-		if (LiftActive == true)
+		if (LiftActive)
 		{
-		
+			if (motor[LLU] == 0 || motor[LLD] == 0 || motor[RLU] == 0 || motor[RLD] == 0)
+			{
+				DriveActive = false;
+			}
 		}
-		
-		EndTimeSlice();
+		wait1Msec(1000);
+		EndTimeSlice(); // what does this function do?
 	}
 }
 

@@ -176,10 +176,31 @@ task usercontrol()
 	PotLTarget = 0;
 	
 	while (true)
-	{
-	
-	//Just need drive control here
-	
+	{		
+		// Moving and strafing actions
+		DriveLF = vexRT[Ch3] + vexRT[Ch4];
+		DriveLB = vexRT[Ch3] - vexRT[Ch4];
+		DriveRF = vexRT[Ch3] - vexRT[Ch4];
+		DriveRB = vexRT[Ch3] + vexRT[Ch4];
+
+		// Turning actions
+		DriveLF = DriveLF + vexRT[Ch1];
+		DriveLB = DriveLB + vexRT[Ch1];
+		DriveRF = DriveRF - vexRT[Ch1];
+		DriveRB = DriveRB - vexRT[Ch1];
+
+		// Scaling
+		DriveLF = ExponentialControl(DriveLF);
+		DriveLB = ExponentialControl(DriveLB);
+		DriveRF = ExponentialControl(DriveRF);
+		DriveRB = ExponentialControl(DriveRB);
+
+		// Assigning
+		motor[LDB] = DriveLB;
+		motor[LDF] = DriveLF;
+		motor[RDB] = DriveRB;
+		motor[RDF] = DriveRF;
+
 		//Lift actions and assigning
 		if ((abs(LiftL) > 0)||(abs(LiftR) > 0))
 		{

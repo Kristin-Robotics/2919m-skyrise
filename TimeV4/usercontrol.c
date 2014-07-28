@@ -202,6 +202,12 @@ task usercontrol()
 		DriveLB = reduceSpeed(DriveLB);
 		DriveRF = reduceSpeed(DriveRF);
 		DriveRB = reduceSpeed(DriveRB);
+		
+		//Right Stick forwards and back will be full power drive
+		DriveLF = DriveLF + ExponentialControl(vexRT[Ch2]);
+		DriveLB = DriveLB + ExponentialControl(vexRT[Ch2]);
+		DriveRF = DriveRF + ExponentialControl(vexRT[Ch2]);
+		DriveRB = DriveRB + ExponentialControl(vexRT[Ch2]);
 
 		// Assigning
 		motor[LDB] = DriveLB;
@@ -239,28 +245,28 @@ task usercontrol()
 		{
 			IntakeL = 100;
 			IntakeR = 100;
-			intakeUpPressed = true;
+			//intakeUpPressed = true;
 		}
 		else if (vexRT[Btn6U] == 0 && vexRT[Btn6D] == 1)
 		{
 			IntakeL = -80;
 			IntakeR = -80;
-			intakeUpPressed = false;
+			//intakeUpPressed = false;
 		}
 		else if (vexRT[Btn6U] == 1 && vexRT[Btn6D] == 1)
 		{
 			IntakeL = -127;
 			IntakeR = -127;
-			intakeUpPressed = false;
+			//intakeUpPressed = false;
 		}
-		else
+/* 		else
 		{
 			if (intakeUpPressed)
 			{
 				IntakeL = TrimSwitch;
 				IntakeR = TrimSwitch;
 			}
-		}
+		} */
 		motor[LIN] = IntakeL;
 		motor[RIN] = IntakeR;
 		wait1Msec(20);
@@ -269,6 +275,6 @@ task usercontrol()
 // changes the speed to the set value in main.h
 int changeSpeed(int speed)
 {
-	float buffer = (float)speed // to prevent turncation during multiplication
-	return (int)(buffer * speedReductionValue);
+	float buffer = (float)speed // to prevent truncation during multiplication
+	return (int)(round(buffer * speedReductionValue)); //Better rounding using the macro
 }

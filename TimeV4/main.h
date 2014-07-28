@@ -5,6 +5,7 @@
 
 //Global Variables
 const int ExponentialScalingValue = 5;
+const float speedReductionValue = 0.75; // 3/4 of the original speed
 const int LiftLVal[] = {1,1550,680,1140,1400,1500};
 const int LiftRVal[] = {1,1550,680,1140,1400,1500};
 const int PotentiometerLimit = 1460;
@@ -151,21 +152,14 @@ task AntiJam()
 	{
 		if (DriveActive)
 		{
-			if (motor[LDF] == 0 || motor[LDB] == 0 || motor[RDF] == 0 || motor[RDB] == 0)
-			{
-				DriveActive = false;
-			}
-		}
-		
+			
+		}		
 		if (LiftActive)
 		{
-			if (motor[LLU] == 0 || motor[LLD] == 0 || motor[RLU] == 0 || motor[RLD] == 0)
-			{
-				DriveActive = false;
-			}
+
 		}
-		wait1Msec(1000);
-		EndTimeSlice(); // what does this function do?
+		wait1Msec(2000);
+		EndTimeSlice();
 	}
 }
 
@@ -173,12 +167,12 @@ task PIDController()
 {
 	while(true)
 	{
-		if (DriveActive == true)
+		if (DriveActive)
 		{
 		
 		}
 		
-		if (LiftActive == true)
+		if (LiftActive)
 		{
 		
 		}

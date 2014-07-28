@@ -49,19 +49,19 @@ void PresetButtons()
 		}
 		if (vexRT[Btn8R] == 1)
 		{
-			LiftPreset= 4;
+			LiftPreset = 4;
 		}
 		if (vexRT[Btn8D] == 1)
 		{
-			LiftPreset= 3;
+			LiftPreset = 3;
 		}
 		if (vexRT[Btn7U] == 1)
 		{
-			LiftPreset= 2;
+			LiftPreset = 2;
 		}
 		if (vexRT[Btn7D] == 1)
 		{
-			LiftPreset= 1;
+			LiftPreset = 1;
 		}
 		if (vexRT[Btn7L] == 1)
 		{
@@ -195,6 +195,12 @@ task usercontrol()
 		DriveRF = ExponentialControl(DriveRF);
 		DriveRB = ExponentialControl(DriveRB);
 
+		// Reducing speed
+		DriveLF = reduceSpeed(DriveLF);
+		DriveLB = reduceSpeed(DriveLB);
+		DriveRF = reduceSpeed(DriveRF);
+		DriveRB = reduceSpeed(DriveRB);
+
 		// Assigning
 		motor[LDB] = DriveLB;
 		motor[LDF] = DriveLF;
@@ -224,4 +230,10 @@ task usercontrol()
 		
 		wait1Msec(20);
 	}
+}
+// reduces speed to a quarter (or otherwise set) of the initial speed
+int reduceSpeed(int speed)
+{
+	float buffer = (float)speed // to prevent turncation during multiplication
+	return (int)(buffer * speedReductionValue);
 }

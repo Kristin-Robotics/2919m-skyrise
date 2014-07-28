@@ -15,8 +15,9 @@ int IntakeR;
 int LiftPreset = 0;
 
 bool intakeUpPressed = false;
-bool trimEnabled = true;
-int trimToggleCooldown = 0;
+bool intakeTrimEnabled = true;
+bool xmtr2Connected = false;
+int intakeTrimToggleCooldown = 0;
 
 //User functions
 int ExponentialControl(int Input) //input from value, mod is set to driver preferences
@@ -43,35 +44,60 @@ void PresetButtons()
 {
 	if (LiftPresetEnabled)
 	{
-		if (vexRT[Btn8U] == 1)
+		if (vexRT[Btn8U] == 1) // Btn8 for Goal Heights, High goal
 		{
 			LiftPreset = 6;
 		}
-		if (vexRT[Btn8L] == 1)
+		if (vexRT[Btn8L] == 1) // Medium-High Goal
 		{
 			LiftPreset = 5;
 		}
-		if (vexRT[Btn8R] == 1)
+		if (vexRT[Btn8R] == 1) // Medium-Low Goal
 		{
 			LiftPreset = 4;
 		}
-		if (vexRT[Btn8D] == 1)
+		if (vexRT[Btn8D] == 1)  //Low Goal
 		{
 			LiftPreset = 3;
 		}
-		if (vexRT[Btn7U] == 1)
+		if (vexRT[Btn7U] == 1)	//Maximum
 		{
 			LiftPreset = 2;
 		}
-		if (vexRT[Btn7D] == 1)
+		if (vexRT[Btn7D] == 1)	//Minimum
 		{
 			LiftPreset = 1;
 		}
 		if (vexRT[Btn7L] == 1)
 		{
+			if (xmtr2Connected == false)
+			{
+				SkyriseIntake = 0 //Closed
+			}
+
+			else if (intakeTrimToggleCooldown == 0)
+			{
+				// Toggle intake trimming on/off
+				intakeTrimEnabled = !intakeTrimEnabled;
+				intakeTrimToggleCooldown = 1;
 		}
 		if (vexRT[Btn7R] == 1)
 		{
+			if (xmtr2Connected == false)
+			{
+				SkyriseIntake = 1 //Open
+			}
+		}
+		if (xmtr2Connected)
+		{
+			if (vexRT[Btn7LXmtr2] == 1)
+			{
+				SkyriseIntake = 0 //Closed
+			}
+			if (vexRT[Btn7RXmtr2] == 1)
+			{
+				SkyriseIntake = 1 //Open
+			}
 		}
 	}
 }
@@ -220,6 +246,9 @@ task usercontrol()
 		//Lift actions and assigning
 		LiftL = (vexRT[Btn5U] - vexRT[Btn5D]) * 127;
 		LiftR = (vexRT[Btn5U] - vexRT[Btn5D]) * 127;
+		
+		//Stuff to do with buttons
+		PresetButtons();
 		if ((abs(LiftL) > 0)||(abs(LiftR) > 0))
 		{
 			LiftPreset = 0;
@@ -239,58 +268,51 @@ task usercontrol()
 				PresetAssign();
 			}
 		}
-
-		// Toggle intake trimming on/off
-		if (vexRT[Btn8L] == 1 && trimToggleCooldown == 0)
-		{
-			trimEnabled = !trimEnabled;
-			trimToggleCooldown = 1;
-		}
 		
-		// Intake actions
+		// Roller Intake actions
 		// up = 100, down = -80, both, -127
 		// If up is pressed, power 15;
 		if (vexRT[Btn6U] == 1 && vexRT[Btn6D] == 0)
 		{
-			IntakeL = 100;
-			IntakeR = 100;
-			//intakeUpPressed = true;
+			IntakeL = 127;
+			IntakeR = 127;
+			intakeUpPressed = true;
 		}
 		else if (vexRT[Btn6U] == 0 && vexRT[Btn6D] == 1)
 		{
-			IntakeL = -80;
-			IntakeR = -80;
-			//intakeUpPressed = false;
+			IntakeL = -127;
+			IntakeR = -127;
+			intakeUpPressed = false;
 		}
 		else if (vexRT[Btn6U] == 1 && vexRT[Btn6D] == 1)
 		{
-			IntakeL = -127;
-			IntakeR = -127;
-			//intakeUpPressed = false;
+			IntakeL = -60;
+			IntakeR = -60;
+			intakeUpPressed = false;
 		}
-/* 		else
+		else
 		{
 			if (intakeUpPressed && !trimEnabled)
 			{
-				IntakeL = TrimSwitch;
-				IntakeR = TrimSwitch;
+				IntakeL = 60;
+				IntakeR = 60;
 			}
-		} */
+		} 
 		motor[LIN] = IntakeL;
 		motor[RIN] = IntakeR;
 
 		// Increment toggle cooldown if pressed
-		if (trimToggleCooldown == 1)
+		if (intakeTrimToggleCooldown == 1)
 		{
-			trimToggleCooldown = 20;
+			intakeTrimToggleCooldown = 20;
 		}
-		else if (trimToggleCooldown > 1 && trimToggleCooldown <= 500)
+		else if (intakeTrimToggleCooldown > 1 && intakeTrimToggleCooldown <= 500)
 		{
-			trimToggleCooldown += 20;
+			intakeTrimToggleCooldown += 20;
 		}
-		else if (trimToggleCooldown > 500)
+		else if (intakeTrimToggleCooldown > 500)
 		{
-			trimToggleCooldown = 0;
+			intakeTrimToggleCooldown = 0;
 		}
 		wait1Msec(20);
 	}

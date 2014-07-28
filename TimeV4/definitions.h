@@ -10,6 +10,7 @@
 #define PotLTarget (LiftTargetValue[0])
 #define PotRTarget (LiftTargetValue[1])
 #define LiftTargetSpeed (LiftTargetValue[2])
+#define SkyriseIntake (SensorValue[PistonClaw])
 
 #define DriveStraightForward(x,y) Drive(x,abs(y),abs(y),abs(y),abs(y))
 #define DriveStraightBack(x,y) Drive(x,-abs(y),-abs(y),-abs(y),-abs(y))

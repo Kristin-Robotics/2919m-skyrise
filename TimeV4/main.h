@@ -9,7 +9,7 @@ const float speedReductionValue = 1.0; // normal speed as of now
 const int LiftLVal[] = {1,1550,680,1140,1400,1500};
 const int LiftRVal[] = {1,1550,680,1140,1400,1500};
 const int PotentiometerLimit = 1460;
-const int TrimSwitch = 150;
+const int liftTrimSwitch = 150;
 
 bool SpeedstepDriveEnabled = false;
 bool SpeedstepLiftEnabled = false;
@@ -152,7 +152,6 @@ task AntiJam()
 	{
 		if ( (PreviousEncoderRDF == Encoder(RDF)) || (PreviousEncoderLDF == Encoder(LDF)) )
 		{
-<<<<<<< HEAD
 			if (DriveActive)
 			{
 				DriveActive = false;
@@ -178,17 +177,7 @@ task AntiJam()
 		}
 		
 		wait1Msec(1000);
-		EndTimeSlice(); // what does this function do?
-=======
-			
-		}		
-		if (LiftActive)
-		{
-
-		}
-		wait1Msec(2000);
-		EndTimeSlice();
->>>>>>> origin/RobotC
+		EndTimeSlice(); 
 	}
 }
 
@@ -217,14 +206,14 @@ task LiftController()
 		//Idle Actions
 		if (PotLTarget == 0 && PotRTarget == 0)
 		{
-			if (PotR < TrimSwitch)
+			if (PotR < liftTrimSwitch)
 			{
 				motor[LLU] = -30;
 				motor[LLD] = -30;
 				motor[RLU] = -30;
 				motor[RLD] = -30;
 			}
-			else if (PotR > TrimSwitch)
+			else if (PotR > liftTrimSwitch)
 			{
 				motor[LLU] = 20;
 				motor[LLD] = 20;

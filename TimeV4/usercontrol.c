@@ -15,20 +15,22 @@ int IntakeR;
 int LiftPreset = 0;
 
 bool intakeUpPressed = false;
+bool trimEnabled = true;
+int trimToggleCooldown = 0;
 
 //User functions
 int ExponentialControl(int Input) //input from value, mod is set to driver preferences
 {
 	if (ExponentialControlEnabled == true)
 	{
-		int Sign = Input/abs(Input);
+		int Sign = Input / abs(Input);
 
 		Input = abs(Input);
 
-		float ScalingValue = 127.0/(ExponentialScalingValue-1);
-		float PercentMax = Input/127.0;
-		float ExpModifier = (float)(pow(ExponentialScalingValue,PercentMax)-1);
-		int Output = (int)round(ScalingValue*ExpModifier*Sign);
+		float ScalingValue = 127.0 / (ExponentialScalingValue - 1);
+		float PercentMax = Input / 127.0;
+		float ExpModifier = (float)(pow(ExponentialScalingValue, PercentMax) - 1);
+		int Output = (int)round(ScalingValue * ExpModifier * Sign);
 		return(Output);
 	}
 	else
@@ -237,6 +239,13 @@ task usercontrol()
 				PresetAssign();
 			}
 		}
+
+		// Toggle intake trimming on/off
+		if (vexRT[Btn8L] == 1 && trimToggleCooldown == 0)
+		{
+			trimEnabled = !trimEnabled;
+			trimToggleCooldown = 1;
+		}
 		
 		// Intake actions
 		// up = 100, down = -80, both, -127
@@ -261,7 +270,7 @@ task usercontrol()
 		}
 /* 		else
 		{
-			if (intakeUpPressed)
+			if (intakeUpPressed && !trimEnabled)
 			{
 				IntakeL = TrimSwitch;
 				IntakeR = TrimSwitch;
@@ -269,6 +278,20 @@ task usercontrol()
 		} */
 		motor[LIN] = IntakeL;
 		motor[RIN] = IntakeR;
+
+		// Increment toggle cooldown if pressed
+		if (trimToggleCooldown == 1)
+		{
+			trimToggleCooldown = 20;
+		}
+		else if (trimToggleCooldown > 1 && trimToggleCooldown <= 500)
+		{
+			trimToggleCooldown += 20;
+		}
+		else if (trimToggleCooldown > 500)
+		{
+			trimToggleCooldown = 0;
+		}
 		wait1Msec(20);
 	}
 }

@@ -14,6 +14,8 @@ int IntakeR;
 
 int LiftPreset = 0;
 
+bool intakeUpPressed = false;
+
 //User functions
 int ExponentialControl(int Input) //input from value, mod is set to driver preferences
 {
@@ -49,19 +51,19 @@ void PresetButtons()
 		}
 		if (vexRT[Btn8R] == 1)
 		{
-			LiftPreset= 4;
+			LiftPreset = 4;
 		}
 		if (vexRT[Btn8D] == 1)
 		{
-			LiftPreset= 3;
+			LiftPreset = 3;
 		}
 		if (vexRT[Btn7U] == 1)
 		{
-			LiftPreset= 2;
+			LiftPreset = 2;
 		}
 		if (vexRT[Btn7D] == 1)
 		{
-			LiftPreset= 1;
+			LiftPreset = 1;
 		}
 		if (vexRT[Btn7L] == 1)
 		{
@@ -176,7 +178,7 @@ task usercontrol()
 	PotLTarget = 0;
 	
 	while (true)
-	{		
+	{	
 		// Moving and strafing actions
 		DriveLF = vexRT[Ch3] + vexRT[Ch4];
 		DriveLB = vexRT[Ch3] - vexRT[Ch4];
@@ -195,6 +197,12 @@ task usercontrol()
 		DriveRF = ExponentialControl(DriveRF);
 		DriveRB = ExponentialControl(DriveRB);
 
+		// Reducing speed
+		DriveLF = reduceSpeed(DriveLF);
+		DriveLB = reduceSpeed(DriveLB);
+		DriveRF = reduceSpeed(DriveRF);
+		DriveRB = reduceSpeed(DriveRB);
+
 		// Assigning
 		motor[LDB] = DriveLB;
 		motor[LDF] = DriveLF;
@@ -202,6 +210,8 @@ task usercontrol()
 		motor[RDF] = DriveRF;
 
 		//Lift actions and assigning
+		LiftL = (vexRT[Btn5U] - vexRT[Btn5D]) * 127;
+		LiftR = (vexRT[Btn5U] - vexRT[Btn5D]) * 127;
 		if ((abs(LiftL) > 0)||(abs(LiftR) > 0))
 		{
 			LiftPreset = 0;
@@ -222,6 +232,43 @@ task usercontrol()
 			}
 		}
 		
+		// Intake actions
+		// up = 100, down = -80, both, -127
+		// If up is pressed, power 15;
+		if (vexRT[Btn6U] == 1 && vexRT[Btn6D] == 0)
+		{
+			IntakeL = 100;
+			IntakeR = 100;
+			intakeUpPressed = true;
+		}
+		else if (vexRT[Btn6U] == 0 && vexRT[Btn6D] == 1)
+		{
+			IntakeL = -80;
+			IntakeR = -80;
+			intakeUpPressed = false;
+		}
+		else if (vexRT[Btn6U] == 1 && vexRT[Btn6D] == 1)
+		{
+			IntakeL = -127;
+			IntakeR = -127;
+			intakeUpPressed = false;
+		}
+		else
+		{
+			if (intakeUpPressed)
+			{
+				IntakeL = TrimSwitch;
+				IntakeR = TrimSwitch;
+			}
+		}
+		motor[LIN] = IntakeL;
+		motor[RIN] = IntakeR;
 		wait1Msec(20);
 	}
+}
+// changes the speed to the set value in main.h
+int changeSpeed(int speed)
+{
+	float buffer = (float)speed // to prevent turncation during multiplication
+	return (int)(buffer * speedReductionValue);
 }

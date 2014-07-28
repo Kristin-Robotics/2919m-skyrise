@@ -5,10 +5,11 @@
 
 //Global Variables
 const int ExponentialScalingValue = 5;
+const float speedReductionValue = 1.0; // normal speed as of now
 const int LiftLVal[] = {1,1550,680,1140,1400,1500};
 const int LiftRVal[] = {1,1550,680,1140,1400,1500};
 const int PotentiometerLimit = 1460;
-const int TrimSwitch = 150;
+const int TrimSwitch = 15;
 
 bool SpeedstepDriveEnabled = false;
 bool SpeedstepLiftEnabled = false;
@@ -151,6 +152,7 @@ task AntiJam()
 	{
 		if ( (PreviousEncoderRDF == Encoder(RDF)) || (PreviousEncoderLDF == Encoder(LDF)) )
 		{
+<<<<<<< HEAD
 			if (DriveActive)
 			{
 				DriveActive = false;
@@ -177,6 +179,16 @@ task AntiJam()
 		
 		wait1Msec(1000);
 		EndTimeSlice(); // what does this function do?
+=======
+			
+		}		
+		if (LiftActive)
+		{
+
+		}
+		wait1Msec(2000);
+		EndTimeSlice();
+>>>>>>> origin/RobotC
 	}
 }
 
@@ -184,12 +196,12 @@ task PIDController()
 {
 	while(true)
 	{
-		if (DriveActive == true)
+		if (DriveActive)
 		{
 		
 		}
 		
-		if (LiftActive == true)
+		if (LiftActive)
 		{
 		
 		}

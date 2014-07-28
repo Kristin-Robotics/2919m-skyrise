@@ -9,7 +9,7 @@ const float speedReductionValue = 1.0; // normal speed as of now
 const int LiftLVal[] = {1,1550,680,1140,1400,1500};
 const int LiftRVal[] = {1,1550,680,1140,1400,1500};
 const int PotentiometerLimit = 1460;
-const int TrimSwitch = 15;
+const int TrimSwitch = 150;
 
 bool SpeedstepDriveEnabled = false;
 bool SpeedstepLiftEnabled = false;

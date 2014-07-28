@@ -14,6 +14,8 @@ int IntakeR;
 
 int LiftPreset = 0;
 
+bool intakeUpPressed = false;
+
 //User functions
 int ExponentialControl(int Input) //input from value, mod is set to driver preferences
 {
@@ -176,7 +178,7 @@ task usercontrol()
 	PotLTarget = 0;
 	
 	while (true)
-	{		
+	{	
 		// Moving and strafing actions
 		DriveLF = vexRT[Ch3] + vexRT[Ch4];
 		DriveLB = vexRT[Ch3] - vexRT[Ch4];
@@ -228,11 +230,39 @@ task usercontrol()
 			}
 		}
 		
+		// Intake actions
+		// up = 100, down = -80, both, -127
+		// If up is pressed, power 15; 
+		int value = 0;
+		if (vexRT[Btn6U] == 1 && vexRT[Btn6D] == 0)
+		{
+			value = 100;
+			intakeUpPressed = true;
+		}
+		else if (vexRT[Btn6U] == 0 && vexRT[Btn6D] == 1)
+		{
+			value = -80;
+			intakeUpPressed = false;
+		}
+		else if (vexRT[Btn6U] == 1 && vexRT[Btn6D] == 1)
+		{
+			value = -127;
+			intakeUpPressed = false;
+		}
+		else
+		{
+			if (intakeUpPressed)
+			{
+				value = 15;
+			}
+		}
+		motor[LIN] = value;
+		motor[RIN] = value;
 		wait1Msec(20);
 	}
 }
-// reduces speed to a quarter (or otherwise set) of the initial speed
-int reduceSpeed(int speed)
+// changes the speed to the set value in main.h
+int changeSpeed(int speed)
 {
 	float buffer = (float)speed // to prevent turncation during multiplication
 	return (int)(buffer * speedReductionValue);

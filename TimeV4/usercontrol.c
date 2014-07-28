@@ -210,6 +210,8 @@ task usercontrol()
 		motor[RDF] = DriveRF;
 
 		//Lift actions and assigning
+		LiftL = (vexRT[Btn5U] - vexRT[Btn5D]) * 127;
+		LiftR = (vexRT[Btn5U] - vexRT[Btn5D]) * 127;
 		if ((abs(LiftL) > 0)||(abs(LiftR) > 0))
 		{
 			LiftPreset = 0;
@@ -232,32 +234,35 @@ task usercontrol()
 		
 		// Intake actions
 		// up = 100, down = -80, both, -127
-		// If up is pressed, power 15; 
-		int value = 0;
+		// If up is pressed, power 15;
 		if (vexRT[Btn6U] == 1 && vexRT[Btn6D] == 0)
 		{
-			value = 100;
+			IntakeL = 100;
+			IntakeR = 100;
 			intakeUpPressed = true;
 		}
 		else if (vexRT[Btn6U] == 0 && vexRT[Btn6D] == 1)
 		{
-			value = -80;
+			IntakeL = -80;
+			IntakeR = -80;
 			intakeUpPressed = false;
 		}
 		else if (vexRT[Btn6U] == 1 && vexRT[Btn6D] == 1)
 		{
-			value = -127;
+			IntakeL = -127;
+			IntakeR = -127;
 			intakeUpPressed = false;
 		}
 		else
 		{
 			if (intakeUpPressed)
 			{
-				value = 15;
+				IntakeL = TrimSwitch;
+				IntakeR = TrimSwitch;
 			}
 		}
-		motor[LIN] = value;
-		motor[RIN] = value;
+		motor[LIN] = IntakeL;
+		motor[RIN] = IntakeR;
 		wait1Msec(20);
 	}
 }

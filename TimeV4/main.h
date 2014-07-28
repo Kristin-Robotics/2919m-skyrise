@@ -142,28 +142,39 @@ void LiftMonitor()
 
 task AntiJam()
 {
-	int PreviousEncoderRDF;
-	int PreviousEncoderLDF;
-	int PreviousPotL;
-	int PreviousPotR;
+	int PreviousEncoderRDF = 0;
+	int PreviousEncoderLDF = 0;
+	int PreviousPotL = 0;
+	int PreviousPotR = 0;
 
 	while(true)
 	{
-		if (DriveActive)
+		if ( (PreviousEncoderRDF == Encoder(RDF)) || (PreviousEncoderLDF == Encoder(LDF)) )
 		{
-			if (motor[LDF] == 0 || motor[LDB] == 0 || motor[RDF] == 0 || motor[RDB] == 0)
+			if (DriveActive)
 			{
 				DriveActive = false;
 			}
+		}
+		else
+		{
+			PreviousEncoderRDF = Encoder(RDF);
+			PreviousEncoderLDF = Encoder(LDF);
 		}
 		
-		if (LiftActive)
+		if ( (PreviousPotL == PotL) || (PreviousPotR == PotR) )
 		{
-			if (motor[LLU] == 0 || motor[LLD] == 0 || motor[RLU] == 0 || motor[RLD] == 0)
+			if (LiftActive)
 			{
-				DriveActive = false;
+				LiftActive = false;
 			}
 		}
+		else
+		{
+			PreviousPotL = PotL;
+			PreviousPotR = PotR;
+		}
+		
 		wait1Msec(1000);
 		EndTimeSlice(); // what does this function do?
 	}

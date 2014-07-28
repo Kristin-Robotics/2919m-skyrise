@@ -72,7 +72,7 @@ void PresetButtons()
 		{
 			if (xmtr2Connected == false)
 			{
-				SkyriseIntake = 0 //Closed
+				SkyriseIntake = 0;//Closed
 			}
 
 			else if (intakeTrimToggleCooldown == 0)
@@ -80,23 +80,24 @@ void PresetButtons()
 				// Toggle intake trimming on/off
 				intakeTrimEnabled = !intakeTrimEnabled;
 				intakeTrimToggleCooldown = 1;
+			}
 		}
 		if (vexRT[Btn7R] == 1)
 		{
 			if (xmtr2Connected == false)
 			{
-				SkyriseIntake = 1 //Open
+				SkyriseIntake = 1; //Open
 			}
 		}
 		if (xmtr2Connected)
 		{
 			if (vexRT[Btn7LXmtr2] == 1)
 			{
-				SkyriseIntake = 0 //Closed
+				SkyriseIntake = 0; //Closed
 			}
 			if (vexRT[Btn7RXmtr2] == 1)
 			{
-				SkyriseIntake = 1 //Open
+				SkyriseIntake = 1; //Open
 			}
 		}
 	}
@@ -292,7 +293,7 @@ task usercontrol()
 		}
 		else
 		{
-			if (intakeUpPressed && !trimEnabled)
+			if (intakeUpPressed && !intakeTrimEnabled)
 			{
 				IntakeL = 60;
 				IntakeR = 60;
@@ -316,10 +317,4 @@ task usercontrol()
 		}
 		wait1Msec(20);
 	}
-}
-// changes the speed to the set value in main.h
-int changeSpeed(int speed)
-{
-	float buffer = (float)speed // to prevent truncation during multiplication
-	return (int)(round(buffer * speedReductionValue)); //Better rounding using the macro
 }

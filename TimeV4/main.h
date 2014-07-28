@@ -10,6 +10,7 @@ const int LiftLVal[] = {1,1550,680,1140,1400,1500};
 const int LiftRVal[] = {1,1550,680,1140,1400,1500};
 const int PotentiometerLimit = 1460;
 const int liftTrimSwitch = 150;
+const int liftTrimSwitchEnabled = true;
 
 bool SpeedstepDriveEnabled = false;
 bool SpeedstepLiftEnabled = false;
@@ -21,6 +22,13 @@ bool LiftActive = false;
 int LiftTargetValue[] = {0,0,0}; 
 
 //Global Functions
+
+// changes the speed to the set value in main.h
+int reduceSpeed(int speed)
+{
+	float buffer = (float)speed; // to prevent truncation during multiplication
+	return (int)(round(buffer * speedReductionValue)); //Better rounding using the macro
+}
 
 void ClearEncoders()
 {
@@ -204,16 +212,16 @@ task LiftController()
 	while(true)
 	{
 		//Idle Actions
-		if (PotLTarget == 0 && PotRTarget == 0)
+		if ( (PotLTarget == 0 && PotRTarget == 0) && (liftTrimSwitchEnabled) )
 		{
-			if (PotR < liftTrimSwitch)
+			if ( (PotR < liftTrimSwitch))
 			{
 				motor[LLU] = -30;
 				motor[LLD] = -30;
 				motor[RLU] = -30;
 				motor[RLD] = -30;
 			}
-			else if (PotR > liftTrimSwitch)
+			else if ( (PotR > liftTrimSwitch) && (liftTrimSwitchEnabled) )
 			{
 				motor[LLU] = 20;
 				motor[LLD] = 20;

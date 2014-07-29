@@ -223,12 +223,6 @@ task usercontrol()
 		DriveLB = ExponentialControl(DriveLB);
 		DriveRF = ExponentialControl(DriveRF);
 		DriveRB = ExponentialControl(DriveRB);
-
-		// Reducing speed
-		DriveLF = reduceSpeed(DriveLF);
-		DriveLB = reduceSpeed(DriveLB);
-		DriveRF = reduceSpeed(DriveRF);
-		DriveRB = reduceSpeed(DriveRB);
 		
 		//Right Stick forwards and back will be full power drive
 		DriveLF = DriveLF + ExponentialControl(vexRT[Ch2]);
@@ -273,28 +267,28 @@ task usercontrol()
 		// If up is pressed, power 15;
 		if (vexRT[Btn6U] == 1 && vexRT[Btn6D] == 0)
 		{
-			IntakeL = 127;
-			IntakeR = 127;
+			IntakeL = 100;
+			IntakeR = 100;
 			intakeUpPressed = true;
 		}
 		else if (vexRT[Btn6U] == 0 && vexRT[Btn6D] == 1)
 		{
-			IntakeL = -127;
-			IntakeR = -127;
+			IntakeL = -80;
+			IntakeR = -80;
 			intakeUpPressed = false;
 		}
 		else if (vexRT[Btn6U] == 1 && vexRT[Btn6D] == 1)
 		{
-			IntakeL = -60;
-			IntakeR = -60;
+			IntakeL = -127;
+			IntakeR = -127;
 			intakeUpPressed = false;
 		}
 		else
 		{
 			if (intakeUpPressed)
 			{
-				IntakeL = 60;
-				IntakeR = 60;
+				IntakeL = 15;
+				IntakeR = 15;
 			}
 		} 
 		motor[LIN] = IntakeL;

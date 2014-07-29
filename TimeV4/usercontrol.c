@@ -15,9 +15,7 @@ int IntakeR;
 int LiftPreset = 0;
 
 bool intakeUpPressed = false;
-bool intakeTrimEnabled = true;
 bool xmtr2Connected = false;
-int intakeTrimToggleCooldown = 0;
 
 //User functions
 int ExponentialControl(int Input) //input from value, mod is set to driver preferences
@@ -293,7 +291,7 @@ task usercontrol()
 		}
 		else
 		{
-			if (intakeUpPressed && !intakeTrimEnabled)
+			if (intakeUpPressed)
 			{
 				IntakeL = 60;
 				IntakeR = 60;
@@ -302,19 +300,6 @@ task usercontrol()
 		motor[LIN] = IntakeL;
 		motor[RIN] = IntakeR;
 
-		// Increment toggle cooldown if pressed
-		if (intakeTrimToggleCooldown == 1)
-		{
-			intakeTrimToggleCooldown = 20;
-		}
-		else if (intakeTrimToggleCooldown > 1 && intakeTrimToggleCooldown <= 500)
-		{
-			intakeTrimToggleCooldown += 20;
-		}
-		else if (intakeTrimToggleCooldown > 500)
-		{
-			intakeTrimToggleCooldown = 0;
-		}
 		wait1Msec(20);
 	}
 }

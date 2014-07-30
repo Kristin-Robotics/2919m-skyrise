@@ -72,13 +72,6 @@ void PresetButtons()
 			{
 				SkyriseIntake = 0;//Closed
 			}
-
-			else if (intakeTrimToggleCooldown == 0)
-			{
-				// Toggle intake trimming on/off
-				intakeTrimEnabled = !intakeTrimEnabled;
-				intakeTrimToggleCooldown = 1;
-			}
 		}
 		if (vexRT[Btn7R] == 1)
 		{
@@ -200,9 +193,9 @@ task usercontrol()
 {
 	//Initialise user control
 	StartTask(LiftController);
-	StartTask(PIDController);
 	PotRTarget = 0;
 	PotLTarget = 0;
+	LiftActive = false;
 	
 	while (true)
 	{	
@@ -223,12 +216,6 @@ task usercontrol()
 		DriveLB = ExponentialControl(DriveLB);
 		DriveRF = ExponentialControl(DriveRF);
 		DriveRB = ExponentialControl(DriveRB);
-		
-		//Right Stick forwards and back will be full power drive
-		DriveLF = DriveLF + ExponentialControl(vexRT[Ch2]);
-		DriveLB = DriveLB + ExponentialControl(vexRT[Ch2]);
-		DriveRF = DriveRF + ExponentialControl(vexRT[Ch2]);
-		DriveRB = DriveRB + ExponentialControl(vexRT[Ch2]);
 
 		// Assigning
 		motor[LDB] = DriveLB;
@@ -236,30 +223,33 @@ task usercontrol()
 		motor[RDB] = DriveRB;
 		motor[RDF] = DriveRF;
 
-		//Lift actions and assigning
+		//Lift Variable
 		LiftL = (vexRT[Btn5U] - vexRT[Btn5D]) * 127;
 		LiftR = (vexRT[Btn5U] - vexRT[Btn5D]) * 127;
 		
 		//Stuff to do with buttons
-		PresetButtons();
+		//PresetButtons();
 		if ((abs(LiftL) > 0)||(abs(LiftR) > 0))
 		{
 			LiftPreset = 0;
 			PotLTarget = 0;
 			PotRTarget = 0;
 			LiftActive = false;
-
-			motor[LLD] = LiftL;
-			motor[LLU] = LiftL;
-			motor[RLD] = LiftR;
-			motor[RLU] = LiftR;
 		}
 		else
 		{
 			if (LiftPreset != 0)
 			{
-				PresetAssign();
+				//PresetAssign();
 			}
+		}
+		
+		if (LiftActive == false)
+		{
+			motor[LLD] = LiftL;
+			motor[LLU] = LiftL;
+			motor[RLD] = LiftR;
+			motor[RLU] = LiftR;
 		}
 		
 		// Roller Intake actions
@@ -275,7 +265,7 @@ task usercontrol()
 		{
 			IntakeL = -80;
 			IntakeR = -80;
-			intakeUpPressed = false;
+			intakeUpPressed = true;
 		}
 		else if (vexRT[Btn6U] == 1 && vexRT[Btn6D] == 1)
 		{
@@ -287,10 +277,12 @@ task usercontrol()
 		{
 			if (intakeUpPressed)
 			{
-				IntakeL = 15;
-				IntakeR = 15;
+				IntakeL = 10;
+				IntakeR = 10;
 			}
 		} 
+		
+		//Intake Assign
 		motor[LIN] = IntakeL;
 		motor[RIN] = IntakeR;
 

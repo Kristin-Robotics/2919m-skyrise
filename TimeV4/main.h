@@ -6,8 +6,8 @@
 //Global Variables
 const int ExponentialScalingValue = 5;
 const float speedReductionValue = 1.0; // normal speed as of now
-const int LiftLVal[] = {1,1550,680,1140,1400,1500};
-const int LiftRVal[] = {1,1550,680,1140,1400,1500};
+const int LiftLVal[] = {1,1590,680,1140,1400,1500};
+const int LiftRVal[] = {1,1724,680,1140,1400,1500};
 const int PotentiometerLimit = 1460;
 const int liftTrimSwitch = 150;
 const int liftTrimSwitchEnabled = true;
@@ -211,23 +211,28 @@ task LiftController()
 {
 	while(true)
 	{
+		if (((LiftActive == false) && (liftTrimSwitchEnabled)) && (vexRT[Btn5U] == 0 && vexRT[Btn5D] == 0) )
+		{
+			if ( (PotR < liftTrimSwitch) )
+			{
+				motor[LLU] = -10;
+				motor[LLD] = -10;
+				motor[RLU] = -10;
+				motor[RLD] = -10;
+			}
+			else if ( (PotR > liftTrimSwitch) )
+			{
+				motor[LLU] = 10;
+				motor[LLD] = 10;
+				motor[RLU] = 10;
+				motor[RLD] = 10;
+			}
+		
+		}
 		//Idle Actions
 		if ( (PotLTarget == 0 && PotRTarget == 0) && (liftTrimSwitchEnabled) )
 		{
-			if ( (PotR < liftTrimSwitch))
-			{
-				motor[LLU] = -30;
-				motor[LLD] = -30;
-				motor[RLU] = -30;
-				motor[RLD] = -30;
-			}
-			else if ( (PotR > liftTrimSwitch) && (liftTrimSwitchEnabled) )
-			{
-				motor[LLU] = 20;
-				motor[LLD] = 20;
-				motor[RLU] = 20;
-				motor[RLD] = 20;
-			}
+
 		}
 		//Non-Idle Actions
 		else

@@ -12,6 +12,9 @@ int LiftR;
 int IntakeL;
 int IntakeR;
 
+int pistonL;
+int pistonR;
+
 int LiftPreset = 0;
 
 bool intakeUpPressed = false;
@@ -20,7 +23,7 @@ bool xmtr2Connected = false;
 //User functions
 int ExponentialControl(int Input) //input from value, mod is set to driver preferences
 {
-	if (ExponentialControlEnabled == true)
+	if (ExponentialControlEnabled)
 	{
 		int Sign = Input / abs(Input);
 
@@ -217,6 +220,12 @@ task usercontrol()
 		DriveRF = ExponentialControl(DriveRF);
 		DriveRB = ExponentialControl(DriveRB);
 
+		// Changing speed
+		DriveLF = changeSpeed(DriveLF);
+		DriveLB = changeSpeed(DriveLB);
+		DriveRF = changeSpeed(DriveRF);
+		DriveRB = changeSpeed(DriveRB);
+
 		// Assigning
 		motor[LDB] = DriveLB;
 		motor[LDF] = DriveLF;
@@ -226,6 +235,20 @@ task usercontrol()
 		//Lift Variable
 		LiftL = (vexRT[Btn5U] - vexRT[Btn5D]) * 127;
 		LiftR = (vexRT[Btn5U] - vexRT[Btn5D]) * 127;
+
+		// Pistons with second controller
+		if (vexRT(Btn6UXmtr2) == 1 && vexRT(Btn6DXmtr2) == 0)
+		{
+			pistonL = 1;
+			pistonR = 1;
+			xmtr2Connected = true;
+		}
+		else if (vexRT(Btn6DXmtr2) == 1 && vexRT(Btn6UXmtr2) == 0)
+		{
+			pistonL = 0;
+			pistonR = 0;
+			xmtr2Connected = true;
+		}
 		
 		//Stuff to do with buttons
 		//PresetButtons();
@@ -244,7 +267,7 @@ task usercontrol()
 			}
 		}
 		
-		if (LiftActive == false)
+		if (!LiftActive)
 		{
 			motor[LLD] = LiftL;
 			motor[LLU] = LiftL;
@@ -255,6 +278,7 @@ task usercontrol()
 		// Roller Intake actions
 		// up = 100, down = -80, both, -127
 		// If up is pressed, power 15;
+		// Don't touch Jerry, unless said to by Marco
 		if (vexRT[Btn6U] == 1 && vexRT[Btn6D] == 0)
 		{
 			IntakeL = 100;

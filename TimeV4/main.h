@@ -24,7 +24,7 @@ int LiftTargetValue[] = {0,0,0};
 //Global Functions
 
 // changes the speed to the set value in main.h
-int reduceSpeed(int speed)
+int changeSpeed(int speed)
 {
 	float buffer = (float)speed; // to prevent truncation during multiplication
 	return (int)(round(buffer * speedReductionValue)); //Better rounding using the macro

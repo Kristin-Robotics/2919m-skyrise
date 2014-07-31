@@ -95,88 +95,16 @@ void PresetButtons()
 }
 void PresetAssign()
 {
-	switch (LiftPreset)
+	if (PotR != LiftRVal[LiftPreset - 1])
 	{
-		case 1:
-			if (PotR != LiftRVal[0])
-			{
-				PotLTarget = LiftLVal[0];
-				PotRTarget = LiftRVal[0];
-				LiftMonitor();
-			}
-			else
-			{
-				LiftPreset = 0;
-				LiftActive = false;
-			}
-			break;
-		case 2:
-			if (PotR != LiftRVal[1])
-			{
-				PotLTarget = LiftLVal[1];
-				PotRTarget = LiftRVal[1];
-				LiftMonitor();
-			}
-			else
-			{
-				LiftPreset = 0;
-				LiftActive = false;
-			}
-			break;
-		case 3:
-			if (PotR != LiftRVal[2])
-			{
-				PotLTarget = LiftLVal[2];
-				PotRTarget = LiftRVal[2];
-				LiftMonitor();
-			}
-			else
-			{
-				LiftPreset = 0;
-				LiftActive = false;
-			}
-			break;
-		case 4:
-			if (PotR != LiftRVal[3])
-			{
-				PotLTarget = LiftLVal[3];
-				PotRTarget = LiftRVal[3];
-				LiftMonitor();
-			}
-			else
-			{
-				LiftPreset = 0;
-				LiftActive = false;
-			}
-			break;
-		case 5:
-			if (PotR != LiftRVal[4])
-			{
-				PotLTarget = LiftLVal[4];
-				PotRTarget = LiftRVal[4];
-				LiftMonitor();
-			}
-			else
-			{
-				LiftPreset = 0;
-				LiftActive = false;
-			}
-			break;
-		case 6:
-			if (PotR != LiftRVal[5])
-			{
-				PotLTarget = LiftLVal[5];
-				PotRTarget = LiftRVal[5];
-				LiftMonitor();
-			}
-			else
-			{
-				LiftPreset = 0;
-				LiftActive = false;
-			}
-			break;
-		default:
-			break;
+		PotLTarget = LiftLVal[LiftPreset - 1];
+		PotRTarget = LiftRVal[LiftPreset - 1];
+		LiftMonitor();
+	}
+	else
+	{
+		LiftPreset = 0;
+		LiftActive = false;
 	}
 }
 
@@ -228,7 +156,7 @@ task usercontrol()
 		LiftR = (vexRT[Btn5U] - vexRT[Btn5D]) * 127;
 		
 		//Stuff to do with buttons
-		//PresetButtons();
+		PresetButtons();
 		if ((abs(LiftL) > 0)||(abs(LiftR) > 0))
 		{
 			LiftPreset = 0;
@@ -240,7 +168,7 @@ task usercontrol()
 		{
 			if (LiftPreset != 0)
 			{
-				//PresetAssign();
+				PresetAssign();
 			}
 		}
 		

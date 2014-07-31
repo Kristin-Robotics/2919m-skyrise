@@ -2,7 +2,6 @@
 #define DEFINITIONS_H_
 
 #define round(x) ((x)>=0?(long)((x)+0.5):(long)((x)-0.5))
-#define abs(x) ((x) < 0 ? -x : x)
 
 #define Gyro in3
 #define Encoder(x) (nMotorEncoder[x])

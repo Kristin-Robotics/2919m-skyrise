@@ -611,6 +611,14 @@ void Intake(int speed)
 			{
 				SensorValue[PistonClaw]=1;
 			}
+			if (vexRT[Btn7LXmtr2] == 1)
+			{
+				SensorValue[PistonClaw]=0;
+			}
+			if (vexRT[Btn7RXmtr2] == 1)
+			{
+				SensorValue[PistonClaw]=1;
+			}
 		}
 	}
 

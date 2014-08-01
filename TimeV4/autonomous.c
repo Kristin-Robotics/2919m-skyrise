@@ -92,11 +92,11 @@ void Intake(int Speed)
 task autonomous()
 {
 	//Initialise Autonomous
-	StartTask(LiftController);
-	StartTask(PIDController);
+/* 	StartTask(LiftController);
 	StartTask(AntiJam);
-	InitialiseDrive();
+	InitialiseDrive(); */
 	
 	//Autonomous Routine
-	DriveStraightForward(200,127);
+	SensorValue[PistonClaw]=1;
+	wait1Msec(1000);
 }

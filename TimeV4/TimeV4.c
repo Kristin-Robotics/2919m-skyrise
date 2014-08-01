@@ -7,7 +7,7 @@
 #pragma config(Sensor, in6,    LineR,          sensorLineFollower)
 #pragma config(Sensor, dgtl1,  UltrasonicL,    sensorSONAR_mm)
 #pragma config(Sensor, dgtl3,  UltrasonicR,    sensorSONAR_mm)
-#pragma config(Sensor, dgtl5,  PistonClaw,     sensorDigitalIn)
+#pragma config(Sensor, dgtl12,  PistonClaw,     sensorDigitalOut)
 #pragma config(Sensor, dgtl6,  EIN,            sensorQuadEncoder)
 #pragma config(Sensor, I2C_1,  ,               sensorQuadEncoderOnI2CPort,    , AutoAssign)
 #pragma config(Sensor, I2C_2,  ,               sensorQuadEncoderOnI2CPort,    , AutoAssign)

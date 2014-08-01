@@ -230,12 +230,12 @@ task LiftController()
 		
 		}
 		//Idle Actions
-		if ( (PotLTarget == 0 && PotRTarget == 0) && (liftTrimSwitchEnabled) )
+/* 		if ( (PotLTarget == 0 && PotRTarget == 0) && (liftTrimSwitchEnabled) )
 		{
 
-		}
+		} */
 		//Non-Idle Actions
-		else
+		if ( (PotLTarget != 0 && PotRTarget != 0) && (!liftTrimSwitchEnabled) )
 		{
 			LiftMonitor();
 		}

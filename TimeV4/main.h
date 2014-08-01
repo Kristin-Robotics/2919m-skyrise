@@ -32,9 +32,9 @@ int reduceSpeed(int speed)
 
 void ClearEncoders()
 {
-	Encoder(LDF) = 0;
-	Encoder(RDF) = 0;
-	Encoder(LDB) = 0;
+	nMotorEncoder[LDF] = 0;
+	nMotorEncoder[RDF] = 0;
+	nMotorEncoder[LDB] = 0;
 	nMotorEncoder[RDB] = 0;
 }
 

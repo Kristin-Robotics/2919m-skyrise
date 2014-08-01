@@ -100,7 +100,6 @@ void PresetAssign()
 	{
 		PotLTarget = LiftLVal[LiftPreset - 1];
 		PotRTarget = LiftRVal[LiftPreset - 1];
-		LiftMonitor();
 	}
 	else
 	{

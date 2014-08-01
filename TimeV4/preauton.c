@@ -29,4 +29,5 @@ void pre_auton()
 	// Example: clearing encoders, setting servo positions, ...
 	
 	InitialiseGyro();
+	ClearEncoders();
 }

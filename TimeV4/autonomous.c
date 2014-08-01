@@ -18,7 +18,7 @@ void Drive(int EncoderDistance,int SpeedLDB,int SpeedLDF,int SpeedRDB,int SpeedR
 
 	while (((DriveLBGoalReached == false)||(DriveRBGoalReached == false)||(DriveRFGoalReached == false)||(DriveLFGoalReached == false)) && (DriveActive))
 	{
-		if ( Encoder(LDB) < EncoderDistance )
+		if ( nMotorEncoder[LDB] < EncoderDistance )
 		{
 		
 			motor[LDB] = SpeedLDB;
@@ -29,7 +29,7 @@ void Drive(int EncoderDistance,int SpeedLDB,int SpeedLDF,int SpeedRDB,int SpeedR
 			DriveLBGoalReached=true;
 		}
 
-		if ( Encoder(RDB) < EncoderDistance )
+		if ( nMotorEncoder[RDB] < EncoderDistance )
 		{
 			motor[RDB] = SpeedRDB;
 		}
@@ -39,7 +39,7 @@ void Drive(int EncoderDistance,int SpeedLDB,int SpeedLDF,int SpeedRDB,int SpeedR
 			DriveRBGoalReached=true;
 		}
 
-		if ( Encoder(LDF) < EncoderDistance )
+		if ( nMotorEncoder[LDF] < EncoderDistance )
 		{
 			motor[LDF] = SpeedLDF;
 		}
@@ -49,7 +49,7 @@ void Drive(int EncoderDistance,int SpeedLDB,int SpeedLDF,int SpeedRDB,int SpeedR
 			DriveLFGoalReached=true;
 		}
 
-		if ( Encoder(RDF) < EncoderDistance )
+		if ( nMotorEncoder[RDF] < EncoderDistance )
 		{
 			motor[RDF] = SpeedRDF;
 		}
@@ -95,7 +95,8 @@ task autonomous()
 	StartTask(LiftController);
 	StartTask(AntiJam);
 	InitialiseDrive();
+	ClearEncoders();
 	
 	//Autonomous Routine
-	
+	DriveStraightForward(200,100);
 }

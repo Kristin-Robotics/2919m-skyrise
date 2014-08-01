@@ -6,8 +6,8 @@
 //Global Variables
 const int ExponentialScalingValue = 5;
 const float speedReductionValue = 1.0; // normal speed as of now
-const int LiftLVal[] = {1,1590,680,1140,1400,1500};
-const int LiftRVal[] = {1,1724,680,1140,1400,1500};
+const int LiftLVal[] = {1,1530,1,777,1210,1520};
+const int LiftRVal[] = {1,1710,680,548,1025,1340};
 const int PotentiometerLimit = 1460;
 const int liftTrimSwitch = 150;
 const int liftTrimSwitchEnabled = true;

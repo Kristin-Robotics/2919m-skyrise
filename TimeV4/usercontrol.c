@@ -71,14 +71,14 @@ void PresetButtons()
 		{
 			if (xmtr2Connected == false)
 			{
-				SkyriseIntake = 0;//Closed
+				SensorValue[PistonClaw]=0;
 			}
 		}
 		if (vexRT[Btn7R] == 1)
 		{
 			if (xmtr2Connected == false)
 			{
-				SkyriseIntake = 1; //Open
+				SensorValue[PistonClaw]=1;
 			}
 		}
 		if (xmtr2Connected)
@@ -186,7 +186,7 @@ task usercontrol()
 		// If up is pressed, power 15;
 		if (vexRT[Btn6U] == 1 && vexRT[Btn6D] == 0)
 		{
-			intakeStarted = true;
+				//intakeStarted = true;
 			intakeUpPressed = true;
 		}
 		else if (vexRT[Btn6U] == 0 && vexRT[Btn6D] == 1)
@@ -209,7 +209,7 @@ task usercontrol()
 				IntakeR = 10;
 			}
 		} 
-		if (intakeStarted)
+ /* 		if (intakeStarted)
 		{
 			if (SensorValue[EIN] <= x)
 			{
@@ -221,7 +221,7 @@ task usercontrol()
 				ticks = 0;
 				intakeStarted = false;
 			}
-		}
+		}  */
 		//Intake Assign
 		motor[LIN] = IntakeL;
 		motor[RIN] = IntakeR;

@@ -16,6 +16,7 @@ int LiftPreset = 0;
 
 bool intakeUpPressed = false;
 bool xmtr2Connected = false;
+bool intakeStarted = false;
 
 //User functions
 int ExponentialControl(int Input) //input from value, mod is set to driver preferences
@@ -185,8 +186,7 @@ task usercontrol()
 		// If up is pressed, power 15;
 		if (vexRT[Btn6U] == 1 && vexRT[Btn6D] == 0)
 		{
-			IntakeL = 100;
-			IntakeR = 100;
+			intakeStarted = true;
 			intakeUpPressed = true;
 		}
 		else if (vexRT[Btn6U] == 0 && vexRT[Btn6D] == 1)
@@ -203,13 +203,25 @@ task usercontrol()
 		}
 		else
 		{
-			if (intakeUpPressed)
+			if (intakeUpPressed && !intakeStarted)
 			{
 				IntakeL = 10;
 				IntakeR = 10;
 			}
 		} 
-		
+		if (intakeStarted)
+		{
+			if (SensorValue[EIN] <= x)
+			{
+				IntakeL = 100;
+				IntakeR = 100;
+			}
+			else
+			{
+				ticks = 0;
+				intakeStarted = false;
+			}
+		}
 		//Intake Assign
 		motor[LIN] = IntakeL;
 		motor[RIN] = IntakeR;

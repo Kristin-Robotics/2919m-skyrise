@@ -842,7 +842,13 @@ task autonomous()
 	//{
 	//	wait10Msec(100);
 	//}
-	//Blue - 5 pnts
+	//Blue - 2 pnts
+
+	/*motor[LIN]=-90;
+	motor[RIN]=-90;
+	wait1Msec(400);
+	motor[LIN]=0;
+	motor[RIN]=0;
 	motor[LDB]=80;
 	motor[RDB]=80;
 	motor[LDF]=-40;
@@ -853,20 +859,42 @@ task autonomous()
 	motor[LDF]=0;
 	motor[RDF]=0;
 	drive_move(500,80);
-	motor[LIN]=100;
-	motor[RIN]=100;
-	drive_move(100,100);
-	wait1Msec(1500);
+	motor[LIN]=150;
+	motor[RIN]=150;
+	wait1Msec(2000);
 	motor[LIN]=0;
 	motor[RIN]=0;
-	drive_strafe(700,100);
-	drive_move(400,80);
-	drive_turn(700,-127);
-	drive_move(200,80);
-	tLiftUp(1000,127);
-	drive_move(100,80);
-	motor[LIN]=-80;
-	motor[RIN]=-80;
+	drive_move(250,100);
+	wait1Msec(1000);
+	motor[LDB]=0;
+	motor[RDB]=0;
+	motor[LDF]=0;
+	motor[RDF]=0;
+	*/
+
+	//motor[LIN]=0;
+	//motor[RIN]=0;
+	//drive_strafe(700,100);
+	//drive_move(400,80);
+	//drive_turn(700,-127);
+	//drive_move(200,80);
+	//tLiftUp(1000,127);
+	//drive_move(100,80);
+	//motor[LIN]=-80;
+	//motor[RIN]=-80;
+	//wait1Msec(4000);
+	//motor[LIN]=0;
+	//motor[RIN]=0;
+
+		//Both - 3 pnts
+	motor[LDB]=90;
+	motor[RDB]=90;
+	motor[LDF]=-40;
+	motor[RDF]=-40;
+	wait1Msec(1000);
+	tLiftUp(500,127);
+	motor[LIN]=-100;
+	motor[RIN]=-100;
 	wait1Msec(4000);
 	motor[LIN]=0;
 	motor[RIN]=0;

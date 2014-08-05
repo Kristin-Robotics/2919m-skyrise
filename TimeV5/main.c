@@ -32,8 +32,14 @@
 #pragma autonomousDuration(20)
 #pragma userControlDuration(120)
 
-//Main Header
+//Header Files
+#include "/headers/definitions.h"
+
+#include "/headers/variables.h"
+
 #include "/headers/main.h"
+
+//Includes Files
 
 #include "Vex_Competition_Includes.c"   //Main competition background code...do not modify!
 

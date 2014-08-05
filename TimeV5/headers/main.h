@@ -1,10 +1,6 @@
 #ifndef MAIN_H_
 #define MAIN_H_
 
-#include "definitions.h"
-
-#include "variables.h"
-
 //Global Functions
 // changes the speed to the set value in main.h
 int reduceSpeed(int speed)

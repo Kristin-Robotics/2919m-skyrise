@@ -111,16 +111,9 @@ task usercontrol()
 	while (true)
 	{	
 		//Limit movement to one direction
-		if (abs(vexRT[Ch3]) < abs(vexRT[Ch4]))
-		{
-			analogStickPrimary = vexRT[Ch4];
-			analogStickSecondary = -vexRT[Ch4];
-		}
-		else 
-		{
-			analogStickPrimary = vexRT[Ch3];
-			analogStickSecondary = vexRT[Ch3];
-		}
+		analogStickPrimary = (vexRT[Ch3] != 0 ? vexRT[Ch3] : vexRT[Ch4]);
+		analogStickSecondary = (vexRt[Ch3] != 0 ? vexRT[Ch3] : -vexRT[Ch4]);
+
 		// Moving and strafing actions
 		dLF = analogStickPrimary;
 		dLB = analogStickSecondary;

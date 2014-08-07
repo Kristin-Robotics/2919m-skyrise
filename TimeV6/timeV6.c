@@ -50,3 +50,6 @@
 
 // Autonomous
 #include "/files/autonomous.c"
+
+// Special effects
+#include "/files/effects.c"

@@ -52,14 +52,7 @@ void setPreset()
 		{
 			if (!xmtr2Connected)
 			{
-				intakeSkyrise = 0;
-			}
-		}
-		if (vexRT[Btn7R] == 1)
-		{
-			if (!xmtr2Connected)
-			{
-				intakeSkyrise = 1;
+				intakeSkyrise = (intakeSkyrise == 0 ? 1 : 0);
 			}
 		}
 		if (xmtr2Connected)
@@ -93,6 +86,10 @@ task usercontrol()
 
 	while (true)
 	{
+		if (vexRT[Btn7R] == 1)
+		{
+			//StartTask(playMusic);
+		}
 		// Limit movement
 		stickPrimary = (abs(vexRT[Ch3]) > abs(vexRT[Ch4]) ? vexRT[Ch3] : vexRT[Ch4]);
 		stickSecondary = (abs(vexRT[Ch3]) > abs(vexRT[Ch4]) ? vexRT[Ch3] : -vexRT[Ch4]);

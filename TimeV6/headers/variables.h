@@ -1,5 +1,5 @@
-#ifndef VARIABLES_H
-#define VARIABLES_H
+#ifndef VARIABLES_H_
+#define VARIABLES_H_
 
 #include "variables.h"
 
@@ -9,9 +9,11 @@ const float speedReductionVal = 1.0; // normal as of now
 const int liftLVal[] = { 1, 1530, 1, 777, 1210, 1520 }; //Preset values for left lift
 const int liftRVal[] = { 1, 1710, 680, 548, 1025, 1340 }; // Preset values for right list
 
+int liftAutonVal[] = { 0, 0, 0 };
+
 // Booleans
 bool expScalingEnabled = true;
-bool liftPresetEnabled = true;
+bool liftPresetsEnabled = true;
 bool driveActive = false;
 bool liftActive = false;
 
@@ -27,4 +29,4 @@ int liftR;
 int intakeL;
 int intakeR;
 
-#endif VARIABLES_H
+#endif VARIABLES_H_

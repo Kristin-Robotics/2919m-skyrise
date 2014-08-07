@@ -1,5 +1,5 @@
-#ifndef DEFINITIONS_H
-#define DEFINITIONS_H
+#ifndef DEFINITIONS_H_
+#define DEFINITIONS_H_
 
 // Math functions
 #define PI 3.141592654
@@ -16,5 +16,9 @@
 #define encoder(x) (nMotorEncoder[x])
 #define potL (SensorValue[potLL])
 #define potR (SensorValue[potRL])
+#define potLTarget (liftAutonVal[0])
+#define potRTarget (liftAutonVal[1])
+#define liftTargetSpeed (liftAutonVal[2])
+#define intakeSkyrise (SensorValue[piston])
 
-#endif DEFINITIONS_H
+#endif DEFINITIONS_H_

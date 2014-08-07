@@ -1,7 +1,3 @@
-/*
-* TimeV6
-* By Kristian Hansen
-*/
 #pragma config(I2C_Usage, I2C1, i2cSensors)
 #pragma config(Sensor, in1,    potLL, sensorPotentiometer)
 #pragma config(Sensor, in2,    potRL, sensorPotentiometer)
@@ -23,8 +19,8 @@
 #pragma config(Motor,  port4,           liftLD,           tmotorVex393, openLoop)
 #pragma config(Motor,  port5,           liftRU,           tmotorVex393, openLoop)
 #pragma config(Motor,  port6,           liftRD,           tmotorVex393, openLoop, reversed)
-#pragma config(Motor,  port7,           intakeR,           tmotorVex393, openLoop)
-#pragma config(Motor,  port8,           intakeL,           tmotorVex393, openLoop)
+#pragma config(Motor,  port7,           iR,           tmotorVex393, openLoop)
+#pragma config(Motor,  port8,           iL,           tmotorVex393, openLoop)
 #pragma config(Motor,  port9,           dLB,           tmotorVex393, openLoop, reversed, encoder, encoderPort, I2C_4, 1000)
 #pragma config(Motor,  port10,          dLF,           tmotorVex393, openLoop, encoder, encoderPort, I2C_3, 1000)
 

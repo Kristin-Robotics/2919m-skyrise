@@ -1,5 +1,10 @@
 #include "main.h"
 
+typedef enum { NONE, MIN, MAX, LOW_GOAL, MID_LOW_GOAL, MID_HIGH_GOAL, HIGH_GOAL } presets;
+int liftPreset = 0;
+
+bool xmtr2Connected = false;
+
 int expControl(int input)
 {
 	if (expScalingEnabled)
@@ -15,9 +20,74 @@ int expControl(int input)
 	return input;
 }
 
+void setPreset()
+{
+	if (liftPresetsEnabled)
+	{
+		if (vexRT[Btn8U] == 1)
+		{
+			liftPreset = HIGH_GOAL;
+		}
+		if (vexRT[Btn8L] == 1)
+		{
+			liftPreset = MID_HIGH_GOAL;
+		}
+		if (vexRT[Btn8R] == 1)
+		{
+			liftPreset = MID_LOW_GOAL;
+		}
+		if (vexRT[Btn8D] == 1)
+		{
+			liftPreset = LOW_GOAL;
+		}
+		if (vexRT[Btn7U] == 1)
+		{
+			liftPreset = MAX;
+		}
+		if (vexRT[Btn7D] == 1)
+		{
+			liftPreset = MIN;
+		}
+		if (vexRT[Btn7L] == 1)
+		{
+			if (!xmtr2Connected)
+			{
+				intakeSkyrise = 0;
+			}
+		}
+		if (vexRT[Btn7R] == 1)
+		{
+			if (!xmtr2Connected)
+			{
+				intakeSkyrise = 1;
+			}
+		}
+		if (xmtr2Connected)
+		{
+			if (vexRT[Btn7LXmtr2] == 1)
+			{
+				intakeSkyrise = 0; //Closed
+			}
+			if (vexRT[Btn7RXmtr2] == 1)
+			{
+				intakeSkyrise = 1; //Open
+			}
+		}
+	}
+}
+
+void assignPreset()
+{
+	int index = liftPreset - 1;
+	potLTarget = liftLVal[index];
+	potRTarget = liftRVal[index];
+}
+
 // User control task
 task usercontrol()
 {
+	potLTarget = potRTarget = 0;
+	liftActive = driveActive = false;
 	int stickPrimary;
 	int stickSecondary;
 
@@ -49,5 +119,36 @@ task usercontrol()
 		motor[dLF] = driveLF;
 		motor[dLB] = driveLB;
 
+		// Lift functions
+		liftL = liftR = (vexRT[Btn5U] - vexRT[Btn5D]) * 127;
+		setPreset();
+		if ((vexRT[Btn5U] == 1) || (vexRT[Btn5D] == 1))
+		{
+			liftPreset = NONE;
+			potLTarget = potRTarget = 0;
+			liftActive = false;
+		}
+		else
+		{
+			if (liftPreset > NONE)
+			{
+				assignPreset();
+			}
+		}
+		
+		// Assign lift
+		if ((vexRT[Btn5U] == 1) || (vexRT[Btn5D] == 1) || (liftPreset > NONE))
+		{
+			motor[liftLU] = motor[liftLD] = liftL;
+			motor[liftRU] = motor[liftRD] = liftR;
+		}
+
+		// Intake
+		intakeL = intakeR = (vexRT[Btn6U] * 100 - vexRT[Btn6D] * 80) + 10;
+
+		motor[iL] = intakeL;
+		motor[iR] = intakeR;
+
+		wait1Msec(20);
 	}
 }

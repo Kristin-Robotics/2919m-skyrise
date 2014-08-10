@@ -9,3 +9,5 @@ TimeV6 Changelog
 . Declared new macros if they need to be used
 . Renamed a few methods and variables appropriately
 . Changed Btn7L to a toggle for the piston intake, and changed Btn7R to start the music task
+. Shortened code needed in many locations
+. Some variables have their names changed to more appropriate, or less-conflicting names

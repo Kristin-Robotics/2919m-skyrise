@@ -24,9 +24,9 @@ const sound finalCountdown[72] = {
 	{ 493, 50 }, {392, 400}
 };
 
-const sound mahnamahna[50] = {
+/*const sound mahnamahna[50] = {
 
-};
+};*/
 
 task playMusic()
 {

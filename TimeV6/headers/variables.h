@@ -8,27 +8,36 @@ const int expScalingVal = 5;
 const float speedReductionVal = 1.0; // normal as of now
 const int liftLVal[] = { 1, 1530, 1, 777, 1210, 1520 }; //Preset values for left lift
 const int liftRVal[] = { 1, 1710, 680, 548, 1025, 1340 }; // Preset values for right lift
+const int liftTrimThreshold = 150;
 
 int liftAutonVal[] = { 0, 0, 0 };
+volatile int driveAutonVal = 0;
 
 // Booleans
 bool expScalingEnabled = true;
 bool liftPresetsEnabled = true;
 bool specialEffectsEnabled = true;
-bool driveActive = false;
-bool liftActive = false;
+volatile bool driveActive = false;
+volatile bool liftActive = false;
+bool speedstepDriveEnabled = false;
+bool speedstepLiftEnabled = false;
+bool liftTrimThresholdEnabled = true;
 
 // Speedstep
+int speedstepSpeed = 0;
+int speedstepError = 0;
+int speedstepIntegral = 0;
+int speedstepDerivitive = 0;
 int speedstepPreviousError[] = { 0, 0, 0, 0 };
 
 // Control variables
-int driveLF;
-int driveLB;
-int driveRF;
-int driveRB;
+volatile int driveLF;
+volatile int driveLB;
+volatile int driveRF;
+volatile int driveRB;
 
-int liftL;
-int liftR;
+volatile int liftL;
+volatile int liftR;
 
 int intakeL;
 int intakeR;

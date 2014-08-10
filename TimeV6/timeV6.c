@@ -42,6 +42,9 @@
 
 #include "Vex_Competition_Includes.c"   //Main competition background code...do not modify!
 
+// Special effects
+#include "/files/effects.c"
+
 //Pre Auton
 #include "/files/preauton.c"
 
@@ -50,6 +53,3 @@
 
 // Autonomous
 #include "/files/autonomous.c"
-
-// Special effects
-#include "/files/effects.c"

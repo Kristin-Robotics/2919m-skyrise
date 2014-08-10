@@ -88,7 +88,7 @@ task usercontrol()
 	{
 		if (vexRT[Btn7R] == 1)
 		{
-			//StartTask(playMusic);
+			StartTask(playMusic);
 		}
 		// Limit movement
 		stickPrimary = (abs(vexRT[Ch3]) > abs(vexRT[Ch4]) ? vexRT[Ch3] : vexRT[Ch4]);

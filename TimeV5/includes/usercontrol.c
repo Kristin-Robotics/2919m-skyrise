@@ -105,20 +105,20 @@ task usercontrol()
 	potLTarget = 0;
 	liftActive = false;
 	driveActive = false;
-	int analogStickPrimary;
-	int analogStickSecondary;
+	int stickPrimary;
+	int stickSecondary;
 	
 	while (true)
 	{	
 		//Limit movement to one direction
-		analogStickPrimary = (vexRT[Ch3] != 0 ? vexRT[Ch3] : vexRT[Ch4]);
-		analogStickSecondary = (vexRt[Ch3] != 0 ? vexRT[Ch3] : -vexRT[Ch4]);
+		stickPrimary = (abs(vexRT[Ch3]) > abs(vexRT[Ch4]) ? vexRT[Ch3] : vexRT[Ch4]);
+		stickSecondary = (abs(vexRT[Ch3]) > abs(vexRT[Ch4]) ? vexRT[Ch3] : -vexRT[Ch4]);
 
 		// Moving and strafing actions
-		dLF = analogStickPrimary;
-		dLB = analogStickSecondary;
-		dRF = analogStickSecondary;
-		dRB = analogStickPrimary;
+		dLF = stickPrimary;
+		dLB = stickSecondary;
+		dRF = stickSecondary;
+		dRB = stickPrimary;
 
 		// Turning actions
 		dLF = dLF + vexRT[Ch1];

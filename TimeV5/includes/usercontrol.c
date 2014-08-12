@@ -110,9 +110,19 @@ task usercontrol()
 	
 	while (true)
 	{	
-		//Limit movement to one direction
-		stickPrimary = (abs(vexRT[Ch3]) > abs(vexRT[Ch4]) ? vexRT[Ch3] : vexRT[Ch4]);
-		stickSecondary = (abs(vexRT[Ch3]) > abs(vexRT[Ch4]) ? vexRT[Ch3] : -vexRT[Ch4]);
+/* 		//Limit movement to one direction
+		if (abs(vexRT[Ch3]) < abs(vexRT[Ch4]))
+		{
+			stickPrimary = vexRT[Ch4];
+			stickSecondary = -vexRT[Ch4];
+		}
+		else 
+		{
+			stickPrimary = vexRT[Ch3];
+			stickSecondary = vexRT[Ch3];
+		} */
+		stickPrimary = ((abs(vexRT[Ch3] > absvexRT[Ch4])) ? (vexRT[Ch3] : vexRT[Ch4]));
+		stickSecondary = ((abs(vexRT[Ch3]) > abs(vexRT[Ch4])) ? (vexRT[Ch3] : -vexRT[Ch4]));
 
 		// Moving and strafing actions
 		dLF = stickPrimary;

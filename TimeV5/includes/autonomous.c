@@ -105,29 +105,24 @@ task motorController() //Assigns motor values from buffer
 	int leftSideDown[6];
 task autonomous()
 {
-/* 	//Initialise Autonomous
+	//Initialise Autonomous
 	StartTask(motorController);
 	StartTask(liftController);
 	StartTask(antiJam);
 	initialiseDrive();
-	
-	//Autonomous Routine
-	driveStraightForward(200,100); */
-	wait1Msec(2000);
-		int counter = 0;
-	while (true)
-	{
-		if (counter == 6)
-		{
-			break;
-		}
-		motor[liftLU] = 127;
-		motor[liftRD] = 127;
-		motor[liftRU] = 127;
-		motor[liftLD] = 127;
-		leftSideUp[counter] = potL;
-		leftSideDown[counter] = potR;
-		counter += 1;
-		wait1Msec(500);
-	}
+
+	// Autonomous Routine
+	// Feel free to modify the values
+	liftMove(800, 100);
+	intakeOut();
+	liftMove(0, 100);
+	drivePointTurnRight(90, 100);
+	driveStraightForward(100, 200);
+	intakeIn();
+	driveStraightForward(50, 200);
+	drivePointTurnLeft(90, 100);
+	liftMove(1300, 100);
+	intakeOut();
+	liftMove(0, 100);
+	drivePointTurnRight(90, 100);
 }

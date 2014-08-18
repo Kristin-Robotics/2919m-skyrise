@@ -11,10 +11,10 @@ int reduceSpeed(int speed)
 
 void clearEncoders()
 {
-	encoder(driveLF) = 0;
-	encoder(driveRF) = 0;
-	encoder(driveLB) = 0;
-	encoder(driveRB) = 0;
+	nMotorEncoder[driveLF] = 0;
+	nMotorEncoder[driveRF] = 0;
+	nMotorEncoder[driveLB] = 0;
+	nMotorEncoder[driveRB] = 0;
 }
 
 void clearPreviousError()
@@ -114,101 +114,6 @@ int speedstepLift(int speedLimit,int sensorReading,int arrayID) //PID for Autono
 		}
 }
 
-void liftMonitor()
-{
-	if (((potR-30 > potRTarget) && (potR+30 < potRTarget)) || (potR == potRTarget))
-	{
-		lL = 0;
-		lR = 0;
-		
-		potRTarget = 0;
-		potLTarget = 0;
-	}
-
-	else
-	{
-		bool liftLGoalReached = false;
-		bool liftRGoalReached = false;
-		
-		int direction; //0 is down, 1 is up
-		
-		//Set lift to active
-		liftActive = true;
-		
-		while (((liftLGoalReached == false) || (liftRGoalReached == false)) && (liftActive))
-		{
-			if (potR < potRTarget)
-			{
-				direction = 1;
-			}
-			if (potR > potRTarget)
-			{
-				direction = 0;
-			}
-			
-			if (direction == 1)
-			{
-				if (potL > potLTarget)
-				{
-					lL = -liftTargetSpeed;
-					lL = -liftTargetSpeed;
-				}
-				else
-				{
-					lL = 0;
-					lL = 0;
-					potLTarget = 0;
-					liftLGoalReached = true;
-				}
-				if (potR > potRTarget)
-				{
-					lR = -liftTargetSpeed;
-					lR = -liftTargetSpeed;
-				}
-				else
-				{
-					lR = 0;
-					lR = 0;
-					potRTarget = 0;
-					liftRGoalReached = true;
-				}
-			}
-			
-			if (direction == 1)
-			{
-				if (potL > potLTarget)
-				{
-					lL = liftTargetSpeed;
-					lL = liftTargetSpeed;
-				}
-				else
-				{
-					lL = 0;
-					lL = 0;
-					potLTarget = 0;
-					liftLGoalReached = true;
-				}
-				if (potR > potRTarget)
-				{
-					lR = liftTargetSpeed;
-					lR = liftTargetSpeed;
-				}
-				else
-				{
-					lR = 0;
-					lR = 0;
-					potRTarget = 0;
-					liftRGoalReached = true;
-				}
-				EndTimeSlice();
-			}
-		}
-			
-		//Set lift to inactive
-		liftActive = false;
-	}
-}
-
 //Global Tasks
 
 task antiJam()
@@ -269,37 +174,6 @@ task PIDController()
 		
 		}
 		
-		EndTimeSlice();
-	}
-}
-
-task liftController()
-{
-	
-	while(true)
-	{
-		if (((potRTarget != 0) && (potLTarget != 0) && (vexRT[Btn5U] == 0 && vexRT[Btn5D] == 0)))
-		{
-			liftMonitor();
-		}
-		else if ((liftTrimThresholdEnabled) && (liftActive == false))
-		{
-			if (potR < liftTrimThreshold)
-			{
-				motor[liftLU] = -10;
-				motor[liftLD] = -10;
-				motor[liftRU] = -10;
-				motor[liftRD] = -10;
-			}
-			else if ((potR > liftTrimThreshold) && (liftActive == false))
-			{
-				motor[liftLU] = 10;
-				motor[liftLD] = 10;
-				motor[liftRU] = 10;
-				motor[liftRD] = 10;
-			}
-		
-		}
 		EndTimeSlice();
 	}
 }

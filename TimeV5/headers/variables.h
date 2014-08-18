@@ -9,10 +9,9 @@ const float speedReductionVal = 1.0; // normal speed as of now
 const int liftLVal[] = {1,1530,1,777,1210,1520}; //Preset values for left lift
 
 const int liftRVal[] = {1,1710,680,548,1025,1340}; //Preset values for right lift
-const int liftTrimThreshold = 150; //Point where lift trim switches directions
+const int liftTrimThreshold = 50; //Point where lift trim switches directions
 
 int liftAutonVal[] = {0,0,0}; //Values for auton lift controllers to read [PotL,PotR,Speed]
-int driveAutonVal = 0;
 
 bool liftTrimThresholdEnabled = true; //Switch for lift trim
 bool speedstepDriveEnabled = false; //Switch for drive PID

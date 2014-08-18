@@ -82,10 +82,98 @@ void presetButtons()
 		}
 	}
 }
+
+void liftPresetMonitor()
+{
+	if ((potLTarget != 0) && (potRTarget != 0))
+	{
+		bool LLGoalReached = false;
+		bool RLGoalReached = false;
+
+		string direction;
+
+		if (potR < potRTarget)
+		{
+			direction = "up";
+		}
+		if (potR > potRTarget)
+		{
+			direction = "down";
+		}
+
+		if ((abs(potR)-30 < abs(potRTarget)) && ((abs(potR)+30 > abs(potRTarget))))
+		{
+			lL = 0;
+			lR = 0;
+			potRTarget = 0;
+			liftPreset = 0;
+		}
+
+		else if ((potRTarget != 0) && potLTarget != 0)
+		{
+			if (direction == "down")
+			{
+				if ((LLGoalReached == false) || (RLGoalReached == false))
+				{
+					if (potR > potRTarget)
+					{
+						lL = -(liftTargetSpeed);
+					}
+					else
+					{
+						LLGoalReached = true;
+						lL = 0;
+					}
+					if (potR > potRTarget)
+					{
+						lR = -(liftTargetSpeed);
+					}
+					else
+					{
+						RLGoalReached = true;
+						lR = 0;
+					}
+				}
+
+
+
+			}
+
+			else if (direction == "up")
+			{
+				if ((LLGoalReached == false) || (RLGoalReached == false))
+				{
+					if (potR < potRTarget)
+					{
+						lL = (liftTargetSpeed);
+					}
+					else
+					{
+						LLGoalReached = true;
+						lL = 0;
+					}
+					if (potR < potRTarget)
+					{
+						lR = liftTargetSpeed;
+					}
+					else
+					{
+						RLGoalReached = true;
+						lR = 0;
+					}
+				}
+			}
+		}
+
+	}
+}
+
 void presetAssign()
 {
 	potLTarget = liftLVal[liftPreset - 1];
 	potRTarget = liftRVal[liftPreset - 1];
+	liftTargetSpeed = 127;
+	liftPresetMonitor()
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -100,17 +188,17 @@ void presetAssign()
 task usercontrol()
 {
 	//Initialise user control
-	StartTask(liftController);
+	int stickPrimary;
+	int stickSecondary;
+	
 	potRTarget = 0;
 	potLTarget = 0;
 	liftActive = false;
 	driveActive = false;
-	int stickPrimary;
-	int stickSecondary;
 	
 	while (true)
 	{	
-/* 		//Limit movement to one direction
+		//Limit movement to one direction
 		if (abs(vexRT[Ch3]) < abs(vexRT[Ch4]))
 		{
 			stickPrimary = vexRT[Ch4];
@@ -120,9 +208,7 @@ task usercontrol()
 		{
 			stickPrimary = vexRT[Ch3];
 			stickSecondary = vexRT[Ch3];
-		} */
-		stickPrimary = ((abs(vexRT[Ch3] > absvexRT[Ch4])) ? (vexRT[Ch3] : vexRT[Ch4]));
-		stickSecondary = ((abs(vexRT[Ch3]) > abs(vexRT[Ch4])) ? (vexRT[Ch3] : -vexRT[Ch4]));
+		}
 
 		// Moving and strafing actions
 		dLF = stickPrimary;
@@ -148,35 +234,48 @@ task usercontrol()
 		motor[driveRB] = dRB;
 		motor[driveRF] = dRF;
 
-		//Lift manual control
-		lL = (vexRT[Btn5U] - vexRT[Btn5D]) * 127;
-		lR = (vexRT[Btn5U] - vexRT[Btn5D]) * 127;
-		
+
 		//Button control
 		presetButtons();
-		if ((vexRT[Btn5U] == 1)||(vexRT[Btn5U] == 1))
-		{
-			liftPreset = 0;
-			potLTarget = 0;
-			potRTarget = 0;
-			liftActive = false;
-		}
-		else
-		{
-			if (liftPreset > 0)
-			{
-				presetAssign();
-			}
-		}
+		
+		//Lift
+			//Get Controller Values
+				lL=(vexRT[Btn5U]-vexRT[Btn5D])*127;
+				lR=(vexRT[Btn5U]-vexRT[Btn5D])*127;
+
+				if ((abs(lL) > 0)||(abs(lR) > 0))
+				{
+					liftPreset = 0;
+				}
+				else
+				{
+					//Lift Preset Actions
+					if (liftPreset != 0)
+					{
+						presetAssign();
+					}
+					else
+					//Trim if idle
+					{
+						if ((potR < liftTrimThreshold))
+						{
+							lL = lL - 10;
+							lR = lR - 10;
+						}
+						else if ((potR > liftTrimThreshold))
+						{
+							lL = lL + 10;
+							lR = lR + 10;
+						}
+					}
+
+				}
 		
 		//Assigning lift
-		if ((vexRT[Btn5U] == 1) || (vexRT[Btn5D] == 1) || (liftPreset > 0))
-		{
-			motor[liftLD] = lL;
-			motor[liftLU] = lL;
-			motor[liftRD] = lR;
-			motor[liftRU] = lR;
-		}
+		motor[liftLD] = lL;
+		motor[liftLU] = lL;
+		motor[liftRD] = lR;
+		motor[liftRU] = lR;
 		
 		//Get controller values
 		iL = (vexRT[Btn6U]*100-vexRT[Btn6D]*80)+10;

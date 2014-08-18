@@ -11,16 +11,13 @@ void drive(int encoderDistance,int driveLBSpeed,int driveLFSpeed,int driveRBSpee
 	bool driveRBGoalReached = false;
 	bool driveLFGoalReached = false;
 	bool driveRFGoalReached = false;
-
-	//Data validation
-	driveAutonVal = abs(encoderDistance);
 	
 	//Set Drive to Active
 	driveActive = true;
 
 	while (((driveLBGoalReached == false)||(driveRBGoalReached == false)||(driveRFGoalReached == false)||(driveLFGoalReached == false)) && (driveActive))
 	{
-		if (encoder(driveLB) < driveAutonVal)
+		if (encoder(driveLB) < encoderDistance)
 		{
 		
 			motor[driveLB] = driveLBSpeed;
@@ -31,7 +28,7 @@ void drive(int encoderDistance,int driveLBSpeed,int driveLFSpeed,int driveRBSpee
 			driveLBGoalReached=true;
 		}
 
-		if (encoder(driveRB) < driveAutonVal)
+		if (encoder(driveRB) < encoderDistance)
 		{
 			motor[driveRB] = driveRBSpeed;
 		}
@@ -41,7 +38,7 @@ void drive(int encoderDistance,int driveLBSpeed,int driveLFSpeed,int driveRBSpee
 			driveRBGoalReached=true;
 		}
 
-		if (encoder(driveLF) < driveAutonVal)
+		if (encoder(driveLF) < encoderDistance)
 		{
 			motor[driveLF] = driveLFSpeed;
 		}
@@ -51,7 +48,7 @@ void drive(int encoderDistance,int driveLBSpeed,int driveLFSpeed,int driveRBSpee
 			driveLFGoalReached=true;
 		}
 
-		if (encoder(driveRF) < driveAutonVal)
+		if (encoder(driveRF) < encoderDistance)
 		{
 			motor[driveRF] = driveRFSpeed;
 		}
@@ -65,6 +62,95 @@ void drive(int encoderDistance,int driveLBSpeed,int driveLFSpeed,int driveRBSpee
 	//Set Drive to inactive
 	driveActive = false;
 	
+}
+
+void liftAutonMonitor()
+{
+	if ((potLTarget != 0) && (potRTarget != 0))
+	{
+		liftActive = true;
+		
+		bool LLGoalReached = false;
+		bool RLGoalReached = false;
+
+		string direction;
+
+		if (potR < potRTarget)
+		{
+			direction = "up";
+		}
+		if (potR > potRTarget)
+		{
+			direction = "down";
+			potRTarget = potRTarget + 100;
+		}
+
+		if ((abs(potR)-30 < abs(potRTarget)) && ((abs(potR)+30 > abs(potRTarget))))
+		{
+			lL = 0;
+			lR = 0;
+			potRTarget = 0;
+			potLTarget = 0;
+		}
+
+		else if ((potRTarget != 0) && (potLTarget != 0) && (liftActive))
+		{
+			if (direction == "down")
+			{
+				while ((LLGoalReached == false) || (RLGoalReached == false) && (liftActive) )
+				{
+					if (potR > potRTarget)
+					{
+						lL = -(liftTargetSpeed);
+					}
+					else
+					{
+						LLGoalReached = true;
+						lL = 0;
+					}
+					if (potR > potRTarget)
+					{
+						lR = -(liftTargetSpeed);
+					}
+					else
+					{
+						RLGoalReached = true;
+						lR = 0;
+					}
+				}
+
+
+
+			}
+
+			else if (direction == "up")
+			{
+				while ((LLGoalReached == false) || (RLGoalReached == false) && (liftActive))
+				{
+					if (potR < potRTarget)
+					{
+						lL = (liftTargetSpeed);
+					}
+					else
+					{
+						LLGoalReached = true;
+						lL = 0;
+					}
+					if (potR < potRTarget)
+					{
+						lR = liftTargetSpeed;
+					}
+					else
+					{
+						RLGoalReached = true;
+						lR = 0;
+					}
+				}
+			}
+		}
+		
+		liftActive = false;
+	}
 }
 
 void lift(int potLT,int potRT,int speed)
@@ -89,6 +175,16 @@ void intake(int speed)
 //
 /////////////////////////////////////////////////////////////////////////////////////////
 
+task liftController()
+{
+	
+	while(true)
+	{
+		liftAutonMonitor();
+		EndTimeSlice();
+	}
+}
+
 task motorController() //Assigns motor values from buffer
 {
 	while(true)
@@ -101,33 +197,15 @@ task motorController() //Assigns motor values from buffer
 		wait1Msec(20);
 	}
 }
-	int leftSideUp[6];
-	int leftSideDown[6];
+	
 task autonomous()
 {
-/* 	//Initialise Autonomous
-	StartTask(motorController);
+	//Initialise Autonomous
 	StartTask(liftController);
-	StartTask(antiJam);
+//	StartTask(antiJam);
+	StartTask(motorController);
 	initialiseDrive();
 	
 	//Autonomous Routine
-	driveStraightForward(200,100); */
-	wait1Msec(2000);
-		int counter = 0;
-	while (true)
-	{
-		if (counter == 6)
-		{
-			break;
-		}
-		motor[liftLU] = 127;
-		motor[liftRD] = 127;
-		motor[liftRU] = 127;
-		motor[liftLD] = 127;
-		leftSideUp[counter] = potL;
-		leftSideDown[counter] = potR;
-		counter += 1;
-		wait1Msec(500);
-	}
+	driveStraightForward(100,50); 
 }

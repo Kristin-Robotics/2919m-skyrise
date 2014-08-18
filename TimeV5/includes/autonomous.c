@@ -201,11 +201,33 @@ task motorController() //Assigns motor values from buffer
 task autonomous()
 {
 	//Initialise Autonomous
+<<<<<<< HEAD
+=======
+	StartTask(motorController);
+>>>>>>> origin/RobotC-TimeV5
 	StartTask(liftController);
 //	StartTask(antiJam);
 	StartTask(motorController);
 	initialiseDrive();
+<<<<<<< HEAD
 	
 	//Autonomous Routine
 	driveStraightForward(100,50); 
+=======
+
+	// Autonomous Routine
+	// Feel free to modify the values
+	liftMove(800, 100);
+	intakeOut();
+	liftMove(0, 100);
+	drivePointTurnRight(90, 100);
+	driveStraightForward(100, 200);
+	intakeIn();
+	driveStraightForward(50, 200);
+	drivePointTurnLeft(90, 100);
+	liftMove(1300, 100);
+	intakeOut();
+	liftMove(0, 100);
+	drivePointTurnRight(90, 100);
+>>>>>>> origin/RobotC-TimeV5
 }

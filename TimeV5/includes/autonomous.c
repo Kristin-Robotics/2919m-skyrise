@@ -14,10 +14,11 @@ void drive(int encoderDistance,int driveLBSpeed,int driveLFSpeed,int driveRBSpee
 	
 	//Set Drive to Active
 	driveActive = true;
+	encoderDistance = abs(encoderDistance);
 
-	while (((driveLBGoalReached == false)||(driveRBGoalReached == false)||(driveRFGoalReached == false)||(driveLFGoalReached == false)) && (driveActive))
+	while (((driveLBGoalReached == false)||(driveRBGoalReached == false)||/*(driveRFGoalReached == false)||*/(driveLFGoalReached == false)) && (driveActive))
 	{
-		if (encoder(driveLB) < encoderDistance)
+		if (abs(nMotorEncoder[driveLB]) < encoderDistance)
 		{
 		
 			motor[driveLB] = driveLBSpeed;
@@ -28,7 +29,7 @@ void drive(int encoderDistance,int driveLBSpeed,int driveLFSpeed,int driveRBSpee
 			driveLBGoalReached=true;
 		}
 
-		if (encoder(driveRB) < encoderDistance)
+		if (abs(nMotorEncoder[driveRB]) < encoderDistance)
 		{
 			motor[driveRB] = driveRBSpeed;
 		}
@@ -38,7 +39,7 @@ void drive(int encoderDistance,int driveLBSpeed,int driveLFSpeed,int driveRBSpee
 			driveRBGoalReached=true;
 		}
 
-		if (encoder(driveLF) < encoderDistance)
+		if (abs(nMotorEncoder[driveLF]) < encoderDistance)
 		{
 			motor[driveLF] = driveLFSpeed;
 		}
@@ -48,7 +49,7 @@ void drive(int encoderDistance,int driveLBSpeed,int driveLFSpeed,int driveRBSpee
 			driveLFGoalReached=true;
 		}
 
-		if (encoder(driveRF) < encoderDistance)
+		if (abs(nMotorEncoder[driveRF]) < encoderDistance)
 		{
 			motor[driveRF] = driveRFSpeed;
 		}
@@ -61,6 +62,7 @@ void drive(int encoderDistance,int driveLBSpeed,int driveLFSpeed,int driveRBSpee
 	
 	//Set Drive to inactive
 	driveActive = false;
+	motor[driveRF]=0;
 	
 }
 
@@ -189,10 +191,10 @@ task motorController() //Assigns motor values from buffer
 {
 	while(true)
 	{
-		motor[liftLU] = lL;
-		motor[liftLD] = lL;
-		motor[liftRU] = lR;
-		motor[liftRD] = lR;
+		motor[liftLU] = lL+10;
+		motor[liftLD] = lL+10;
+		motor[liftRU] = lR+10;
+		motor[liftRD] = lR+10;
 		
 		wait1Msec(20);
 	}
@@ -201,33 +203,45 @@ task motorController() //Assigns motor values from buffer
 task autonomous()
 {
 	//Initialise Autonomous
-<<<<<<< HEAD
-=======
 	StartTask(motorController);
->>>>>>> origin/RobotC-TimeV5
 	StartTask(liftController);
 //	StartTask(antiJam);
-	StartTask(motorController);
-	initialiseDrive();
-<<<<<<< HEAD
+//	initialiseDrive();
 	
-	//Autonomous Routine
-	driveStraightForward(100,50); 
-=======
-
 	// Autonomous Routine
 	// Feel free to modify the values
-	liftMove(800, 100);
-	intakeOut();
-	liftMove(0, 100);
-	drivePointTurnRight(90, 100);
-	driveStraightForward(100, 200);
-	intakeIn();
-	driveStraightForward(50, 200);
-	drivePointTurnLeft(90, 100);
-	liftMove(1300, 100);
-	intakeOut();
-	liftMove(0, 100);
-	drivePointTurnRight(90, 100);
->>>>>>> origin/RobotC-TimeV5
+	
+	//Part 1
+	intakeOut;
+	wait1Msec(300);
+	intakeStop;
+	driveStraightForward(300,127);
+	intakeIn;
+	wait1Msec(1000);
+	intakeStop;
+	liftMove(1000, 127);
+	driveStraightBack(300,127);
+
+	
+	//Part2
+	drivePointTurnRight(150.127);
+	intakeIn;
+	wait1Msec(1000);
+	intakeStop;
+	liftMove(1,127);
+	drivePointTurnRight(150,127);
+	
+	
+	// Part 3
+	driveStraightForward(300,127);
+	intakeIn;
+	wait1Msec(1000);
+	intakeStop;
+	//driveStrafeRight(300,127); //May not be needed
+	liftMove(1400,127);
+	driveSwerveTurnLeft(300,127);
+	intakeOut;
+	wait1Msec(1000);
+	intakeStop;
+	
 }

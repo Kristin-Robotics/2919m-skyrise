@@ -16,7 +16,7 @@ void drive(int encoderDistance,int driveLBSpeed,int driveLFSpeed,int driveRBSpee
 	driveActive = true;
 	encoderDistance = abs(encoderDistance);
 
-	while (((driveLBGoalReached == false)||(driveRBGoalReached == false)||/*(driveRFGoalReached == false)||*/(driveLFGoalReached == false)) && (driveActive))
+	while (((driveLBGoalReached == false)||(driveRBGoalReached == false)||(driveRFGoalReached == false)||(driveLFGoalReached == false)) && (driveActive))
 	{
 		if (abs(nMotorEncoder[driveLB]) < encoderDistance)
 		{

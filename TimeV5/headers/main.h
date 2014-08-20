@@ -27,8 +27,8 @@ void clearPreviousError()
 
 void initialiseDrive()
 {
-	motor[driveLB] = 80;
-	motor[driveRB] = 80;
+	motor[driveLB] = 127;
+	motor[driveRB] = 127;
 	motor[driveLF] = -40;
 	motor[driveRF] = -40;
 	wait1Msec(1000);

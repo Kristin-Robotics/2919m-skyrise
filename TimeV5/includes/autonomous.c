@@ -206,30 +206,36 @@ task autonomous()
 	StartTask(motorController);
 	StartTask(liftController);
 //	StartTask(antiJam);
-//	initialiseDrive();
-	
+	initialiseDrive();
+
 	// Autonomous Routine
 	// Feel free to modify the values
+	
+	//Full blue auton below
 	
 	//Part 1
 	intakeOut;
 	wait1Msec(300);
-	intakeStop;
-	driveStraightForward(300,127);
 	intakeIn;
-	wait1Msec(1000);
+	wait1Msec(300);
+	intakeOut;
+	wait1Msec(75);
+	intakeStop;
+	driveStraightForward(400,127);
+	intakeIn;
+	wait1Msec(500);
 	intakeStop;
 	liftMove(1000, 127);
-	driveStraightBack(300,127);
+	driveStraightBack(400,127);
 
 	
 	//Part2
-	drivePointTurnRight(150.127);
+	drivePointTurnLeft(350,127);
 	intakeIn;
-	wait1Msec(1000);
+	wait1Msec(3000);
 	intakeStop;
 	liftMove(1,127);
-	drivePointTurnRight(150,127);
+	drivePointTurnLeft(1500,127);
 	
 	
 	// Part 3
@@ -243,5 +249,60 @@ task autonomous()
 	intakeOut;
 	wait1Msec(1000);
 	intakeStop;
+
+	//Full red auton below
+	//Part 1
+	/* <--- Take these things out to use and add these to comment other sections
+	intakeOut;
+	wait1Msec(300);
+	intakeIn;
+	wait1Msec(300);
+	intakeOut;
+	wait1Msec(75);
+	intakeStop;
+	driveStraightForward(400,127);
+	intakeIn;
+	wait1Msec(500);
+	intakeStop;
+	liftMove(1000, 127);
+	driveStraightBack(400,127);
+
+	
+	//Part2
+	drivePointTurnRight(350,127);
+	intakeIn;
+	wait1Msec(3000);
+	intakeStop;
+	liftMove(1,127);
+	drivePointTurnRight(1500,127);
+	
+	
+	// Part 3
+	driveStraightForward(300,127);
+	intakeIn;
+	wait1Msec(1000);
+	intakeStop;
+	//driveStrafeLeft(300,127); //May not be needed
+	liftMove(1400,127);
+	driveSwerveTurnRight(300,127);
+	intakeOut;
+	wait1Msec(1000);
+	intakeStop;
+	remember to put this in ---> */ 
+	
+	//Backup Auton - 2 points
+	/*
+	intakeOut;
+	wait1Msec(300);
+	intakeIn;
+	wait1Msec(300);
+	intakeOut;
+	wait1Msec(75);
+	intakeStop;
+	driveStraightForward(400,127);
+	intakeIn;
+	wait1Msec(3000);
+	intakeStop;
+	*/
 	
 }

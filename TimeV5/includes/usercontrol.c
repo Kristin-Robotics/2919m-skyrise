@@ -173,7 +173,7 @@ void presetAssign()
 	potLTarget = liftLVal[liftPreset - 1];
 	potRTarget = liftRVal[liftPreset - 1];
 	liftTargetSpeed = 127;
-	liftPresetMonitor()
+	liftPresetMonitor();
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////

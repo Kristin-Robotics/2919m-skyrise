@@ -6,12 +6,12 @@ void drive(int encoderDistance,int driveLBSpeed,int driveLFSpeed,int driveRBSpee
 {
 	clearPreviousError();
 	clearEncoders();
-	
+
 	bool driveLBGoalReached = false;
 	bool driveRBGoalReached = false;
 	bool driveLFGoalReached = false;
 	bool driveRFGoalReached = false;
-	
+
 	//Set Drive to Active
 	driveActive = true;
 	encoderDistance = abs(encoderDistance);
@@ -20,7 +20,7 @@ void drive(int encoderDistance,int driveLBSpeed,int driveLFSpeed,int driveRBSpee
 	{
 		if (abs(nMotorEncoder[driveLB]) < encoderDistance)
 		{
-		
+
 			motor[driveLB] = driveLBSpeed;
 		}
 		else
@@ -59,11 +59,11 @@ void drive(int encoderDistance,int driveLBSpeed,int driveLFSpeed,int driveRBSpee
 			driveRFGoalReached=true;
 		}
 	}
-	
+
 	//Set Drive to inactive
 	driveActive = false;
 	motor[driveRF]=0;
-	
+
 }
 
 void liftAutonMonitor()
@@ -71,7 +71,7 @@ void liftAutonMonitor()
 	if ((potLTarget != 0) && (potRTarget != 0))
 	{
 		liftActive = true;
-		
+
 		bool LLGoalReached = false;
 		bool RLGoalReached = false;
 
@@ -150,7 +150,7 @@ void liftAutonMonitor()
 				}
 			}
 		}
-		
+
 		liftActive = false;
 	}
 }
@@ -179,7 +179,7 @@ void intake(int speed)
 
 task liftController()
 {
-	
+
 	while(true)
 	{
 		liftAutonMonitor();
@@ -195,11 +195,11 @@ task motorController() //Assigns motor values from buffer
 		motor[liftLD] = lL+10;
 		motor[liftRU] = lR+10;
 		motor[liftRD] = lR+10;
-		
+
 		wait1Msec(20);
 	}
 }
-	
+
 task autonomous()
 {
 	//Initialise Autonomous
@@ -210,9 +210,9 @@ task autonomous()
 
 	// Autonomous Routine
 	// Feel free to modify the values
-	
+
 	//Full blue auton below
-	
+
 	//Part 1
 	intakeOut;
 	wait1Msec(300);
@@ -228,7 +228,7 @@ task autonomous()
 	liftMove(1000, 127);
 	driveStraightBack(400,127);
 
-	
+
 	//Part2
 	drivePointTurnLeft(350,127);
 	intakeIn;
@@ -236,8 +236,8 @@ task autonomous()
 	intakeStop;
 	liftMove(1,127);
 	drivePointTurnLeft(1500,127);
-	
-	
+
+
 	// Part 3
 	driveStraightForward(300,127);
 	intakeIn;
@@ -267,7 +267,7 @@ task autonomous()
 	liftMove(1000, 127);
 	driveStraightBack(400,127);
 
-	
+
 	//Part2
 	drivePointTurnRight(350,127);
 	intakeIn;
@@ -275,8 +275,8 @@ task autonomous()
 	intakeStop;
 	liftMove(1,127);
 	drivePointTurnRight(1500,127);
-	
-	
+
+
 	// Part 3
 	driveStraightForward(300,127);
 	intakeIn;
@@ -288,8 +288,8 @@ task autonomous()
 	intakeOut;
 	wait1Msec(1000);
 	intakeStop;
-	remember to put this in ---> */ 
-	
+	remember to put this in ---> */
+
 	//Backup Auton - 2 points
 	/*
 	intakeOut;
@@ -304,5 +304,14 @@ task autonomous()
 	wait1Msec(3000);
 	intakeStop;
 	*/
-	
+
+	//Backup Auton - 3 points
+	/*
+	liftMove(500,127);
+	intake(-100);
+	wait1Msec(4000);
+	intakeStop;
+
+	*/
+
 }

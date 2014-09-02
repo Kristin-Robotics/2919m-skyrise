@@ -9,6 +9,7 @@
 #define encoder(x) (nMotorEncoder[x])
 #define potL (SensorValue[potLL])
 #define potR (SensorValue[potRL])
+#define autonChooser (SensorValue[aCh])
 #define relLPotR ((int) round(1.0759 * potL - 75.8155))
 #define relRPotL ((int) round(0.92942 * potR - 70.4641))
 #define potLTarget (liftAutonVal[0])

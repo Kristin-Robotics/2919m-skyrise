@@ -211,16 +211,30 @@ task autonomous()
 	// Autonomous Routine
 	// Feel free to modify the values
 
+	if (autonChooser < 2000) //Pot is on left
+	{
+		liftMove(500,127);
+		wait1Msec(2000);
+		intake(-120);
+		wait1Msec(4000);
+		intakeStop;
+		driveStraightBack(500,127);
+		driveStrafeRight(470,127);
+		driveStrafeLeft(400,127);
+	}
+	else
+	{
+		liftMove(500,127);
+		wait1Msec(2000);
+		intake(-120);
+		wait1Msec(4000);
+		intakeStop;
+		driveStraightBack(500,127);
+		driveStrafeLeft(470,127);
+		driveStrafeRight(400,127);
+	}
 	//Full blue auton below
 
-	liftMove(500,127);
-	wait1Msec(2000);
-	intake(-120);
-	wait1Msec(4000);
-	intakeStop;
-	driveStraightBack(500,127);
-	driveStrafeRight(470,127);
-	driveStrafeLeft(400,127);
 
 	//Part 1
 	/*intakeOut;

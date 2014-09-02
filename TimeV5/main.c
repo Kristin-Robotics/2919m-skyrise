@@ -11,7 +11,7 @@
 #pragma config(Sensor, dgtl6,  encoderIN,            sensorQuadEncoder)
 #pragma config(Sensor, I2C_1,  encoderRDB,    sensorQuadEncoderOnI2CPort,    , AutoAssign)
 #pragma config(Sensor, I2C_2,  encoderRDF,    sensorQuadEncoderOnI2CPort,    , AutoAssign)
-#pragma config(Sensor, I2C_3,  encoderLDF,    sensorQuadEncoderOnI2CPort,    , AutoAssign)
+#pragma config(Sensor, I2C_3,  encoderLDF,    sensorQuadEncoderOnI2CPort,    , AutoAssign)f
 #pragma config(Sensor, I2C_4,  encoderLDB,    sensorQuadEncoderOnI2CPort,    , AutoAssign)
 #pragma config(Motor,  port1,           driveRF,           tmotorVex393, openLoop, encoder, encoderPort, I2C_2, 1000)
 #pragma config(Motor,  port2,           driveRB,           tmotorVex393, openLoop, encoder, encoderPort, I2C_1, 1000)

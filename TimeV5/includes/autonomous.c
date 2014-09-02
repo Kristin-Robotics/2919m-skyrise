@@ -213,8 +213,17 @@ task autonomous()
 
 	//Full blue auton below
 
+	liftMove(500,127);
+	wait1Msec(2000);
+	intake(-120);
+	wait1Msec(4000);
+	intakeStop;
+	driveStraightBack(500,127);
+	driveStrafeRight(470,127);
+	driveStrafeLeft(400,127);
+
 	//Part 1
-	intakeOut;
+	/*intakeOut;
 	wait1Msec(300);
 	intakeIn;
 	wait1Msec(300);

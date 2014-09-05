@@ -211,34 +211,42 @@ task autonomous()
 	// Autonomous Routine
 	// Feel free to modify the values
 
-	if (autonChooser < 2000) //Pot is on Right
+	if (autonChooser < 1000) //Pot is on Right
 	{
 		//STRAFES RIGHT
 		liftMove(500,127);
 		wait1Msec(2000);
 		intake(-120);
-		wait1Msec(2000);
+		wait1Msec(3000);
 		intakeStop;
 		driveStraightBack(500,127);
 		wait1Msec(500);
 		driveStrafeRight(650,80);
 		driveStrafeLeft(400,100);
 	}
-	else
+	else if (autonChooser > 3000)
 	{
 		//STRAFES LEFT
 		liftMove(500,127);
 		wait1Msec(2000);
 		intake(-120);
-		wait1Msec(2000);
+		wait1Msec(3000);
 		intakeStop;
 		driveStraightBack(500,127);
 		wait1Msec(500);
 		driveStrafeLeft(650,80);
 		driveStrafeRight(400,100);
 	}
-
-
+	else if ((autonChooser > 1001) && (autonChooser < 2999))
+	{
+		//SCORES SINGLE CUBE ON POST
+		liftMove(500,127);
+		wait1Msec(2000);
+		intake(-120);
+		wait1Msec(3000);
+		intakeStop;
+		driveStraightBack(300,127);
+	}
 
 	//Full blue auton below
 

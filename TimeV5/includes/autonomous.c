@@ -214,34 +214,36 @@ task autonomous()
 	if (autonChooser < 1000) //Pot is on Right
 	{
 		//STRAFES RIGHT
-		liftMove(500,127);
-		wait1Msec(2000);
+		liftMove(400,127);
+		wait1Msec(3000);
 		intake(-120);
 		wait1Msec(3000);
 		intakeStop;
 		driveStraightBack(500,127);
 		wait1Msec(500);
-		driveStrafeRight(650,80);
-		driveStrafeLeft(400,100);
+		liftMove(1,127);
+		driveStrafeRight(400,127);
+		driveStrafeLeft(400,127);
 	}
 	else if (autonChooser > 3000)
 	{
 		//STRAFES LEFT
-		liftMove(500,127);
-		wait1Msec(2000);
+		liftMove(400,127);
+		wait1Msec(3000);
 		intake(-120);
 		wait1Msec(3000);
 		intakeStop;
 		driveStraightBack(500,127);
 		wait1Msec(500);
-		driveStrafeLeft(650,80);
-		driveStrafeRight(400,100);
+		liftMove(1,127);
+		driveStrafeLeft(400,127);
+		driveStrafeRight(400,127);
 	}
 	else if ((autonChooser > 1001) && (autonChooser < 2999))
 	{
 		//SCORES SINGLE CUBE ON POST
-		liftMove(500,127);
-		wait1Msec(2000);
+		liftMove(400,127);
+		wait1Msec(3000);
 		intake(-120);
 		wait1Msec(3000);
 		intakeStop;

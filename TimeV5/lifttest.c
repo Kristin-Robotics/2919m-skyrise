@@ -38,13 +38,42 @@
 #pragma autonomousDuration(20)
 #pragma userControlDuration(120)
 
-//Main Header
-#include "/headers/main.h"
 
 #include "Vex_Competition_Includes.c"   //Main competition background code...do not modify!
 
+typedef struct {
+	int frequency;
+	int duration;
+} sound;
+
+// Its the final countdown sound array. DO NOT TOUCH!!!
+/*const sound finalCountdown[72] = {
+	{ 220, 100 }, { 0, 50 }, { 523, 25 }, { 493, 25 }, { 440, 100 },
+	{ 261, 100 }, { 174, 100 }, { 0, 50 }, { 587, 25 }, { 523, 25 },
+	{ 587, 50 }, { 523, 50 }, { 493, 100 }, { 293, 100 }, { 0, 50 },
+	{ 587, 25 }, { 523, 25 }, { 493, 100 }, { 293, 100 }, { 196, 100 },
+	{ 0, 50 }, { 493, 25 }, { 440, 25 }, { 493, 50 }, { 440, 50 },
+	{ 392, 50 }, { 440, 50 }, { 220, 100 }, { 0, 50 }, { 523, 25 },
+	{ 493, 25 }, { 440, 100 }, { 261, 100 }, { 174, 100 }, { 0, 50 },
+	{ 587, 25 }, { 523, 25 }, { 587, 50 }, { 523, 50 }, { 493, 100 },
+	{ 293, 100 }, { 0, 50 }, { 587, 25 }, { 523, 25 }, { 493, 100 },
+	{ 293, 100 }, { 196, 100 }, { 0, 50 }, { 493, 25 }, { 440, 25 },
+	{ 493, 50 }, { 440, 50 }, { 392, 50 }, { 440, 50 }, { 349, 100 },
+	{ 392, 25 }, { 440, 25 }, { 493, 100 }, { 440, 25 }, { 493, 25 },
+	{ 523, 50 }, { 493, 50 }, { 440, 50 }, { 392, 50 }, { 349, 100 },
+	{ 440, 100 }, { 392, 200 }, { 523, 50 }, { 587, 50 }, { 523, 50 },
+	{ 493, 50 }, { 392, 400 }
+};*/
+
+const int finalCountdownFreq[14] = {220, 0, 523, 493, 440, 261, 174, 0, 587, 523, 587, 532, 493, 293};
+const int finalCountdownDur[14] = {100, 50, 25, 25, 100, 100, 100, 50, 25, 25, 50, 50, 100, 100};
+
+/*const sound mahnamahna[50] = {
+
+};*/
+bool test = false;
 //Pre Auton
-task pre_auton()
+void pre_auton()
 {
 }
 
@@ -53,25 +82,7 @@ task autonomous()
 }
 
 
-int leftSideUp[6];
-int leftSideDown[6];
-
 task usercontrol()
 {
-	int counter = 0;
-	while (true)
-	{
-		if (counter == 6)
-		{
-			break;
-		}
-		motor[LLU] = 127;
-		motor[RLD] = 127;
-		motor[RLU] = 127;
-		motor[LLD] = 127;
-		leftSideUp[counter] = PotL;
-		rightSideUp[counter] = PotR;
-		counter += 1;
-		wait1Msc(1000);
-	}
+	PlaySoundFile("final_countdown.wav");
 }

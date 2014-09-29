@@ -115,7 +115,7 @@ void liftPresetMonitor()
 			{
 				if ((LLGoalReached == false) || (RLGoalReached == false))
 				{
-					if (potR > potRTarget)
+					if (potL > potLTarget)
 					{
 						lL = -(liftTargetSpeed);
 					}
@@ -143,7 +143,7 @@ void liftPresetMonitor()
 			{
 				if ((LLGoalReached == false) || (RLGoalReached == false))
 				{
-					if (potR < potRTarget)
+					if (potL < potLTarget)
 					{
 						lL = (liftTargetSpeed);
 					}

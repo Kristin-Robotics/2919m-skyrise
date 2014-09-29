@@ -66,6 +66,41 @@ void drive(int encoderDistance,int driveLBSpeed,int driveLFSpeed,int driveRBSpee
 
 }
 
+void gyroTurn(int degrees,int driveLBSpeed,int driveLFSpeed,int driveRBSpeed,int driveRFSpeed)
+{
+
+	bool driveGoalReached = false;
+
+	//Set Drive to Active
+	driveActive = true;
+	degrees = abs(degrees);
+
+	while (!(driveGoalReached) && (driveActive))
+	{
+		if (((abs(gyro) > degrees - 50) && (abs(gyro) > degrees + 50)) || ((abs(gyro) < degrees - 50) && (abs(gyro) < degrees + 50))) //not within 100 of set angle
+		{
+
+			motor[driveLB] = driveLBSpeed;
+			motor[driveRB] = driveRBSpeed;
+			motor[driveLF] = driveLFSpeed;
+			motor[driveRF] = driveRFSpeed;
+		}
+		else
+		{
+			motor[driveLB] = 0;
+			motor[driveRB] = 0;
+			motor[driveLF] = 0;
+			motor[driveRF] = 0;
+			driveGoalReached=true;
+		}
+	}
+
+	//Set Drive to inactive
+	driveActive = false;
+	motor[driveRF]=0;
+
+}
+
 void liftAutonMonitor()
 {
 	if ((potLTarget != 0) && (potRTarget != 0))
@@ -101,7 +136,7 @@ void liftAutonMonitor()
 			{
 				while ((LLGoalReached == false) || (RLGoalReached == false) && (liftActive) )
 				{
-					if (potR > potRTarget)
+					if (relRPotL > potRTarget)
 					{
 						lL = -(liftTargetSpeed);
 					}
@@ -129,7 +164,7 @@ void liftAutonMonitor()
 			{
 				while ((LLGoalReached == false) || (RLGoalReached == false) && (liftActive))
 				{
-					if (potR < potRTarget)
+					if (relRPotL < potRTarget)
 					{
 						lL = (liftTargetSpeed);
 					}

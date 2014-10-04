@@ -4,7 +4,7 @@
 #include "variables.h"
 
 //Global Variables
-const int expScalingVal = 10; //Change on driver request
+const int expScalingVal = 5; //Change on driver request
 const float speedReductionVal = 1.0; // normal speed as of now
 const int liftLVal[] = {1,1530,1,777,1210,1520}; //Preset values for left lift
 

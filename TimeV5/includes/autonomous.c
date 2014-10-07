@@ -77,7 +77,7 @@ void gyroTurn(int degrees,int driveLBSpeed,int driveLFSpeed,int driveRBSpeed,int
 
 	while (!(driveGoalReached) && (driveActive))
 	{
-		if (((abs(gyro) > degrees - 50) && (abs(gyro) > degrees + 50)) || ((abs(gyro) < degrees - 50) && (abs(gyro) < degrees + 50))) //not within 100 of set angle
+		if (((abs(SensorValue[turningGyro]) > degrees - 50) && (abs(SensorValue[turningGyro]) > degrees + 50)) || ((abs(SensorValue[turningGyro]) < degrees - 50) && (abs(SensorValue[turningGyro]) < degrees + 50))) //not within 100 of set angle
 		{
 
 			motor[driveLB] = driveLBSpeed;

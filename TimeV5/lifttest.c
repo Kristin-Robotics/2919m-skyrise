@@ -47,7 +47,7 @@ typedef struct {
 } sound;
 
 // Its the final countdown sound array. DO NOT TOUCH!!!
-/*const sound finalCountdown[72] = {
+const sound finalCountdown[72] = {
 	{ 220, 100 }, { 0, 50 }, { 523, 25 }, { 493, 25 }, { 440, 100 },
 	{ 261, 100 }, { 174, 100 }, { 0, 50 }, { 587, 25 }, { 523, 25 },
 	{ 587, 50 }, { 523, 50 }, { 493, 100 }, { 293, 100 }, { 0, 50 },

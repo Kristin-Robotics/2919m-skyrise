@@ -2,11 +2,11 @@
 #pragma config(Sensor, in1,    potLL,          sensorPotentiometer)
 #pragma config(Sensor, in2,    potRL,          sensorPotentiometer)
 #pragma config(Sensor, in3,    aCh,            sensorPotentiometer)
-#pragma config(Sensor, in4,    turningGyro,    sensorGyro)
+#pragma config(Sensor, in4,    turningGyro,           sensorGyro)
 #pragma config(Sensor, in5,    lineL,          sensorLineFollower)
 #pragma config(Sensor, in6,    lineM,          sensorLineFollower)
 #pragma config(Sensor, in7,    lineR,          sensorLineFollower)
-#pragma config(Sensor, dgtl1,  ultraL,         sensorSONAR_mm)s
+#pragma config(Sensor, dgtl1,  ultraL,         sensorSONAR_mm)
 #pragma config(Sensor, dgtl3,  ultraR,         sensorSONAR_mm)
 #pragma config(Sensor, dgtl6,  encoderIN,      sensorQuadEncoder)
 #pragma config(Sensor, dgtl12, piston,         sensorDigitalOut)

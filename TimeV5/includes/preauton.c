@@ -2,12 +2,12 @@
 
 void initialiseGyro()
 {
-	SensorType[gyro] = sensorNone;
+	SensorType[turningGyro] = sensorNone;
 	wait1Msec(500);
-	SensorType[gyro] = sensorGyro;
+	SensorType[turningGyro] = sensorGyro;
 	wait1Msec(2000);
-	SensorScale[gyro] = 520;
-  	SensorFullCount[gyro] = 3600;
+	SensorScale[turningGyro] = 520;
+  	SensorFullCount[turningGyro] = 3600;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -27,7 +27,7 @@ void pre_auton()
 
 	// All activities that occur before the competition starts
 	// Example: clearing encoders, setting servo positions, ...
-
+	
 	initialiseGyro();
 	clearEncoders();
 }

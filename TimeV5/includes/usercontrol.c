@@ -190,21 +190,21 @@ task usercontrol()
 	//Initialise user control
 	int stickPrimary;
 	int stickSecondary;
-
+	
 	potRTarget = 0;
 	potLTarget = 0;
 	liftActive = false;
 	driveActive = false;
-
+	
 	while (true)
-	{
+	{	
 		//Limit movement to one direction
 		if (abs(vexRT[Ch3]) < abs(vexRT[Ch4]))
 		{
 			stickPrimary = vexRT[Ch4];
 			stickSecondary = -vexRT[Ch4];
 		}
-		else
+		else 
 		{
 			stickPrimary = vexRT[Ch3];
 			stickSecondary = vexRT[Ch3];
@@ -237,7 +237,7 @@ task usercontrol()
 
 		//Button control
 		presetButtons();
-
+		
 		//Lift
 			//Get Controller Values
 				lL=(vexRT[Btn5U]-vexRT[Btn5D])*127;
@@ -270,17 +270,17 @@ task usercontrol()
 					}
 
 				}
-
+		
 		//Assigning lift
 		motor[liftLD] = lL;
 		motor[liftLU] = lL;
 		motor[liftRD] = lR;
 		motor[liftRU] = lR;
-
+		
 		//Get controller values
 		iL = (vexRT[Btn6U]*100-vexRT[Btn6D]*80)+10;
 		iR = (vexRT[Btn6U]*100-vexRT[Btn6D]*80)+10;
-
+		
 		//Intake Assign
 		motor[intakeL] = iL;
 		motor[intakeR] = iR;

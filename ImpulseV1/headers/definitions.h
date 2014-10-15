@@ -2,6 +2,7 @@
 #define DEFINITIONS_H
 
 // maths functions
+#define round(x) ((int)x)
 #define abs(x) (x < 0 ? -x : x)
 
 // movement macros

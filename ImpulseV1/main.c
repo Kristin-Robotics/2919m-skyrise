@@ -18,13 +18,15 @@
 #pragma userControlDuration(120)
 
 // Include headers
-#include 'definitions.h'
+#include "definitions.h"
 
-#include 'main.h'
+#include "main.h"
 
-#include 'variables.h'
+#include "variables.h"
 
 // Include files
 #include "Vex_Competition_Includes.c" // Do not modify
 
 #include "usercontrol.c"
+
+#include "autonomous.c"

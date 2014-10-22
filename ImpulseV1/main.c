@@ -1,5 +1,9 @@
 #pragma config(Sensor, in1,	rPot,		sensorPotentiometer)
 #pragma config(Sensor, in2, lPot,		sensorPotentiometer)
+#pragma config(Sensor, in3, lineInnerL, sensorLineFollower)
+#pragma config(Sensor, in4, lineInnerR, sensorLineFollower)
+#pragma config(Sensor, in5, lineOuterL, sensorLineFollower)
+#pragma config(Sensor, in6, lineOuterR, sensorLineFollower)
 #pragma config(Motor, port1,	,		tmotorVex393, openLoop)
 #pragma config(Motor, port2,	lDrive1,	tmotorVex393HighSpeed, openLoop)
 #pragma config(Motor, port3,	lDrive2,	tmotorVex393HighSpeed, openLoop)
@@ -30,3 +34,5 @@
 #include "/files/usercontrol.c"
 
 #include "/files/autonomous.c"
+
+#include "/files/preauton.c"

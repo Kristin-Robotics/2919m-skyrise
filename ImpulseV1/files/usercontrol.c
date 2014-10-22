@@ -1,5 +1,12 @@
 #include "main.h"
 
+void calibrateSensors()
+{
+	float averageInner = (SensorValue[lineInnerR] + SensorValue[lineInnerL]) / 2;
+	float averageOuter = (SensorValue[lineOuterR] + SensorValue[lineOuterL]) / 2;
+	lineSensorThreshold = (averageOuter - averageInner) / 2;
+}
+
 task usercontrol()
 {
 	int leftTrackSpeed;
@@ -28,7 +35,11 @@ task usercontrol()
 			arcadeMode = !arcadeMode;
 			toggleCooldown = true;
 		}
-
+		if (vexRt[Btn8U] == 1 && !toggleCooldown)
+		{
+			calibrateSensors();
+			toggleCooldown = true;
+		}
 		// getting values
 		if (!arcadeMode)
 		{

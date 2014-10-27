@@ -23,14 +23,32 @@ void move(int durationMsec, int leftDriveOneSpeed, int leftDriveTwoSpeed, int ri
 
 bool isValid()
 {
-	bool valid = true;
-	return valid;
+	if (SensorValue[lineInnerL] < lineSensorThreshold || SensorValue[lineInnerR] < lineSensorThreshold)
+	{
+		return false;
+	}
+	return true;
 }
 
 void correctRobot()
 {
-	
+	while (SensorValue[lineInnerL] < lineSensorThreshold || SensorValue[lineInnerR] < lineSensorThreshold)
+	{
+		if (SensorValue[lineInnerL] < lineSensorThreshold)
+		{
+			move(1, 100, 100, 127, 127);
+		}
+		else if (SensorValue[lineInnerR] < lineSensorThreshold)
+		{
+			move(1, 127, 127, 100, 100);
+		}
+	}
 }
+
+typedef struct {
+	int x;
+	int y;
+} point;
 
 task autonomous()
 {

@@ -7,6 +7,30 @@ void calibrateSensors()
 	lineSensorThreshold = (averageOuter - averageInner) / 2;
 }
 
+bool isValid()
+{
+	if (SensorValue[lineInnerL] < lineSensorThreshold || SensorValue[lineInnerR] < lineSensorThreshold)
+	{
+		return false;
+	}
+	return true;
+}
+
+void correctRobot()
+{
+	while (SensorValue[lineInnerL] < lineSensorThreshold || SensorValue[lineInnerR] < lineSensorThreshold)
+	{
+		if (SensorValue[lineInnerL] < lineSensorThreshold)
+		{
+			move(1, 100, 100, 127, 127);
+		}
+		else if (SensorValue[lineInnerR] < lineSensorThreshold)
+		{
+			move(1, 127, 127, 100, 100);
+		}
+	}
+}
+
 task usercontrol()
 {
 	int leftTrackSpeed;
@@ -35,10 +59,30 @@ task usercontrol()
 			arcadeMode = !arcadeMode;
 			toggleCooldown = true;
 		}
-		if (vexRt[Btn8U] == 1 && !toggleCooldown)
+		if (vexRT[Btn8U] == 1 && !toggleCooldown)
 		{
 			calibrateSensors();
 			toggleCooldown = true;
+		}
+		if (vexRT[Btn8L] == 1 && !toggleCooldown)
+		{
+			toggleCooldown = true;
+			while (true)
+			{
+				if (isValid())
+				{
+					drive(10, 127);
+				}
+				else
+				{
+					correctRobot();
+				}
+				if (vexRT[Btn8L == 1])
+				{
+					break;
+					toggleCooldown = true;
+				}
+			}
 		}
 		// getting values
 		if (!arcadeMode)

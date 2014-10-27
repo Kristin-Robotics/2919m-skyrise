@@ -67,6 +67,8 @@ task usercontrol()
 		if (vexRT[Btn8L] == 1 && !toggleCooldown)
 		{
 			toggleCooldown = true;
+			drive(500, 127);
+			wait1Msec(500);
 			while (true)
 			{
 				if (isValid())

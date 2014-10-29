@@ -1,7 +1,7 @@
 #include "main.h"
 
 // moves robot at a b c d speeds for x milliseconds
-void move(int durationMsec, int leftDriveOneSpeed, int leftDriveTwoSpeed, int rightDriveOneSpeed, int rightDriveTwoSpeed)
+/*void move(int durationMsec, int leftDriveOneSpeed, int leftDriveTwoSpeed, int rightDriveOneSpeed, int rightDriveTwoSpeed)
 {
 	bool goalReached = false;
 	int currentTime;
@@ -44,7 +44,7 @@ void correctRobot()
 		}
 	}
 }
-
+*/
 typedef struct {
 	int x;
 	int y;
@@ -52,10 +52,10 @@ typedef struct {
 
 task autonomous()
 {
-	do
+	/*do
 	{
 		if (isValid())
-		{
+	{
 			drive(10, 127);
 		}
 		else
@@ -63,5 +63,5 @@ task autonomous()
 			correctRobot();
 		}
 	}
-	while (true);
+	while (true);*/
 }

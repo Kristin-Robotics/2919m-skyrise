@@ -9,7 +9,9 @@ void calibrateSensors()
 
 bool isValid()
 {
-	if (SensorValue[lineInnerL] < lineSensorThreshold || SensorValue[lineInnerR] < lineSensorThreshold)
+	float left = lineSensorPID(true);
+	float right = lineSensorPID(false);
+	if (left < lineSensorThreshold || right < lineSensorThreshold)
 	{
 		return false;
 	}
@@ -38,15 +40,17 @@ void move(int durationMsec, int leftDriveOneSpeed, int leftDriveTwoSpeed, int ri
 }
 void correctRobot()
 {
-	while (SensorValue[lineInnerL] < lineSensorThreshold || SensorValue[lineInnerR] < lineSensorThreshold)
+	float left = lineSensorPID(true);
+	float right = lineSensorPID(false);
+	while (left < lineSensorThreshold || right < lineSensorThreshold)
 	{
-		if (SensorValue[lineInnerL] < lineSensorThreshold)
+		if (left < lineSensorThreshold)
 		{
-			move(1, 100, 100, 127, 127);
+			move(1, 50, 50, 70, 70);
 		}
-		else if (SensorValue[lineInnerR] < lineSensorThreshold)
+		else if (right < lineSensorThreshold)
 		{
-			move(1, 127, 127, 100, 100);
+			move(1, 50, 50, 70, 70);
 		}
 	}
 }

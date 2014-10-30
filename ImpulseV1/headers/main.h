@@ -20,10 +20,10 @@ float d = 0.0;
  * This method is based off Harrison Freni's code (2150D robotics team)
  * For further inquries about the source of this code, talk to Marco.
  */
-float lineSensorPID(bool innerLineMark)
+float lineSensorPID(bool innerLineMark, int cal)
 {
 	float lineSensorSpeed = 0;
-	error = 200 - SensorValue[innerLineMark ? lineInnerL : lineInnerR];
+	error = cal - SensorValue[innerLineMark ? lineInnerL : lineInnerR];
 	p = error;
 	i = abs(i + error) < kL ? i + error : kL;
 	d = error - prevError;

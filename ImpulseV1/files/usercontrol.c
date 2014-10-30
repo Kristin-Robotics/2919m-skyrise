@@ -1,17 +1,17 @@
 #include "main.h"
 
-void calibrateSensors()
+int calibratedValue = 0;
+
+int calibrateSensors()
 {
-	float averageInner = (SensorValue[lineInnerR] + SensorValue[lineInnerL]) / 2.0;
-	float averageOuter = (SensorValue[lineOuterR] + SensorValue[lineOuterL]) / 2.0;
-	lineSensorThreshold = (averageOuter - averageInner) / 2.0;
+	return abs(SensorValue[lineInnerL] - SensorValue[lineInnerR]) / 2;
 }
 
 bool isValid()
 {
-	float left = lineSensorPID(true);
-	float right = lineSensorPID(false);
-	if (left < lineSensorThreshold || right < lineSensorThreshold)
+	float left = lineSensorPID(true, calibratedValue);
+	float right = lineSensorPID(false, calibratedValue);
+	if (left < calibratedValue || right < calibratedValue)
 	{
 		return false;
 	}
@@ -40,17 +40,17 @@ void move(int durationMsec, int leftDriveOneSpeed, int leftDriveTwoSpeed, int ri
 }
 void correctRobot()
 {
-	float left = lineSensorPID(true);
-	float right = lineSensorPID(false);
-	while (left < lineSensorThreshold || right < lineSensorThreshold)
+	float left = lineSensorPID(true, calibratedValue);
+	float right = lineSensorPID(false, calibratedValue);
+	while (left < calibratedValue || right < calibratedValue)
 	{
-		if (left < lineSensorThreshold)
+		if (left < calibratedValue)
 		{
 			move(1, 50, 50, 70, 70);
 		}
-		else if (right < lineSensorThreshold)
+		else if (right < calibratedValue)
 		{
-			move(1, 50, 50, 70, 70);
+			move(1, 70, 70, 50, 50);
 		}
 	}
 }
@@ -85,7 +85,7 @@ task usercontrol()
 		}
 		if (vexRT[Btn8U] == 1 && !toggleCooldown)
 		{
-			calibrateSensors();
+			calibratedValue = calibrateSensors();
 			toggleCooldown = true;
 		}
 		if (vexRT[Btn8L] == 1 && !toggleCooldown)
@@ -97,7 +97,7 @@ task usercontrol()
 			{
 				if (isValid())
 				{
-					drive(10, 127);
+					drive(1, 35);
 				}
 				else
 				{

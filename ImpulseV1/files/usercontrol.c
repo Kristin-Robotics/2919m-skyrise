@@ -7,6 +7,21 @@ int calibrateSensors()
 	return abs(SensorValue[lineInnerL] - SensorValue[lineInnerR]) / 2;
 }
 
+int motorSaftey(int input)
+{
+	if (exponentialControlEnabled)
+	{
+		int sign = input / abs(input);
+		input = abs(input);
+		float scalingValue = 127.0 / (exponentialScalingValue - 1);
+		float percentMax = input / 127.0;
+		float exponentialMod = (float)(pow(exponentialScalingValue, percentMax) - 1);
+		int output = (int)round(scalingValue * exponentialMod * sign);
+		return output;
+	}
+	return input;
+}
+
 bool isValid()
 {
 	float left = lineSensorPID(true, calibratedValue);
@@ -123,6 +138,10 @@ task usercontrol()
 			leftTrackSpeed = leftTrackSpeed + vexRT[Ch1];
 			rightTrackSpeed = rightTrackSpeed - vexRT[Ch1];
 		}
+
+		// scaling motors
+		leftTrackSpeed = motorSaftey(leftTrackSpeed);
+		rightTrackSpeed = motorSaftey(rightTrackSpeed);
 
 		// assigning values
 		motor[lDrive1] = leftTrackSpeed;

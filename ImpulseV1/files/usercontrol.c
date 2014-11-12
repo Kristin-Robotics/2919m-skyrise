@@ -140,8 +140,8 @@ task usercontrol()
 		}
 
 		// scaling motors
-		leftTrackSpeed = motorSaftey(leftTrackSpeed);
-		rightTrackSpeed = motorSaftey(rightTrackSpeed);
+		//leftTrackSpeed = abs(motorSaftey(leftTrackSpeed));
+		//rightTrackSpeed = abs(motorSaftey(rightTrackSpeed));
 
 		// assigning values
 		motor[lDrive1] = leftTrackSpeed;

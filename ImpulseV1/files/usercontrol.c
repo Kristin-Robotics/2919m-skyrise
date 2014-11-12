@@ -1,12 +1,5 @@
 #include "main.h"
 
-int calibratedValue = 0;
-
-int calibrateSensors()
-{
-	return abs(SensorValue[lineInnerL] - SensorValue[lineInnerR]) / 2;
-}
-
 int motorSaftey(int input)
 {
 	if (exponentialControlEnabled)
@@ -22,24 +15,12 @@ int motorSaftey(int input)
 	return input;
 }
 
-bool isValid()
-{
-	float left = lineSensorPID(true, calibratedValue);
-	float right = lineSensorPID(false, calibratedValue);
-	if (left < calibratedValue || right < calibratedValue)
-	{
-		return false;
-	}
-	return true;
-}
-
 void move(int durationMsec, int leftDriveOneSpeed, int leftDriveTwoSpeed, int rightDriveOneSpeed, int rightDriveTwoSpeed)
 {
 	bool goalReached = false;
 	int currentTime;
 	motor[lDrive1] = leftDriveOneSpeed;
-	motor[lDrive2]
-	= leftDriveTwoSpeed;
+	motor[lDrive2] = leftDriveTwoSpeed;
 	motor[rDrive1] = rightDriveOneSpeed;
 	motor[rDrive2] = rightDriveTwoSpeed;
 	while (currentTime < durationMsec)
@@ -52,22 +33,6 @@ void move(int durationMsec, int leftDriveOneSpeed, int leftDriveTwoSpeed, int ri
 	motor[lDrive2] = 0;
 	motor[rDrive1] = 0;
 	motor[rDrive2] = 0;
-}
-void correctRobot()
-{
-	float left = lineSensorPID(true, calibratedValue);
-	float right = lineSensorPID(false, calibratedValue);
-	while (left < calibratedValue || right < calibratedValue)
-	{
-		if (left < calibratedValue)
-		{
-			move(1, 50, 50, 70, 70);
-		}
-		else if (right < calibratedValue)
-		{
-			move(1, 70, 70, 50, 50);
-		}
-	}
 }
 
 task usercontrol()
@@ -103,6 +68,7 @@ task usercontrol()
 			calibratedValue = calibrateSensors();
 			toggleCooldown = true;
 		}
+		// autonomous routine intergrated (for dev purposes)
 		if (vexRT[Btn8L] == 1 && !toggleCooldown)
 		{
 			toggleCooldown = true;
@@ -110,19 +76,8 @@ task usercontrol()
 			wait1Msec(500);
 			while (true)
 			{
-				if (isValid())
-				{
-					drive(1, 35);
-				}
-				else
-				{
-					correctRobot();
-				}
-				if (vexRT[Btn8L == 1])
-				{
-					toggleCooldown = true;
-					break;
-				}
+				leftValue = SensorValue[lineInnerR];
+				rightValue = SensorValue[lineInnerL];
 			}
 		}
 		// getting values

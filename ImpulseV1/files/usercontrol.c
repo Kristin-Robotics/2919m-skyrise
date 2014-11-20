@@ -47,6 +47,8 @@ task usercontrol()
 	{
 		leftTrackSpeed = 0;
 		rightTrackSpeed = 0;
+		leftLiftSpeed = 0;
+		rightLiftSpeed = 0;
 
 		// processes the toggle cooldown if it is in effect.
 		if (toggleCooldown)
@@ -94,15 +96,33 @@ task usercontrol()
 			rightTrackSpeed = rightTrackSpeed - vexRT[Ch1];
 		}
 
+		// assign to lifts
+		if (vexRT[Btn5D] == 1 && vexRT[Btn5U] == 0)
+		{
+			leftLiftSpeed = -127;
+			rightLiftSpeed = -127;
+		}
+		else if (vexRT[Btn5U] == 1 && vexRT[Btn5D] == 0)
+		{
+			leftLiftSpeed = 127;
+			rightLiftSpeed = 127;
+		}
+
 		// scaling motors
-		//leftTrackSpeed = abs(motorSaftey(leftTrackSpeed));
-		//rightTrackSpeed = abs(motorSaftey(rightTrackSpeed));
+		leftTrackSpeed = abs(motorSaftey(leftTrackSpeed));
+		rightTrackSpeed = abs(motorSaftey(rightTrackSpeed));
 
 		// assigning values
 		motor[lDrive1] = leftTrackSpeed;
 		motor[lDrive2] = leftTrackSpeed;
 		motor[rDrive2] = rightTrackSpeed;
 		motor[rDrive1] = rightTrackSpeed;
+
+		// assign to lifts
+		motor[leftLift1] = leftLiftSpeed;
+		motor[leftLift2] = leftLiftSpeed;
+		motor[rightLift1] = rightLiftSpeed;
+		motor[rightLift2] = rightLiftSpeed;
 
 		wait1Msec(1);
 	}

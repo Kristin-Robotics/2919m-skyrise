@@ -228,6 +228,7 @@ task usercontrol()
 			{
 				assignPreset();
 			}
+		}
 		// scaling motors
 		//leftTrackSpeed = abs(motorSaftey(leftTrackSpeed));
 		//rightTrackSpeed = abs(motorSaftey(rightTrackSpeed));

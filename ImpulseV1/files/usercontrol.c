@@ -39,6 +39,8 @@ task usercontrol()
 {
 	int leftTrackSpeed;
 	int rightTrackSpeed;
+	int leftLiftSpeed;
+	int rightLiftSpeed;
 	bool arcadeMode;
 	bool toggleCooldown;
 	int cooldown = 0;
@@ -67,7 +69,7 @@ task usercontrol()
 		}
 		if (vexRT[Btn8U] == 1 && !toggleCooldown)
 		{
-			calibratedValue = calibrateSensors();
+			//calibratedValue = calibrateSensors();
 			toggleCooldown = true;
 		}
 		// autonomous routine intergrated (for dev purposes)
@@ -78,8 +80,8 @@ task usercontrol()
 			wait1Msec(500);
 			while (true)
 			{
-				leftValue = SensorValue[lineInnerR];
-				rightValue = SensorValue[lineInnerL];
+				///leftValue = SensorValue[lineInnerR];
+				//rightValue = SensorValue[lineInnerL];
 			}
 		}
 		// getting values
@@ -99,18 +101,18 @@ task usercontrol()
 		// assign to lifts
 		if (vexRT[Btn5D] == 1 && vexRT[Btn5U] == 0)
 		{
-			leftLiftSpeed = -127;
-			rightLiftSpeed = -127;
-		}
-		else if (vexRT[Btn5U] == 1 && vexRT[Btn5D] == 0)
-		{
 			leftLiftSpeed = 127;
 			rightLiftSpeed = 127;
 		}
+		else if (vexRT[Btn5U] == 1 && vexRT[Btn5D] == 0)
+		{
+			leftLiftSpeed = -127;
+			rightLiftSpeed = -127;
+		}
 
 		// scaling motors
-		leftTrackSpeed = abs(motorSaftey(leftTrackSpeed));
-		rightTrackSpeed = abs(motorSaftey(rightTrackSpeed));
+		//leftTrackSpeed = abs(motorSaftey(leftTrackSpeed));
+		//rightTrackSpeed = abs(motorSaftey(rightTrackSpeed));
 
 		// assigning values
 		motor[lDrive1] = leftTrackSpeed;

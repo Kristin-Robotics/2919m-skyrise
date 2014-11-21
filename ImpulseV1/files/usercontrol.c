@@ -1,5 +1,11 @@
 #include "main.h"
 
+int liftPreset = 0;
+int potLTarget = 0;
+int potRTarget = 0;
+int lL, lr;
+int liftTargetSpeed = 0;
+
 int motorSaftey(int input)
 {
 	if (exponentialControlEnabled)
@@ -35,12 +41,120 @@ void move(int durationMsec, int leftDriveOneSpeed, int leftDriveTwoSpeed, int ri
 	motor[rDrive2] = 0;
 }
 
+void presetAssign()
+{
+	if (vexRT[Btn7U] == 1)
+	{
+		liftPreset = 2;
+	}
+	else if (vexRT[Btn7D] == 1)
+	{
+		liftPreset = 1;
+	}
+}
+
+void assignPreset()
+{
+	if (liftPreset != 0)
+	{
+		potLTarget = lPotValues[liftPreset - 1];
+		potRTarget = rPotValues[liftPreset - 1];
+		liftTargetSpeed = 127;
+		presetMonitor();
+	}
+}
+
+void presetMonitor()
+{
+	if ((potLTarget != 0) && (potRTarget != 0))
+	{
+		int potR = SensorValue[rPot];
+		int potL = SensorValue[lPot];
+		bool LLGoalReached = false;
+		bool RLGoalReached = false;
+
+		string direction;
+
+		if (potR < potRTarget)
+		{
+			direction = "up";
+		}
+		if (potR > potRTarget)
+		{
+			direction = "down";
+		}
+
+		if ((abs(potR) - 30 < abs(potRTarget)) && ((abs(potR) + 30 > abs(potRTarget))))
+		{
+			lL = 0;
+			lR = 0;
+			potRTarget = 0;
+			liftPreset = 0;
+		}
+
+		else if ((potRTarget != 0) && potLTarget != 0)
+		{
+			if (direction == "down")
+			{
+				if ((LLGoalReached == false) || (RLGoalReached == false))
+				{
+					if (potL > potLTarget)
+					{
+						lL = -(liftTargetSpeed);
+					}
+					else
+					{
+						LLGoalReached = true;
+						lL = 0;
+					}
+					if (potR > potRTarget)
+					{
+						lR = -(liftTargetSpeed);
+					}
+					else
+					{
+						RLGoalReached = true;
+						lR = 0;
+					}
+				}
+
+
+
+			}
+
+			else if (direction == "up")
+			{
+				if ((LLGoalReached == false) || (RLGoalReached == false))
+				{
+					if (potL < potLTarget)
+					{
+						lL = (liftTargetSpeed);
+					}
+					else
+					{
+						LLGoalReached = true;
+						lL = 0;
+					}
+					if (potR < potRTarget)
+					{
+						lR = liftTargetSpeed;
+					}
+					else
+					{
+						RLGoalReached = true;
+						lR = 0;
+					}
+				}
+			}
+		}
+
+	}
+}
+
 task usercontrol()
 {
 	int leftTrackSpeed;
 	int rightTrackSpeed;
-	int leftLiftSpeed;
-	int rightLiftSpeed;
 	bool arcadeMode;
 	bool toggleCooldown;
 	int cooldown = 0;
@@ -49,8 +163,6 @@ task usercontrol()
 	{
 		leftTrackSpeed = 0;
 		rightTrackSpeed = 0;
-		leftLiftSpeed = 0;
-		rightLiftSpeed = 0;
 
 		// processes the toggle cooldown if it is in effect.
 		if (toggleCooldown)
@@ -98,18 +210,24 @@ task usercontrol()
 			rightTrackSpeed = rightTrackSpeed - vexRT[Ch1];
 		}
 
-		// assign to lifts
-		if (vexRT[Btn5D] == 1 && vexRT[Btn5U] == 0)
-		{
-			leftLiftSpeed = 127;
-			rightLiftSpeed = 127;
-		}
-		else if (vexRT[Btn5U] == 1 && vexRT[Btn5D] == 0)
-		{
-			leftLiftSpeed = -127;
-			rightLiftSpeed = -127;
-		}
+		presetAssign();
 
+		//Lift
+		//Get Controller Values
+		lL = (vexRT[Btn5U] - vexRT[Btn5D]) * 127;
+		lR = (vexRT[Btn5U] - vexRT[Btn5D]) * 127;
+
+		if ((abs(lL) > 0) || (abs(lR) > 0))
+		{
+			liftPreset = 0;
+		}
+		else
+		{
+			//Lift Preset Actions
+			if (liftPreset != 0)
+			{
+				assignPreset();
+			}
 		// scaling motors
 		//leftTrackSpeed = abs(motorSaftey(leftTrackSpeed));
 		//rightTrackSpeed = abs(motorSaftey(rightTrackSpeed));
@@ -121,10 +239,10 @@ task usercontrol()
 		motor[rDrive1] = rightTrackSpeed;
 
 		// assign to lifts
-		motor[leftLift1] = leftLiftSpeed;
-		motor[leftLift2] = leftLiftSpeed;
-		motor[rightLift1] = rightLiftSpeed;
-		motor[rightLift2] = rightLiftSpeed;
+		motor[leftLift1] = lL;
+		motor[leftLift2] = lL;
+		motor[rightLift1] = lR;
+		motor[rightLift2] = lR;
 
 		wait1Msec(1);
 	}

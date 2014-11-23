@@ -3,9 +3,10 @@
 int liftPreset = 0;
 int potLTarget = 0;
 int potRTarget = 0;
-int lL, lr;
+int leftLiftSpeed, rightLiftSpeed;
 int liftTargetSpeed = 0;
 
+// scaling controls. Currently is broken. (Robot will not reverse)
 int motorSaftey(int input)
 {
 	if (exponentialControlEnabled)
@@ -21,26 +22,7 @@ int motorSaftey(int input)
 	return input;
 }
 
-void move(int durationMsec, int leftDriveOneSpeed, int leftDriveTwoSpeed, int rightDriveOneSpeed, int rightDriveTwoSpeed)
-{
-	bool goalReached = false;
-	int currentTime;
-	motor[lDrive1] = leftDriveOneSpeed;
-	motor[lDrive2] = leftDriveTwoSpeed;
-	motor[rDrive1] = rightDriveOneSpeed;
-	motor[rDrive2] = rightDriveTwoSpeed;
-	while (currentTime < durationMsec)
-	{
-		wait1Msec(1);
-		currentTime++;
-	}
-	goalReached = true;
-	motor[lDrive1] = 0;
-	motor[lDrive2] = 0;
-	motor[rDrive1] = 0;
-	motor[rDrive2] = 0;
-}
-
+// assign presets if the corresponding button is pressed
 void presetAssign()
 {
 	if (vexRT[Btn7U] == 1)
@@ -53,6 +35,7 @@ void presetAssign()
 	}
 }
 
+// assign preset values from the stored array in variables.h
 void assignPreset()
 {
 	if (liftPreset != 0)
@@ -64,6 +47,7 @@ void assignPreset()
 	}
 }
 
+// execute the preset action
 void presetMonitor()
 {
 	if ((potLTarget != 0) && (potRTarget != 0))
@@ -86,8 +70,8 @@ void presetMonitor()
 
 		if ((abs(potR) - 30 < abs(potRTarget)) && ((abs(potR) + 30 > abs(potRTarget))))
 		{
-			lL = 0;
-			lR = 0;
+			leftLiftSpeed = 0;
+			rightLiftSpeed = 0;
 			potRTarget = 0;
 			liftPreset = 0;
 		}
@@ -100,21 +84,21 @@ void presetMonitor()
 				{
 					if (potL > potLTarget)
 					{
-						lL = -(liftTargetSpeed);
+						leftLiftSpeed = -(liftTargetSpeed);
 					}
 					else
 					{
 						LLGoalReached = true;
-						lL = 0;
+						leftLiftSpeed = 0;
 					}
 					if (potR > potRTarget)
 					{
-						lR = -(liftTargetSpeed);
+						rightLiftSpeed = -(liftTargetSpeed);
 					}
 					else
 					{
 						RLGoalReached = true;
-						lR = 0;
+						rightLiftSpeed = 0;
 					}
 				}
 
@@ -128,21 +112,21 @@ void presetMonitor()
 				{
 					if (potL < potLTarget)
 					{
-						lL = (liftTargetSpeed);
+						leftLiftSpeed = (liftTargetSpeed);
 					}
 					else
 					{
 						LLGoalReached = true;
-						lL = 0;
+						leftLiftSpeed = 0;
 					}
 					if (potR < potRTarget)
 					{
-						lR = liftTargetSpeed;
+						rightLiftSpeed = liftTargetSpeed;
 					}
 					else
 					{
 						RLGoalReached = true;
-						lR = 0;
+						rightLiftSpeed = 0;
 					}
 				}
 			}
@@ -151,6 +135,7 @@ void presetMonitor()
 	}
 }
 
+// usercontrol task
 task usercontrol()
 {
 	int leftTrackSpeed;
@@ -174,14 +159,10 @@ task usercontrol()
 				cooldown = 0;
 			}
 		}
+		// switch to arcade mode for steering
 		if (vexRT[Btn8D] == 1 && !toggleCooldown)
 		{
 			arcadeMode = !arcadeMode;
-			toggleCooldown = true;
-		}
-		if (vexRT[Btn8U] == 1 && !toggleCooldown)
-		{
-			//calibratedValue = calibrateSensors();
 			toggleCooldown = true;
 		}
 		// autonomous routine intergrated (for dev purposes)
@@ -210,40 +191,42 @@ task usercontrol()
 			rightTrackSpeed = rightTrackSpeed - vexRT[Ch1];
 		}
 
+		// check what preset button is pressed
 		presetAssign();
 
-		//Lift
-		//Get Controller Values
-		lL = (vexRT[Btn5U] - vexRT[Btn5D]) * 127;
-		lR = (vexRT[Btn5U] - vexRT[Btn5D]) * 127;
+		// get lift values
+		leftLiftSpeed = (vexRT[Btn5U] - vexRT[Btn5D]) * 127;
+		rightLiftSpeed = (vexRT[Btn5U] - vexRT[Btn5D]) * 127;
 
-		if ((abs(lL) > 0) || (abs(lR) > 0))
+		// if the buttons are used, then we do not need presets
+		if ((abs(leftLiftSpeed) > 0) || (abs(rightLiftSpeed) > 0))
 		{
 			liftPreset = 0;
 		}
 		else
 		{
-			//Lift Preset Actions
+			// otherwise execute preset actions
 			if (liftPreset != 0)
 			{
 				assignPreset();
 			}
 		}
-		// scaling motors
+
+		// scaling motors [broken as of now]
 		//leftTrackSpeed = abs(motorSaftey(leftTrackSpeed));
 		//rightTrackSpeed = abs(motorSaftey(rightTrackSpeed));
 
-		// assigning values
+		// assigning values to motors
 		motor[lDrive1] = leftTrackSpeed;
 		motor[lDrive2] = leftTrackSpeed;
 		motor[rDrive2] = rightTrackSpeed;
 		motor[rDrive1] = rightTrackSpeed;
 
-		// assign to lifts
-		motor[leftLift1] = lL;
-		motor[leftLift2] = lL;
-		motor[rightLift1] = lR;
-		motor[rightLift2] = lR;
+		// assign values to lifts
+		motor[leftLift1] = leftLiftSpeed;
+		motor[leftLift2] = leftLiftSpeed;
+		motor[rightLift1] = rightLiftSpeed;
+		motor[rightLift2] = rightLiftSpeed;
 
 		wait1Msec(1);
 	}

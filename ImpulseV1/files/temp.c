@@ -1,6 +1,9 @@
 /*
  * This file contains all of the previous attempts code for trying to get the robot
  * to follow a line properly. This file otherwise has no other use, but only as a database. 
+ *
+ * These might be used later when we come back to the autonomous tasks. But for now, this file
+ * is simply used as storage
  */
 
 /* Attempt #1 Start */

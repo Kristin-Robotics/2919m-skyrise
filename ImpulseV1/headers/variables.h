@@ -2,9 +2,9 @@
 #define VARIABLES_H
 
 // configuration constants
-const int exponentialScalingValue = 5;
+const int fineControlValue = 5;
 int lineSensorThreshold = (2220 - 150) / 2;
-const bool exponentialControlEnabled = true;
+const bool fineControlEnabled = true;
 
 // preset values
 // structure: min, max

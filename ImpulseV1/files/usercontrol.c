@@ -6,20 +6,25 @@ int potRTarget = 0;
 int leftLiftSpeed, rightLiftSpeed;
 int liftTargetSpeed = 0;
 
-// scaling controls. Currently is broken. (Robot will not reverse)
-int motorSaftey(int input)
+//Code for finer driving control
+int fineControl(int input) //input from value, mod is set to driver preferences
 {
-	if (exponentialControlEnabled)
+	if (fineControlEnabled)
 	{
 		int sign = input / abs(input);
+
 		input = abs(input);
-		float scalingValue = 127.0 / (exponentialScalingValue - 1);
+
+		float scalingValue = 127.0 / (fineControlValue - 1);
 		float percentMax = input / 127.0;
-		float exponentialMod = (float)(pow(exponentialScalingValue, percentMax) - 1);
-		int output = (int)round(scalingValue * exponentialMod * sign);
-		return output;
+		float modifier = (float)(pow(fineControlValue, percentMax) - 1);
+		int output = (int)round(scalingValue * modifier * sign);
+		return(output);
 	}
-	return input;
+	else
+	{
+		return(input);
+	}
 }
 
 // assign presets if the corresponding button is pressed

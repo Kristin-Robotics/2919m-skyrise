@@ -1,9 +1,17 @@
 int motorRamping(int input, int selectedMotor, int timer)
 {
+	int newSpeed;
+	
 	if (selectedMotor < input) && (time1[0] > 100)
 	{
-		selectedMotor = selectedMotor + 10;
+		newSpeed = selectedMotor + 10;
 		ClearTimer(time1[timer]);
-		return(selectedMotor);
+		
+		if (newSpeed > input)
+		{
+			newSpeed = input;
+		}
+		
+		return(newSpeed);
 	}
 }

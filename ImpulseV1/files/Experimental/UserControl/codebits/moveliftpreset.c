@@ -1,18 +1,15 @@
 void moveLiftPreset()
 {
 	if (liftPreset > -1)
-	{
-		potR = SensorValue[rPot];
-		potL = SensorValue[lPot];
-		
+	{		
 		LLGoalReached = false;
 		RLGoalReached = false;
 
-		if (potR < rPotValues[liftPreset])
+		if (SensorValue[rPot] < potRTarget)
 		{
 			direction = "up";
 		}
-		if (potR > rPotValues[liftPreset])
+		if (SensorValue[rPot] > potRTarget)
 		{
 			direction = "down";
 		}
@@ -21,24 +18,24 @@ void moveLiftPreset()
 		{
 			while (!(LLGoalReached && RLGoalReached) && liftPreset > -1))
 			{
-				if (potL < lPotValues[liftPreset])
+				if (SensorValue[lPot] < potLTarget)
 				{
-					leftLiftSpeed = ;
+					leftLiftSpeed = 127;
 				}
 				else
 				{
 					LLGoalReached = true;
 				}
 				
-				if (potR < rPotValues[liftPreset])
+				if (SensorValue[rPot] < potRTarget)
 				{
-					rightLiftSpeed = ;
+					rightLiftSpeed = 127;
 				}
 				else
 				{
 					RLGoalReached = true;
 				}
-				wait1MSec(20);
+				sleep(20);
 			}
 			
 			liftPreset = -1;
@@ -47,24 +44,24 @@ void moveLiftPreset()
 		{
 			while (!(LLGoalReached && RLGoalReached) && liftPreset > -1))
 			{
-				if (potL > lPotValues[liftPreset])
+				if (SensorValue[lPot] > potLTarget)
 				{
-					leftLiftSpeed = ;
+					leftLiftSpeed = -127;
 				}
 				else
 				{
 					LLGoalReached = true;
 				}
 				
-				if (potR > rPotValues[liftPreset])
+				if (SensorValue[rPot] > potRTarget)
 				{
-					rightLiftSpeed = ;
+					rightLiftSpeed = -127;
 				}
 				else
 				{
 					RLGoalReached = true;
 				}
-				wait1MSec(20);
+				sleep(20);
 			}
 		
 			liftPreset = -1;

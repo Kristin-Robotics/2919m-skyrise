@@ -195,8 +195,8 @@ task usercontrol()
 		presetAssign();
 
 		// get lift values
-		leftLiftSpeed = (vexRT[Btn5U] - vexRT[Btn5D]) * 127;
-		rightLiftSpeed = (vexRT[Btn5U] - vexRT[Btn5D]) * 127;
+		leftLiftSpeed = (vexRT[Btn5D] - vexRT[Btn5U]) * 127;
+		rightLiftSpeed = (vexRT[Btn5D] - vexRT[Btn5U]) * 127;
 
 		// if the buttons are used, then we do not need presets
 		if ((abs(leftLiftSpeed) > 0) || (abs(rightLiftSpeed) > 0))
@@ -209,6 +209,19 @@ task usercontrol()
 			if (liftPreset != 0)
 			{
 				assignPreset();
+			}
+			else
+			{
+				if ((SensorValue[rPot] < liftTrimThreshold))
+				{
+					leftLiftSpeed = leftLiftSpeed - 10;
+					rightLiftSpeed = rightLiftSpeed - 10;
+				}
+				else if ((SensorValue[rPot] > liftTrimThreshold))
+				{
+					leftLiftSpeed = leftLiftSpeed + 10;
+					rightLiftSpeed = rightLiftSpeed + 10;
+				}
 			}
 		}
 
@@ -228,6 +241,6 @@ task usercontrol()
 		motor[rightLift1] = rightLiftSpeed;
 		motor[rightLift2] = rightLiftSpeed;
 
-		wait1Msec(1);
+		wait1Msec(20);
 	}
 }

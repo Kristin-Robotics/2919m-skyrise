@@ -5,6 +5,7 @@
 const int exponentialScalingValue = 5;
 int lineSensorThreshold = (2220 - 150) / 2;
 const bool exponentialControlEnabled = true;
+int liftTrimThreshold = 50;
 
 // preset values
 // structure: min, max

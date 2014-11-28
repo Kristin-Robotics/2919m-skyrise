@@ -2,10 +2,14 @@
 #define VARIABLES_H
 
 // configuration constants
-const int exponentialScalingValue = 5;
+const int fineControlValue = 5;
 int lineSensorThreshold = (2220 - 150) / 2;
+<<<<<<< HEAD
 const bool exponentialControlEnabled = true;
 int liftTrimThreshold = 50;
+=======
+const bool fineControlEnabled = true;
+>>>>>>> origin/ImpulseV1
 
 // preset values
 // structure: min, max

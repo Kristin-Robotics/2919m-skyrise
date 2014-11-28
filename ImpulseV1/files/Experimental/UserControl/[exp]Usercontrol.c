@@ -15,6 +15,9 @@
 //Slowly increase speed over speed/100 seconds
 #include "/codebits/motorramping.c"
 
+//Trim code
+#include "/codebits/lifttrim.c"
+
 //Controller interaction
 task usercontrol()
 {
@@ -59,9 +62,13 @@ task usercontrol()
 			liftPreset = -1;
 		}
 		
-		leftLiftSpeed = (vexRT[Btn5U] - vexRT[Btn5D]) * 127;
-		rightLiftSpeed = (vexRT[Btn5U] - vexRT[Btn5D]) * 127;
+		if (liftPreset == -1)
+		{		
+			leftLiftSpeed = (-vexRT[Btn5U] + vexRT[Btn5D]) * 127;
+			rightLiftSpeed = (-vexRT[Btn5U] + vexRT[Btn5D]) * 127;
+		}
 		
+		liftTrim();
 		sleep(20);
 	}
 }

@@ -21,6 +21,23 @@ void move(int durationMsec, int leftDriveOneSpeed, int leftDriveTwoSpeed, int ri
 	motor[rDrive2] = 0;
 }
 
+void lift(int liftSpeed, int liftGoal)
+{
+	bool goalReached = false;
+	while (SensorValue[rPot] < liftGoal || SensorValue[rPot] > liftGoal)
+	{
+		motor[rLift1] = liftSpeed;
+		motor[rLift2] = liftSpeed;
+		motor[lLift1] = liftSpeed;
+		motor[lLift2] = liftSpeed;
+	}
+	motor[rLift1] = 0;
+	motor[rLift2] = 0;
+	motor[lLift1] = 0;
+	motor[lLift2] = 0;
+	goalReached = true;
+}
+
 // autonomous task
 task autonomous()
 {

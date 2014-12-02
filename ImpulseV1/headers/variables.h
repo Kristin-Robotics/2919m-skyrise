@@ -6,7 +6,7 @@ const int fineControlValue = 5;
 int lineSensorThreshold = (2220 - 150) / 2;
 <<<<<<< HEAD
 const bool exponentialControlEnabled = true;
-int liftTrimThreshold = 50;
+const int liftTrimThreshold = 75;
 =======
 const bool fineControlEnabled = true;
 >>>>>>> origin/ImpulseV1

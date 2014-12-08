@@ -10,7 +10,6 @@
 #define driveBack(x, y) (move(x, -abs(y), -abs(y), -abs(y), -abs(y)))
 #define turnLeft(x, y) (move(x, -abs(y), -abs(y), abs(y), abs(y))
 #define turnRight(x, y) (move(x, abs(y), abs(y), -abs(y), -abs(y)))
-
 // lift macros
 #define liftUp(x) (lift(127, x))
 #define liftDown(x) (lift(-127, x))

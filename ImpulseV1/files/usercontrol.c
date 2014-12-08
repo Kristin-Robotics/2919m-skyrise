@@ -1,251 +1,121 @@
 #include "main.h"
 
-int liftPreset = 0;
-int potLTarget = 0;
-int potRTarget = 0;
-int leftLiftSpeed, rightLiftSpeed;
-int liftTargetSpeed = 0;
+//Variable Storage
+#include "/codebits/uservariables.c"
 
-//Code for finer driving control
-int fineControl(int input) //input from value, mod is set to driver preferences
+//Fine Control for Driver
+#include "/codebits/finecontrol.c"
+
+//Buttons
+#include "/codebits/buttons.c"
+
+//Move the lift automatically
+#include "/codebits/moveliftpreset.c"
+
+//Slowly increase speed over speed/100 seconds
+#include "/codebits/motorramping.c"
+
+//Trim code
+#include "/codebits/lifttrim.c"
+
+//Processing for Lift
+task liftProcessing()
 {
-	if (fineControlEnabled)
+	while(true)
 	{
-		int sign = input / abs(input);
-
-		input = abs(input);
-
-		float scalingValue = 127.0 / (fineControlValue - 1);
-		float percentMax = input / 127.0;
-		float modifier = (float)(pow(fineControlValue, percentMax) - 1);
-		int output = (int)round(scalingValue * modifier * sign);
-		return(output);
-	}
-	else
-	{
-		return(input);
+		moveLiftPreset(); //Has a while loop
+		wait1Msec(20);
 	}
 }
 
-// assign presets if the corresponding button is pressed
-void presetAssign()
+task arcadeDrive()
 {
-	if (vexRT[Btn7U] == 1)
+	while(true)
 	{
-		liftPreset = 2;
+		leftTrackSpeed = fineControl(vexRT[Ch3] + vexRT[Ch1]);
+		rightTrackSpeed = fineControl(vexRT[Ch3] - vexRT[Ch1]);
+		
+		wait1Msec(20);
 	}
-	else if (vexRT[Btn7D] == 1)
+
+}
+
+task tankDrive()
+{
+	while(true)
 	{
-		liftPreset = 1;
+		leftTrackSpeed = fineControl(vexRT[Ch3]);
+		rightTrackSpeed = fineControl(vexRT[Ch2]);
+		
+		wait1Msec(20);
 	}
 }
 
-// assign preset values from the stored array in variables.h
-void assignPreset()
+//Controller for all motors
+task motorController()
 {
-	if (liftPreset != 0)
-	{
-		potLTarget = lPotValues[liftPreset - 1];
-		potRTarget = rPotValues[liftPreset - 1];
-		liftTargetSpeed = 127;
-		presetMonitor();
+	while(true)
+	{		
+			motor[lDrive1] += slopeLimiter(motor[lDrive1],leftTrackSpeed,20);
+			motor[lDrive2] += slopeLimiter(motor[lDrive2],leftTrackSpeed,20);
+			motor[rDrive2] += slopeLimiter(motor[rDrive2],rightTrackSpeed,20);
+			motor[rDrive1] += slopeLimiter(motor[rDrive1],rightTrackSpeed,20);   
+			wait1Msec(RAMPDELAYMS);
 	}
 }
 
-// execute the preset action
-void presetMonitor()
-{
-	if ((potLTarget != 0) && (potRTarget != 0))
-	{
-		int potR = SensorValue[rPot];
-		int potL = SensorValue[lPot];
-		bool LLGoalReached = false;
-		bool RLGoalReached = false;
 
-		string direction;
-
-		if (potR < potRTarget)
-		{
-			direction = "up";
-		}
-		if (potR > potRTarget)
-		{
-			direction = "down";
-		}
-
-		if ((abs(potR) - 30 < abs(potRTarget)) && ((abs(potR) + 30 > abs(potRTarget))))
-		{
-			leftLiftSpeed = 0;
-			rightLiftSpeed = 0;
-			potRTarget = 0;
-			liftPreset = 0;
-		}
-
-		else if ((potRTarget != 0) && potLTarget != 0)
-		{
-			if (direction == "down")
-			{
-				if ((LLGoalReached == false) || (RLGoalReached == false))
-				{
-					if (potL > potLTarget)
-					{
-						leftLiftSpeed = -(liftTargetSpeed);
-					}
-					else
-					{
-						LLGoalReached = true;
-						leftLiftSpeed = 0;
-					}
-					if (potR > potRTarget)
-					{
-						rightLiftSpeed = -(liftTargetSpeed);
-					}
-					else
-					{
-						RLGoalReached = true;
-						rightLiftSpeed = 0;
-					}
-				}
-
-
-
-			}
-
-			else if (direction == "up")
-			{
-				if ((LLGoalReached == false) || (RLGoalReached == false))
-				{
-					if (potL < potLTarget)
-					{
-						leftLiftSpeed = (liftTargetSpeed);
-					}
-					else
-					{
-						LLGoalReached = true;
-						leftLiftSpeed = 0;
-					}
-					if (potR < potRTarget)
-					{
-						rightLiftSpeed = liftTargetSpeed;
-					}
-					else
-					{
-						RLGoalReached = true;
-						rightLiftSpeed = 0;
-					}
-				}
-			}
-		}
-
-	}
-}
-
-// usercontrol task
+//Controller interaction
 task usercontrol()
-{
-	int leftTrackSpeed;
-	int rightTrackSpeed;
-	bool arcadeMode;
-	bool toggleCooldown;
-	int cooldown = 0;
-
-	while (true)
+{	
+	StartTask(liftProcessing);
+	StartTask(tankDrive);
+	StartTask(motorController);
+	
+	while(true)
 	{
-		leftTrackSpeed = 0;
-		rightTrackSpeed = 0;
-
-		// processes the toggle cooldown if it is in effect.
-		if (toggleCooldown)
+		getButtonInput();
+		
+		if (driveModeButton)
 		{
-			cooldown++;
-			if (cooldown >= 1000)
+			if (vexRT[Btn7D] == 0)
 			{
-				toggleCooldown = false;
-				cooldown = 0;
-			}
-		}
-		// switch to arcade mode for steering
-		if (vexRT[Btn8D] == 1 && !toggleCooldown)
-		{
-			arcadeMode = !arcadeMode;
-			toggleCooldown = true;
-		}
-		// autonomous routine intergrated (for dev purposes)
-		if (vexRT[Btn8L] == 1 && !toggleCooldown)
-		{
-			toggleCooldown = true;
-			drive(500, 127);
-			wait1Msec(500);
-			while (true)
-			{
-				///leftValue = SensorValue[lineInnerR];
-				//rightValue = SensorValue[lineInnerL];
-			}
-		}
-		// getting values
-		if (!arcadeMode)
-		{
-			leftTrackSpeed = vexRT[Ch3];
-			rightTrackSpeed = vexRT[Ch2];
-		}
-		else
-		{
-			leftTrackSpeed = vexRT[Ch3];
-			rightTrackSpeed = vexRT[Ch3];
-			leftTrackSpeed = leftTrackSpeed + vexRT[Ch1];
-			rightTrackSpeed = rightTrackSpeed - vexRT[Ch1];
-		}
-
-		// check what preset button is pressed
-		presetAssign();
-
-		// get lift values
-		leftLiftSpeed = (vexRT[Btn5D] - vexRT[Btn5U]) * 127;
-		rightLiftSpeed = (vexRT[Btn5D] - vexRT[Btn5U]) * 127;
-
-		// if the buttons are used, then we do not need presets
-		if ((abs(leftLiftSpeed) > 0) || (abs(rightLiftSpeed) > 0))
-		{
-			liftPreset = 0;
-		}
-		else
-		{
-			// otherwise execute preset actions
-			if (liftPreset != 0)
-			{
-				assignPreset();
-			}
-			else
-			{
-				if ((SensorValue[rPot] < liftTrimThreshold))
+				if (driveMode == "tank")
 				{
-					leftLiftSpeed = leftLiftSpeed - 10;
-					rightLiftSpeed = rightLiftSpeed - 10;
+					StopTask(tankDrive);
+					StartTask(arcadeDrive);
+					driveMode = "arcade";
+					driveModeButton = false;
 				}
-				else if ((SensorValue[rPot] > liftTrimThreshold))
+				else
 				{
-					leftLiftSpeed = leftLiftSpeed + 10;
-					rightLiftSpeed = rightLiftSpeed + 10;
+					StopTask(arcadeDrive);
+					StartTask(tankDrive);
+					driveMode = "tank";
+					driveModeButton = false;
 				}
+					
 			}
 		}
+		
+		if ((vexRT[Btn5U] == 1)||(vexRT[Btn5D] == 1))
+		{
+			liftPreset = -1;
+		}
+		
+		if (liftPreset == -1)
+		{		
+			leftLiftSpeed = (vexRT[Btn5U] - vexRT[Btn5D]) * 127;
+			rightLiftSpeed = (vexRT[Btn5U] - vexRT[Btn5D]) * 127;
+		}
+		
+		liftTrim();
 
-		// scaling motors [broken as of now]
-		//leftTrackSpeed = abs(motorSaftey(leftTrackSpeed));
-		//rightTrackSpeed = abs(motorSaftey(rightTrackSpeed));
-
-		// assigning values to motors
-		motor[lDrive1] = leftTrackSpeed;
-		motor[lDrive2] = leftTrackSpeed;
-		motor[rDrive2] = rightTrackSpeed;
-		motor[rDrive1] = rightTrackSpeed;
-
-		// assign values to lifts
 		motor[leftLift1] = leftLiftSpeed;
 		motor[leftLift2] = leftLiftSpeed;
 		motor[rightLift1] = rightLiftSpeed;
 		motor[rightLift2] = rightLiftSpeed;
-
+		
 		wait1Msec(20);
 	}
 }

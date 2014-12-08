@@ -2,7 +2,7 @@
 #define DEFINITIONS_H
 
 // maths functions
-#define round(x) ((x)>=0?(long)((x)+0.5):(long)((x)-0.5))
+#define round(x) ((int)((x)>=0?(long)((x)+0.5):(long)((x)-0.5)))
 //#define abs(x) (x < 0 ? -x : x) already has inbuilt function
 
 // movement macros

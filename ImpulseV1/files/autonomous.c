@@ -21,19 +21,45 @@ void move(int durationMsec, int leftDriveOneSpeed, int leftDriveTwoSpeed, int ri
 		motor[rDrive1] = rightDriveOneSpeed;
 		motor[rDrive2] = rightDriveTwoSpeed;
 	}
+	
+	motor[lDrive1] = -leftDriveOneSpeed/12;
+	motor[lDrive2] = -leftDriveTwoSpeed/12;
+	motor[rDrive1] = -rightDriveOneSpeed/12;
+	motor[rDrive2] = -rightDriveTwoSpeed/12;
+	wait1Msec(50);
+	motor[lDrive1] = 0;
+	motor[lDrive2] = 0;
+	motor[rDrive1] = 0;
+	motor[rDrive2] = 0;	
+	
 	step[stepArray]++;
 
 }
 
 void lift(int liftSpeed, int stepArray)
 {
+	int pSpeed;
+	
 	while ( !(stepComplete[stepArray]) )
 	{
-		motor[rightLift1] = liftSpeed;
-		motor[rightLift2] = liftSpeed;
-		motor[leftLift1] = liftSpeed;
-		motor[leftLift2] = liftSpeed;
+		pSpeed = (int)round(liftSpeed*proportionalSpeed)
+		
+		if (pSpeed > liftSpeed)
+		{
+			pSpeed = liftSpeed;
+		}
+		
+		motor[rightLift1] = pSpeed;
+		motor[rightLift2] = pSpeed;
+		motor[leftLift1] = pSpeed;
+		motor[leftLift2] = pSpeed;
 	}
+	
+	motor[rightLift1] = 0;
+	motor[rightLift2] = 0;
+	motor[leftLift1] = 0;
+	motor[leftLift2] = 0;
+	
 	step[stepArray]++;
 
 }
@@ -43,6 +69,7 @@ void potentiometerCondition(int potValue, int stepArray)
 	{
 		while (SensorValue[rPot] > potValue)
 		{
+			proportionalSpeed = (abs(potValue - SensorValue[rPot])-254)/254
 			wait1Msec(20);
 		}
 		stepComplete[stepArray] = true;
@@ -51,6 +78,7 @@ void potentiometerCondition(int potValue, int stepArray)
 	{
 		while (SensorValue[rPot] < potValue)
 		{
+			proportionalSpeed = (abs(potValue - SensorValue[rPot])-254)/254
 			wait1Msec(20);
 		}
 		stepComplete[stepArray] = true;
@@ -59,6 +87,8 @@ void potentiometerCondition(int potValue, int stepArray)
 
 void ultrasonicCondition(int distance, bool LS, bool RS, int stepArray)
 {
+	stepComplete[stepArray] = false;
+	
 	if (LS && RS)
 	{
 		bool lSonicComplete = false;
@@ -136,6 +166,8 @@ void ultrasonicCondition(int distance, bool LS, bool RS, int stepArray)
 
 void gyroCondition(int degree, bool stepArray)
 {
+	stepComplete[stepArray] = false;
+	
 	degree = degree * 10;
 	
 	if ((degree - SensorValue[turningGyro]) < 0)
@@ -160,6 +192,7 @@ void gyroCondition(int degree, bool stepArray)
 
 void encoderCondition(int tickL1, int tickR1, int tickL2, int tickR2, bool stepArray)
 {
+	stepComplete[stepArray] = false;
 	clearEncoders();
 
 	bool driveLBGoalReached = false;
@@ -194,7 +227,16 @@ void encoderCondition(int tickL1, int tickR1, int tickL2, int tickR2, bool stepA
 	stepComplete[stepArray] = true;
 }
 
-// void lineCondition(bool stepArray)
+void lineCondition(bool stepArray)
+{
+	stepComplete[stepArray] = false;
+	
+	while !((SensorValue[lineInnerL] < lineSensorThreshold)  && (SensorValue[lineInnerR] < lineSensorThreshold)
+	{
+		wait1Msec(20);
+	}
+	stepComplete[stepArray] = true;
+}
 
 // autonomous task
 task autonomous()

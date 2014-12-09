@@ -6,7 +6,7 @@
 #pragma config(Sensor, in6,    lineOuterR,     sensorLineFollower)
 #pragma config(Sensor, dgtl1,  sonicLeft,      sensorSONAR_mm)
 #pragma config(Sensor, dgtl3,  sonicRight,     sensorSONAR_mm)
-#pragma config(Motor,  port1,           lDrive3,       tmotorVex393HighSpeed, openLoop)
+#pragma config(Motor,  port1,           leftLift3,     tmotorVex393, openLoop)
 #pragma config(Motor,  port2,           lDrive1,       tmotorVex393HighSpeed, openLoop)
 #pragma config(Motor,  port3,           lDrive2,       tmotorVex393HighSpeed, openLoop)
 #pragma config(Motor,  port4,           leftLift1,     tmotorVex393, openLoop)

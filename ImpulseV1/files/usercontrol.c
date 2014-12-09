@@ -113,8 +113,10 @@ task usercontrol()
 
 		motor[leftLift1] = leftLiftSpeed;
 		motor[leftLift2] = leftLiftSpeed;
+		motor[leftLift3] = leftLiftSpeed;
 		motor[rightLift1] = rightLiftSpeed;
 		motor[rightLift2] = rightLiftSpeed;
+		motor[rightLift3] = rightLiftSpeed;
 		
 		wait1Msec(20);
 	}

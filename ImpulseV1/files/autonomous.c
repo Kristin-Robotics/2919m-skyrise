@@ -12,7 +12,7 @@ void clearEncoders()
 }
 
 // moves the selected motors, used in the macros in definitions.h
-void move(int durationMsec, int leftDriveOneSpeed, int leftDriveTwoSpeed, int rightDriveOneSpeed, int rightDriveTwoSpeed, int stepArray)
+void move(int leftDriveOneSpeed = 127, int leftDriveTwoSpeed = 127, int rightDriveOneSpeed = 127, int rightDriveTwoSpeed = 127, int stepArray = 0)
 {
 	while ( !(stepComplete[stepArray]) )
 	{
@@ -36,13 +36,13 @@ void move(int durationMsec, int leftDriveOneSpeed, int leftDriveTwoSpeed, int ri
 
 }
 
-void lift(int liftSpeed, int stepArray)
+void lift(int liftSpeed = 127, int stepArray = 0)
 {
 	int pSpeed;
 
 	while ( !(stepComplete[stepArray]) )
 	{
-		pSpeed = (int)round(liftSpeed*proportionalSpeed)
+		pSpeed = (int)round(liftSpeed*proportionalSpeed);
 
 		if (pSpeed > liftSpeed)
 		{
@@ -63,7 +63,7 @@ void lift(int liftSpeed, int stepArray)
 	step[stepArray]++;
 
 }
-void potentiometerCondition(int potValue, int stepArray)
+void potentiometerCondition(int potValue, int stepArray = 0)
 {
 	if ((potValue - SensorValue[rPot]) < 0)
 	{
@@ -85,7 +85,7 @@ void potentiometerCondition(int potValue, int stepArray)
 	}
 }
 
-void ultrasonicCondition(int distance, bool LS, bool RS, int stepArray)
+void ultrasonicCondition(int distance, bool LS = true, bool RS = true, int stepArray = 0)
 {
 	stepComplete[stepArray] = false;
 
@@ -164,7 +164,7 @@ void ultrasonicCondition(int distance, bool LS, bool RS, int stepArray)
 	}
 }
 
-void gyroCondition(int degree, bool stepArray)
+void gyroCondition(int degree, bool stepArray = 0)
 {
 	stepComplete[stepArray] = false;
 
@@ -190,7 +190,7 @@ void gyroCondition(int degree, bool stepArray)
 	stepComplete[stepArray] = true;
 }
 
-void encoderCondition(int tickL1, int tickR1, int tickL2, int tickR2, bool stepArray)
+void encoderCondition(int tickL1, int tickR1 = tickL1, int tickL2 = tickL1, int tickR2 = tickL1, bool stepArray = 0)
 {
 	stepComplete[stepArray] = false;
 	clearEncoders();
@@ -227,7 +227,7 @@ void encoderCondition(int tickL1, int tickR1, int tickL2, int tickR2, bool stepA
 	stepComplete[stepArray] = true;
 }
 
-void lineCondition(bool stepArray)
+void lineCondition(bool stepArray = 0)
 {
 	stepComplete[stepArray] = false;
 

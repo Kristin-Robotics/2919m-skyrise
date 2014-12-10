@@ -7,9 +7,9 @@ int fineControl(int input) //input from value, mod is set to driver preferences
 
 		input = abs(input);
 		
-		float percentage = (float)(input/127); //Find relative speed to max speed
-		float fineMod = (float)(pow(fineControlValue,percentage)-1); //find the modifier value to multiply by
-		float scalingValue = (float)(127/(fineControlValue-1)); //value to multiply back by after modification
+		float percentage = (input/127.0); //Find relative speed to max speed
+		float fineMod = (pow(fineControlValue,percentage)-1); //find the modifier value to multiply by
+		float scalingValue = (127.0/(fineControlValue-1)); //value to multiply back by after modification
 		
 		int output = (int)(round(scalingValue*sign*fineMod));
 		

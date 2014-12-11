@@ -4,13 +4,13 @@ void liftTrim()
 	{
 		if (SensorValue[rPot] < liftTrimThreshold)
 		{
-			leftLiftSpeed = leftLiftSpeed - 20;
-			rightLiftSpeed = rightLiftSpeed - 20;
+			leftLiftSpeed = leftLiftSpeed - 10;
+			rightLiftSpeed = rightLiftSpeed - 10;
 		}
 		else if (SensorValue[rPot] > liftTrimThreshold)
 		{
-			leftLiftSpeed = leftLiftSpeed + 20;
-			rightLiftSpeed = rightLiftSpeed + 20;
+			leftLiftSpeed = leftLiftSpeed + 10;
+			rightLiftSpeed = rightLiftSpeed + 10;
 		}
 	}
 }

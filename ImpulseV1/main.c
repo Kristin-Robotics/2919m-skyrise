@@ -34,8 +34,8 @@
 // Include files
 #include "Vex_Competition_Includes.c" // Do not modify
 
-#include "/files/usercontrol.c"
+#include "/files/preauton.c"
 
 #include "/files/autonomous.c"
 
-#include "/files/preauton.c"
+#include "/files/usercontrol.c"

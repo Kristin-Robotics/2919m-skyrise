@@ -2,6 +2,7 @@
 
 bool stepComplete[] = {false,false,false};
 int step[] = {0,0,0};
+int testing = 0;
 
 void clearEncoders()
 {
@@ -98,26 +99,22 @@ void ultrasonicCondition(int distance, bool LS = true, bool RS = true, int stepA
 		{
 			if ((distance - SensorValue[sonicLeft]) < 0)
 			{
-				if (SensorValue[sonicLeft] > distance)
+				while(SensorValue[sonicLeft] > distance)
 				{
 					wait1Msec(20);
+					testing = 1;
 				}
-				else
-				{
-					stepComplete[stepArray] = true;
-				}
+				stepComplete[stepArray] = true;
 			}
 
 			else
 			{
-				if (SensorValue[sonicLeft] < distance)
+				while (SensorValue[sonicLeft] < distance)
 				{
 					wait1Msec(20);
+					testing = 2;
 				}
-				else
-				{
-					stepComplete[stepArray] = true;
-				}
+				stepComplete[stepArray] = true;
 			}
 		}
 	}
@@ -238,8 +235,15 @@ void lineCondition(bool stepArray = 0)
 	stepComplete[stepArray] = true;
 }
 
+task motors()
+{
+	move();
+}
+
 // autonomous task
 task autonomous()
 {
-	ultrasonicCondition(2000,true,false,0);
+	StartTask(motors);
+	//MissionImpossible();
+	ultrasonicCondition(500);
 }

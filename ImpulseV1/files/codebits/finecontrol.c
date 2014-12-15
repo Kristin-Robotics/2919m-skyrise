@@ -14,6 +14,11 @@ int fineControl(int input) //input from value, mod is set to driver preferences
 		scalingValue = (127.0/(fineControlValue-1)); //value to multiply back by after modification
 
 		int output = (int)(round(scalingValue*sign*fineMod));
-
+		
+		if ((output < 3) && (output > -3))
+		{
+			return(0);
+		}
+		
 		return(output);
 }

@@ -2,7 +2,6 @@
 
 bool stepComplete[] = {false,false,false};
 int step[] = {0,0,0};
-int testing = 0;
 
 void clearEncoders()
 {
@@ -102,7 +101,6 @@ void ultrasonicCondition(int distance, bool LS = true, bool RS = true, int stepA
 				while(SensorValue[sonicLeft] > distance)
 				{
 					wait1Msec(20);
-					testing = 1;
 				}
 				stepComplete[stepArray] = true;
 			}
@@ -112,7 +110,6 @@ void ultrasonicCondition(int distance, bool LS = true, bool RS = true, int stepA
 				while (SensorValue[sonicLeft] < distance)
 				{
 					wait1Msec(20);
-					testing = 2;
 				}
 				stepComplete[stepArray] = true;
 			}

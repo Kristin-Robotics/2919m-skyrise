@@ -71,7 +71,6 @@ task usercontrol()
 	StartTask(liftProcessing);
 	StartTask(tankDrive);
 	StartTask(motorController);
-
 	while(true)
 	{
 		getButtonInput();

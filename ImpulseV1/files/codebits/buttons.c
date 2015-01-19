@@ -16,8 +16,12 @@ void getButtonInput()
 	{
 		driveModeButton = true;
 	}
+	if  (vexRT[Btn7L] == 1)
+	{
+		SensorValue[skyPiston] = 0;
+	}
 	if  (vexRT[Btn7R] == 1)
 	{
-		clearEncoders();
+		SensorValue[skyPiston] = 1;
 	}
 }

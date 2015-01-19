@@ -1,8 +1,5 @@
 #include "main.h"
 
-//Variable Storage
-#include "/codebits/uservariables.c"
-
 //Fine Control for Driver
 #include "/codebits/finecontrol.c"
 
@@ -17,6 +14,9 @@
 
 //Trim code
 #include "/codebits/lifttrim.c"
+
+//Compensation for skyrise weight code
+#include "/codebits/liftcompensation.c"
 
 //Processing for Lift
 task liftProcessing()
@@ -119,6 +119,8 @@ task usercontrol()
 				}
 			}
 		}
+		
+		liftCompensation();
 
 		liftTrim();
 

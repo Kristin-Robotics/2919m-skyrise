@@ -20,7 +20,7 @@ void moveLiftPreset()
 			RLGoalReached = false;
 			while (!(LLGoalReached && RLGoalReached) && (liftPreset > -1))
 			{
-				proportionalSpeed = 1; //abs(abs(potRTarget) - abs(SensorValue[rPot]))/285;
+				proportionalSpeed = abs(potRTarget - SensorValue[rPot])/proportionalSpeedScaling;
 				
 				if (proportionalSpeed > 1)
 				{
@@ -29,7 +29,7 @@ void moveLiftPreset()
 				
 				if (SensorValue[rPot] < potRTarget)
 				{
-					leftLiftSpeed = 127 * proportionalSpeed;
+					leftLiftSpeed = round(127 * proportionalSpeed);
 				}
 				else
 				{
@@ -38,7 +38,7 @@ void moveLiftPreset()
 				
 				if (SensorValue[rPot] < potRTarget)
 				{
-					rightLiftSpeed = 127 * proportionalSpeed;
+					rightLiftSpeed = round(127 * proportionalSpeed);
 				}
 				else
 				{
@@ -56,7 +56,7 @@ void moveLiftPreset()
 			while (!(LLGoalReached && RLGoalReached) && (liftPreset > -1))
 			{
 			
-				proportionalSpeed = 1;//abs(abs(potRTarget) - abs(SensorValue[rPot]))/285;
+				proportionalSpeed = abs(potRTarget - SensorValue[rPot])/proportionalSpeedScaling;
 				
 				if (proportionalSpeed > 1)
 				{

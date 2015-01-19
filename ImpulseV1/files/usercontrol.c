@@ -24,7 +24,7 @@ task liftProcessing()
 	while(true)
 	{
 		moveLiftPreset(); //Has a while loop
-		wait1Msec(20);
+		wait1Msec(50);
 	}
 }
 
@@ -32,8 +32,10 @@ task arcadeDrive()
 {
 	while(true)
 	{
-		leftTrackSpeed =(vexRT[Ch3] + vexRT[Ch1]); //fineControl(vexRT[Ch3] + vexRT[Ch1]);
-		rightTrackSpeed =(vexRT[Ch3] - vexRT[Ch1]); //fineControl(vexRT[Ch3] - vexRT[Ch1]);
+		leftTrackSpeed =(vexRT[Ch3] + vexRT[Ch1]); 
+		//leftTrackSpeed = fineControl(vexRT[Ch3] + vexRT[Ch1]);
+		rightTrackSpeed =(vexRT[Ch3] - vexRT[Ch1]); 
+		//rightTrackSpeed = fineControl(vexRT[Ch3] - vexRT[Ch1]);
 
 		wait1Msec(20);
 	}
@@ -44,8 +46,10 @@ task tankDrive()
 {
 	while(true)
 	{
-		leftTrackSpeed =(vexRT[Ch3]); //fineControl(vexRT[Ch3]);
-		rightTrackSpeed =(vexRT[Ch2]); //fineControl(vexRT[Ch2]);
+		leftTrackSpeed =(vexRT[Ch3]); 
+		//leftTrackSpeed = fineControl(vexRT[Ch3]);
+		rightTrackSpeed =(vexRT[Ch2]); 
+		//rightTrackSpeed = fineControl(vexRT[Ch2]);
 
 		wait1Msec(20);
 	}
@@ -106,6 +110,14 @@ task usercontrol()
 		{
 			leftLiftSpeed = (vexRT[Btn5U] - vexRT[Btn5D]) * 127;
 			rightLiftSpeed = (vexRT[Btn5U] - vexRT[Btn5D]) * 127;
+			if (SensorValue[rPot] > 1800)
+			{
+				if ((leftLiftSpeed > 0) || (rightLiftSpeed > 0))
+				{
+					leftLiftSpeed = 0;
+					rightLiftSpeed = 0;
+				}
+			}
 		}
 
 		liftTrim();

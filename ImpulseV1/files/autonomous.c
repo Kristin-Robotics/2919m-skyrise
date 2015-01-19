@@ -1,13 +1,15 @@
 #include "main.h"
 
+//sgn(-5) == -1
+//sgn(5) == 1
+//sgn(0) == 0
+
 bool stepComplete[] = {false,false,false};
 int step[] = {0,0,0};
 
 void clearEncoders()
 {
-	nMotorEncoder[lDrive1] = 0;
 	nMotorEncoder[lDrive2] = 0;
-	nMotorEncoder[rDrive1] = 0;
 	nMotorEncoder[rDrive2] = 0;
 }
 
@@ -22,11 +24,11 @@ void move(int leftDriveOneSpeed = 127, int leftDriveTwoSpeed = 127, int rightDri
 		motor[rDrive2] = rightDriveTwoSpeed;
 	}
 
-	motor[lDrive1] = -leftDriveOneSpeed/12;
-	motor[lDrive2] = -leftDriveTwoSpeed/12;
-	motor[rDrive1] = -rightDriveOneSpeed/12;
-	motor[rDrive2] = -rightDriveTwoSpeed/12;
-	wait1Msec(50);
+	motor[lDrive1] = 20;
+	motor[lDrive2] = 20;
+	motor[rDrive1] = 20;
+	motor[rDrive2] = 20;
+	wait1Msec(200);
 	motor[lDrive1] = 0;
 	motor[lDrive2] = 0;
 	motor[rDrive1] = 0;
@@ -191,10 +193,8 @@ void encoderCondition(int tickL1, int tickR1 = tickL1, int tickL2 = tickL1, int 
 
 	bool driveLBGoalReached = false;
 	bool driveRBGoalReached = false;
-	bool driveLFGoalReached = false;
-	bool driveRFGoalReached = false;
 
-	while (((driveLBGoalReached == false)||(driveRBGoalReached == false)||(driveRFGoalReached == false)||(driveLFGoalReached == false)))
+	while (((driveLBGoalReached == false)||(driveRBGoalReached == false)))
 	{
 		if (abs(nMotorEncoder[lDrive1]) > tickL1)
 		{
@@ -205,18 +205,6 @@ void encoderCondition(int tickL1, int tickR1 = tickL1, int tickL2 = tickL1, int 
 		{
 			driveRBGoalReached=true;
 		}
-
-		if (abs(nMotorEncoder[rDrive1]) > tickR1)
-		{
-			driveLFGoalReached=true;
-		}
-
-		if (abs(nMotorEncoder[rDrive2]) > tickR2)
-		{
-			driveRFGoalReached=true;
-		}
-
-		wait1Msec(20);
 	}
 	stepComplete[stepArray] = true;
 }
@@ -234,7 +222,7 @@ void lineCondition(bool stepArray = 0)
 
 task motors()
 {
-	move();
+	move(-60,-60,-60,-60);
 }
 
 // autonomous task
@@ -242,5 +230,5 @@ task autonomous()
 {
 	StartTask(motors);
 	//MissionImpossible();
-	ultrasonicCondition(500);
+	encoderCondition(580);
 }

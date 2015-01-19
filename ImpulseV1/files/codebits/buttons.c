@@ -16,4 +16,8 @@ void getButtonInput()
 	{
 		driveModeButton = true;
 	}
+	if  (vexRT[Btn7R] == 1)
+	{
+		clearEncoders();
+	}
 }

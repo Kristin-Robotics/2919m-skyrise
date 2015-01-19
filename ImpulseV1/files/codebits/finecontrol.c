@@ -15,7 +15,7 @@ int fineControl(int input) //input from value, mod is set to driver preferences
 
 		int output = (int)(round(scalingValue*sign*fineMod));
 		
-		if ((output < 3) && (output > -3))
+		if ((output < 10) && (output > -10))
 		{
 			return(0);
 		}

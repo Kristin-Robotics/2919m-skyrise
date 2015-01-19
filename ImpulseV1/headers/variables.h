@@ -10,7 +10,7 @@ const bool fineControlEnabled = true;
 
 // preset values
 // structure: min, max
-const int rPotValues[] = {300, 1860};
+const int rPotValues[] = {285, 1600};
 const int lPotValues[] = {502, 2352};
 
 #endif VARIABLES_H

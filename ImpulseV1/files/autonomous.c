@@ -22,6 +22,11 @@ void clearEncoders()
 // moves the selected motors, used in the macros in definitions.h
 void move(int leftDriveOneSpeed = 127, int leftDriveTwoSpeed = leftDriveOneSpeed, int rightDriveOneSpeed = leftDriveOneSpeed, int rightDriveTwoSpeed = leftDriveOneSpeed, int stepArray = 0)
 {
+	while(stepComplete[stepArray] == true)
+	{
+		wait1Msec(20);
+	}
+
 	while ( !(stepComplete[stepArray]) )
 	{
 		motor[lDrive1] = leftDriveOneSpeed;
@@ -47,6 +52,11 @@ void move(int leftDriveOneSpeed = 127, int leftDriveTwoSpeed = leftDriveOneSpeed
 
 void lift(int liftSpeed = 127, int stepArray = 0)
 {
+	while(stepComplete[stepArray] == true)
+	{
+		wait1Msec(20);
+	}
+	
 	proportionalSpeed = 1.0;
 	
 	while ( !(stepComplete[stepArray]) )
@@ -63,14 +73,14 @@ void lift(int liftSpeed = 127, int stepArray = 0)
 
 }
 
-void piston(int value, string digitalName = "skyPiston", int stepArray = 0)
+void piston(int value, int delay = 500, int stepArray = 0)
 {
 	while ( !(stepComplete[stepArray]) )
 	{
 		wait1Msec(20);
 	}
-	
-	SensorValue[digitalName] = value;
+	wait1Msec(delay);
+	SensorValue[skyPiston] = value;
 	
 	step[stepArray]++;
 }
@@ -81,7 +91,7 @@ void potentiometerCondition(int potValue, int stepArray = 0)
 	{
 		while (SensorValue[rPot] > potValue)
 		{
-			proportionalSpeed = abs(potRTarget - SensorValue[rPot])/proportionalSpeedScaling;
+			proportionalSpeed = abs(potRTarget - SensorValue[rPot])/proportionalSpeedScaling + 0.1;
 			
 			if (proportionalSpeed > 1)
 			{
@@ -208,7 +218,7 @@ void gyroCondition(int degree, bool stepArray = 0)
 	stepComplete[stepArray] = true;
 }
 
-void encoderCondition(int tickL1, int tickR1 = tickL1, int tickL2 = tickL1, int tickR2 = tickL1, int stepArray = 0)
+void encoderCondition(int tickL2, int tickR2 = tickL2, int stepArray = 0)
 {
 	stepComplete[stepArray] = false;
 	clearEncoders();
@@ -218,12 +228,12 @@ void encoderCondition(int tickL1, int tickR1 = tickL1, int tickL2 = tickL1, int 
 
 	while (((driveLBGoalReached == false)||(driveRBGoalReached == false)))
 	{
-		if (abs(nMotorEncoder[lDrive1]) > tickL1)
+		if (abs(nMotorEncoder[lDrive2]) > tickL2)
 		{
 			driveLBGoalReached=true;
 		}
 
-		if (abs(nMotorEncoder[lDrive2]) > tickL2)
+		if (abs(nMotorEncoder[rDrive2]) > tickR2)
 		{
 			driveRBGoalReached=true;
 		}
@@ -246,15 +256,7 @@ void lightCondition(int threshold = 0, bool fromDark = false, int stepArray = 0)
 {
 	stepComplete[stepArray] = false;
 	
-	if !(fromDark)
-	{
-		while(SensorValue[skyLight] < threshold)
-		{
-			wait1Msec(20);
-		}
-		stepComplete[stepArray] = true;
-	}
-	else
+	if (fromDark)
 	{
 		while(SensorValue[skyLight] > threshold)
 		{
@@ -262,7 +264,16 @@ void lightCondition(int threshold = 0, bool fromDark = false, int stepArray = 0)
 		}
 		stepComplete[stepArray] = true;
 	}
-	
+	else
+	{
+		while(SensorValue[skyLight] < threshold)
+		{
+			wait1Msec(20);
+		}
+		stepComplete[stepArray] = true;
+	}
+}
+
 task liftHandle()
 {
 	while(true)
@@ -282,16 +293,113 @@ task liftHandle()
 
 task conditional1()
 {
+	lightCondition(280);
+	while(step[0] == 0)
+	{
+	wait1Msec(20);
+	}
 	encoderCondition(580);
+	while(step[0] == 1)
+	{
+	wait1Msec(20);
+	}
 	encoderCondition(580);
+	while(step[0] == 2)
+	{
+	wait1Msec(20);
+	}
 	encoderCondition(580);
+	while(step[0] == 3)
+	{
+	wait1Msec(20);
+	}
+	encoderCondition(580);
+	while(step[0] == 4)
+	{
+	wait1Msec(20);
+	}
+	encoderCondition(580);
+	while(step[0] == 5)
+	{
+	wait1Msec(20);
+	}
+	encoderCondition(580);
+	while(step[0] == 6)
+	{
+	wait1Msec(20);
+	}
+	encoderCondition(580);
+	while(step[0] == 7)
+	{
+	wait1Msec(20);
+	}
+	encoderCondition(580);
+	while(step[0] == 8)
+	{
+	wait1Msec(20);
+	}
+	encoderCondition(580);
+	while(step[0] == 9)
+	{
+	wait1Msec(20);
+	}
+	encoderCondition(580);
+	while(step[0] == 10)
+	{
+	wait1Msec(20);
+	}
+	encoderCondition(580);
+	while(step[0] == 11)
+	{
+	wait1Msec(20);
+	}
+	encoderCondition(580);
+	while(step[0] == 12)
+	{
+	wait1Msec(20);
+	}
+	encoderCondition(580);
+	while(step[0] == 13)
+	{
+	wait1Msec(20);
+	}
+	encoderCondition(580);
+	while(step[0] == 14)
+	{
+	wait1Msec(20);
+	}
+	encoderCondition(580);
+	while(step[0] == 15)
+	{
+	wait1Msec(20);
+	}
 }
 
 task command1()
 {
+	leftLiftSpeed = 127;
+	rightLiftSpeed = 127;
+	wait1Msec(200);
+	leftLiftSpeed = 0;
+	rightLiftSpeed = 0;
+	SensorValue[skyPiston] = 0;
+	wait1Msec(200);
+	SensorValue[skyPiston] = 1;
+	piston(0);
 	move(-60);
 	move(60);
 	move(-60);
+	move(60);
+	move(-60);
+	move(60);
+	move(-60);
+	move(60);
+	move(-60);
+	move(60);
+	move(-60);
+	move(60);
+	move(-60);
+	move(60);
 }
 
 // autonomous task

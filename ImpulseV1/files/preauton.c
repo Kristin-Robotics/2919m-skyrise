@@ -10,6 +10,22 @@ void initialiseGyro()
   	SensorFullCount[turningGyro] = 3600;
 }
 
+void initialiseCompensationMonitor()
+{
+	if ((SensorValue[compensationMonitor] > 0) && (SensorValue[compensationMonitor] <= 1500))
+	{
+		compensation = 0;
+	}
+	else if ((SensorValue[compensationMonitor] > 1500) && (SensorValue[compensationMonitor] <= 3000))
+	{
+		compensation = 0;
+	}
+	else
+	{
+		compensation = 0;
+	}	
+}
+
 void MissionImpossible()
 {
   //        100 = Tempo
@@ -86,4 +102,5 @@ void pre_auton()
 {
 	bStopTasksBetweenModes = true;
 	initialiseGyro();
+	initialiseCompensationMonitor();
 }

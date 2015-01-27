@@ -10,6 +10,7 @@
 #pragma config(Sensor, dgtl1,  sonicLeft,      sensorSONAR_mm)
 #pragma config(Sensor, dgtl3,  sonicRight,     sensorSONAR_mm)
 #pragma config(Sensor, dgtl5,  skyPiston,      sensorDigitalOut)
+#pragma config(Sensor, dgtl6,  needle,      sensorDigitalOut)
 #pragma config(Sensor, I2C_1,  en1,            sensorQuadEncoderOnI2CPort,    , AutoAssign)
 #pragma config(Sensor, I2C_2,  en2,            sensorQuadEncoderOnI2CPort,    , AutoAssign)
 #pragma config(Motor,  port1,           leftLift3,     tmotorVex393, openLoop, reversed)

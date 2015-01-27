@@ -1,5 +1,8 @@
 #include "main.h"
 
+//Drive modes for Driver
+#include "/codebits/drivemodes.c"
+
 //Fine Control for Driver
 #include "/codebits/finecontrol.c"
 
@@ -28,43 +31,24 @@ task liftProcessing()
 	}
 }
 
-task arcadeDrive()
-{
-	while(true)
-	{
-		leftTrackSpeed =(vexRT[Ch3] + vexRT[Ch1]); 
-		//leftTrackSpeed = fineControl(vexRT[Ch3] + vexRT[Ch1]);
-		rightTrackSpeed =(vexRT[Ch3] - vexRT[Ch1]); 
-		//rightTrackSpeed = fineControl(vexRT[Ch3] - vexRT[Ch1]);
-
-		wait1Msec(20);
-	}
-
-}
-
-task tankDrive()
-{
-	while(true)
-	{
-		leftTrackSpeed =(vexRT[Ch3]); 
-		//leftTrackSpeed = fineControl(vexRT[Ch3]);
-		rightTrackSpeed =(vexRT[Ch2]); 
-		//rightTrackSpeed = fineControl(vexRT[Ch2]);
-
-		wait1Msec(20);
-	}
-}
-
 //Controller for all motors
 task motorController()
 {
 	while(true)
 	{
-			motor[lDrive1] += slopeLimiter(motor[lDrive1],leftTrackSpeed,20);
-			motor[lDrive2] += slopeLimiter(motor[lDrive2],leftTrackSpeed,20);
-			motor[rDrive2] += slopeLimiter(motor[rDrive2],rightTrackSpeed,20);
-			motor[rDrive1] += slopeLimiter(motor[rDrive1],rightTrackSpeed,20);
-			wait1Msec(RAMPDELAYMS);
+		motor[lDrive1] += slopeLimiter(motor[lDrive1],leftTrackSpeed,20);
+		motor[lDrive2] += slopeLimiter(motor[lDrive2],leftTrackSpeed,20);
+		motor[rDrive2] += slopeLimiter(motor[rDrive2],rightTrackSpeed,20);
+		motor[rDrive1] += slopeLimiter(motor[rDrive1],rightTrackSpeed,20);
+		
+		motor[leftLift1] = leftLiftSpeed;
+		motor[leftLift2] = leftLiftSpeed;
+		motor[leftLift3] = leftLiftSpeed;
+		motor[rightLift1] = rightLiftSpeed;
+		motor[rightLift2] = rightLiftSpeed;
+		motor[rightLift3] = rightLiftSpeed;
+		
+		wait1Msec(RAMPDELAYMS);
 	}
 }
 
@@ -73,43 +57,28 @@ task motorController()
 task usercontrol()
 {
 	StartTask(liftProcessing);
-	StartTask(tankDrive);
 	StartTask(motorController);
 	while(true)
+	
 	{
 		getButtonInput();
 
-		if (driveModeButton)
+		buttonResponse();
+		
+		if (arcadeDriveMode)
 		{
-			if (vexRT[Btn7D] == 0)
-			{
-				if (driveMode == "tank")
-				{
-					StopTask(tankDrive);
-					StartTask(arcadeDrive);
-					driveMode = "arcade";
-					driveModeButton = false;
-				}
-				else
-				{
-					StopTask(arcadeDrive);
-					StartTask(tankDrive);
-					driveMode = "tank";
-					driveModeButton = false;
-				}
-
-			}
+			arcadeDrive();
 		}
-
-		if ((vexRT[Btn5U] == 1)||(vexRT[Btn5D] == 1))
+		else
 		{
-			liftPreset = -1;
+			tankDrive();
 		}
 
 		if (liftPreset == -1)
 		{
 			leftLiftSpeed = (vexRT[Btn5U] - vexRT[Btn5D]) * 127;
 			rightLiftSpeed = (vexRT[Btn5U] - vexRT[Btn5D]) * 127;
+			
 			if (SensorValue[rPot] > 1800)
 			{
 				if ((leftLiftSpeed > 0) || (rightLiftSpeed > 0))
@@ -123,13 +92,6 @@ task usercontrol()
 		liftCompensation();
 
 		liftTrim();
-
-		motor[leftLift1] = leftLiftSpeed;
-		motor[leftLift2] = leftLiftSpeed;
-		motor[leftLift3] = leftLiftSpeed;
-		motor[rightLift1] = rightLiftSpeed;
-		motor[rightLift2] = rightLiftSpeed;
-		motor[rightLift3] = rightLiftSpeed;
 
 		wait1Msec(20);
 	}

@@ -1,6 +1,6 @@
 #include "main.h"
 
-void initialiseGyro()
+/*void initialiseGyro()
 {
 	SensorType[turningGyro] = sensorNone;
 	wait1Msec(500);
@@ -231,4 +231,9 @@ void pre_auton()
 		setCompensation();
 		calibrateLightSensor();
 	}
+}*/
+
+void pre_auton()
+{
+
 }

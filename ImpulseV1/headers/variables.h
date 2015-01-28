@@ -3,10 +3,11 @@
 
 // configuration constants
 bool firstRun = true;
+bool arcadeDriveMode = true;
 const int driveBrakeConstant = 6; //auton drive
 const int fineControlValue = 5;
 const int proportionalSpeedScaling = 200;
-const float compensationFactor = 0.8;
+const float compensationFactor = 0.95;
 int lineSensorThreshold = (2220 - 150) / 2;
 int liftTrimThreshold = 300;
 float proportionalSpeed = 1.0; //for lift
@@ -28,12 +29,12 @@ int needleState = 0;
 int leftTrackSpeed, rightTrackSpeed;
 int leftLiftSpeed, rightLiftSpeed;
 int tick[] = {0,0,0,0};
+int liftTargetSpeed = 0;
 
 string liftDirection;
 
 bool RLGoalReached, LLGoalReached;
 bool driveModeButton = false;
-bool arcadeDriveMode = false;
 bool skyClawButton = false;
 bool needleButton = false;
 

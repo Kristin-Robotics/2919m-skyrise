@@ -39,14 +39,15 @@ void calibrateLightSensor()
 		{
 			calibrateLightButton = false;
 			
-			if (calibrateLightButtonCount = 1)
+			if (calibrateLightButtonCount == 1)
 			{
 				PlayTone( 1175,   14); wait1Msec( 300);  // Calibration Mode
 				PlayTone( 1175,   14); wait1Msec( 300);  // Calibration Mode
 				
 				lightCalibrationValues[0] = SensorValue[skyLight];
 			}
-			else if (calibrateLightButtonCount = 2)
+			else if (calibrateLightButtonCount == 2)
+			{
 				PlayTone( 1175,   14); wait1Msec( 300);  // Calibration Mode
 				PlayTone( 1175,   14); wait1Msec( 300);  // Calibration Mode
 				PlayTone( 1175,   14); wait1Msec( 300);  // Calibration Mode
@@ -60,7 +61,6 @@ void calibrateLightSensor()
 				PlayTone(  784,   14); wait1Msec( 300);  // Exit Calibration
 			}
 		}
-
 	}
 }
 

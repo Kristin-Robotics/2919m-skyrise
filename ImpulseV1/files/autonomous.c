@@ -77,7 +77,7 @@ void gyroMove(int degrees,int leftDriveOneSpeed = 127, int leftDriveTwoSpeed = l
 	rightTrackSpeed = 0;
 }
 
-void ultrasonicMove(int distance, bool LS = true, bool RS = true)
+void ultrasonicMove(int distance, int leftDriveOneSpeed = 127, int leftDriveTwoSpeed = leftDriveOneSpeed, int rightDriveOneSpeed = leftDriveOneSpeed, int rightDriveTwoSpeed = leftDriveOneSpeed, bool LS = true, bool RS = true)
 {
 	if (LS && RS)
 	{
@@ -172,7 +172,7 @@ void ultrasonicMove(int distance, bool LS = true, bool RS = true)
 	rightTrackSpeed = 0;
 }
 
-void setLift(int potRT,int speed)
+void setLift(int potRT = 280,int speed = 127)
 {
 	potRTarget = potRT;
 	liftTargetSpeed = speed;
@@ -260,6 +260,14 @@ void moveLiftAuton()
 	}
 }
 
+void waitForLift()
+{
+	while (liftPreset > -1)
+	{
+		wait1Msec(20);
+	}
+}
+
 void skyriseControl(int value, int delay = 2000, int threshold = lightSensorThreshold, bool fromDark = false)
 {
 	if (fromDark)
@@ -280,15 +288,23 @@ void skyriseControl(int value, int delay = 2000, int threshold = lightSensorThre
 	SensorValue[skyPiston] = value;
 }
 
+void needleControl(int value, int delay = 2000)
+{
+	wait1Msec(delay);
+	SensorValue[needle] = value;
+}
+
 task autonLiftProcessing()
+{
 	while(true)
 	{
 		moveLiftAuton(); //Has a while loop
 		liftTrim();
 		wait1Msec(20);
 	}
+}
 
-task motorController()
+task autonMotorController()
 {
 	while(true)
 	{
@@ -318,7 +334,7 @@ task autonomous()
 {
 	//Initialise Autonomous
 	StartTask(autonLiftProcessing);
-	StartTask(motorController);
+	StartTask(autonMotorController);
 	StartTask(songPlayer);
 	
 	firstRun = false;
@@ -333,9 +349,38 @@ task autonomous()
 	leftLiftSpeed = 0;
 	rightLiftSpeed = 0;
 	
+	//Autonomous Selector
+	if (compensation == -1) //Claw on left
+	{
+	}
+	else if (compensation == 1) //claw on right
+	{
+	}
+	else //Got nothing
+	{
+	}
+	
+	//Most of this selection code is in pre-auton, look there
+	
 	//Start Autonomous
-	setLift(800,127);	//Release the rubber band
+	setLift(800);	//Release the rubber band
+	setLift(400);
+	waitForLift();
+	
+	skyriseControl(1); //pick up
+	setLift(600);
+	waitForLift();
+	encoderMove(600,-60);
+	setLift(280);
+	waitForLift();
+	skyriseControl(0,500); //drop
+	setLift(600);
+	waitForLift();
+	encoderMove(600); //return
 	setLift(400,127);
-	skyriseControl(1);
+	waitForLift();
+	
+	skyriseControl(1); //repeat
+	
 	
 }

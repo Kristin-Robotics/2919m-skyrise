@@ -14,7 +14,7 @@ void clearEncoders()
 	nMotorEncoder[rDrive2] = 0;
 }
 
-void move(int encoderDistance,int leftDriveOneSpeed = 127, int leftDriveTwoSpeed = leftDriveOneSpeed, int rightDriveOneSpeed = leftDriveOneSpeed, int rightDriveTwoSpeed = leftDriveOneSpeed)
+void encoderMove(int encoderDistance,int leftDriveOneSpeed = 127, int leftDriveTwoSpeed = leftDriveOneSpeed, int rightDriveOneSpeed = leftDriveOneSpeed, int rightDriveTwoSpeed = leftDriveOneSpeed)
 {
 	clearEncoders();
 
@@ -23,10 +23,10 @@ void move(int encoderDistance,int leftDriveOneSpeed = 127, int leftDriveTwoSpeed
 
 	while (((driveLBGoalReached == false)||(driveRBGoalReached == false)))
 	{
-		motor[lDrive1] = leftDriveOneSpeed;
-		motor[lDrive2] = leftDriveTwoSpeed;
-		motor[rDrive1] = rightDriveOneSpeed;
-		motor[rDrive2] = rightDriveTwoSpeed;
+		leftTrackSpeed = leftDriveOneSpeed;
+		leftTrackSpeed = leftDriveTwoSpeed;
+		rightTrackSpeed = rightDriveOneSpeed;
+		rightTrackSpeed = rightDriveTwoSpeed;
 		
 		if (abs(nMotorEncoder[lDrive2]) > encoderDistance)
 		{
@@ -39,45 +39,150 @@ void move(int encoderDistance,int leftDriveOneSpeed = 127, int leftDriveTwoSpeed
 		}
 	}
 	
-	motor[lDrive1] = round(-(leftDriveOneSpeed)/driveBrakeConstant);
-	motor[lDrive2] = round(-(leftDriveTwoSpeed)/driveBrakeConstant);
-	motor[rDrive1] = round(-(rightDriveOneSpeed)/driveBrakeConstant);
-	motor[rDrive2] = round(-(rightDriveTwoSpeed)/driveBrakeConstant);
+	leftTrackSpeed = round(-(leftDriveOneSpeed)/driveBrakeConstant);
+	leftTrackSpeed = round(-(leftDriveTwoSpeed)/driveBrakeConstant);
+	rightTrackSpeed = round(-(rightDriveOneSpeed)/driveBrakeConstant);
+	rightTrackSpeed = round(-(rightDriveTwoSpeed)/driveBrakeConstant);
+	
 	wait1Msec(100);
-	motor[lDrive1] = 0;
-	motor[lDrive2] = 0;
-	motor[rDrive1] = 0;
-	motor[rDrive2] = 0;
+	
+	leftTrackSpeed = 0;
+	leftTrackSpeed = 0;
+	rightTrackSpeed = 0;
+	rightTrackSpeed = 0;
 }
 
-void gyroTurn(int degrees,int leftDriveOneSpeed = 127, int leftDriveTwoSpeed = leftDriveOneSpeed, int rightDriveOneSpeed = leftDriveOneSpeed, int rightDriveTwoSpeed = leftDriveOneSpeed)
+void gyroMove(int degrees,int leftDriveOneSpeed = 127, int leftDriveTwoSpeed = leftDriveOneSpeed, int rightDriveOneSpeed = leftDriveOneSpeed, int rightDriveTwoSpeed = leftDriveOneSpeed)
 {
 	degrees = abs(degrees*10);
 
 	while (((abs(SensorValue[turningGyro]) > degrees - 50) && (abs(SensorValue[turningGyro]) > degrees + 50)) || ((abs(SensorValue[turningGyro]) < degrees - 50) && (abs(SensorValue[turningGyro]) < degrees + 50))) //not within 100 of set angle
 	{
-	motor[lDrive1] = leftDriveOneSpeed;
-	motor[lDrive2] = leftDriveTwoSpeed;
-	motor[rDrive1] = rightDriveOneSpeed;
-	motor[rDrive2] = rightDriveTwoSpeed;
+		leftTrackSpeed = leftDriveOneSpeed;
+		leftTrackSpeed = leftDriveTwoSpeed;
+		rightTrackSpeed = rightDriveOneSpeed;
+		rightTrackSpeed = rightDriveTwoSpeed;
 	}
 	
-	motor[lDrive1] = round(-(leftDriveOneSpeed)/driveBrakeConstant);
-	motor[lDrive2] = round(-(leftDriveTwoSpeed)/driveBrakeConstant);
-	motor[rDrive1] = round(-(rightDriveOneSpeed)/driveBrakeConstant);
-	motor[rDrive2] = round(-(rightDriveTwoSpeed)/driveBrakeConstant);
+	leftTrackSpeed = round(-(leftDriveOneSpeed)/driveBrakeConstant);
+	leftTrackSpeed = round(-(leftDriveTwoSpeed)/driveBrakeConstant);
+	rightTrackSpeed = round(-(rightDriveOneSpeed)/driveBrakeConstant);
+	rightTrackSpeed = round(-(rightDriveTwoSpeed)/driveBrakeConstant);
+	
 	wait1Msec(100);
-	motor[lDrive1] = 0;
-	motor[lDrive2] = 0;
-	motor[rDrive1] = 0;
-	motor[rDrive2] = 0;
-
+	
+	leftTrackSpeed = 0;
+	leftTrackSpeed = 0;
+	rightTrackSpeed = 0;
+	rightTrackSpeed = 0;
 }
 
-void liftAutonMonitor()
+void ultrasonicMove(int distance, bool LS = true, bool RS = true)
 {
-	if ((potRTarget != 0))
+	if (LS && RS)
 	{
+		bool lSonicComplete = false;
+		bool rSonicComplete = false;
+
+		while (!lSonicComplete && !rSonicComplete)
+		{
+			if ((distance - SensorValue[sonicLeft]) < 0)
+			{
+				while(SensorValue[sonicLeft] > distance)
+				{
+					leftTrackSpeed = leftDriveOneSpeed;
+					leftTrackSpeed = leftDriveTwoSpeed;
+					rightTrackSpeed = rightDriveOneSpeed;
+					rightTrackSpeed = rightDriveTwoSpeed;
+				}
+			}
+
+			else
+			{
+				while (SensorValue[sonicLeft] < distance)
+				{
+					leftTrackSpeed = leftDriveOneSpeed;
+					leftTrackSpeed = leftDriveTwoSpeed;
+					rightTrackSpeed = rightDriveOneSpeed;
+					rightTrackSpeed = rightDriveTwoSpeed;
+				}
+			}
+		}
+	}
+	else if (LS)
+	{
+		if ((distance - SensorValue[sonicLeft]) < 0)
+		{
+			while (SensorValue[sonicLeft] > distance)
+			{
+				leftTrackSpeed = leftDriveOneSpeed;
+				leftTrackSpeed = leftDriveTwoSpeed;
+				rightTrackSpeed = rightDriveOneSpeed;
+				rightTrackSpeed = rightDriveTwoSpeed;
+			}
+		}
+
+		else
+		{
+			while (SensorValue[sonicLeft] < distance)
+			{
+				leftTrackSpeed = leftDriveOneSpeed;
+				leftTrackSpeed = leftDriveTwoSpeed;
+				rightTrackSpeed = rightDriveOneSpeed;
+				rightTrackSpeed = rightDriveTwoSpeed;
+			}
+		}
+	}
+
+	else if (RS)
+	{
+		if ((distance - SensorValue[sonicRight]) < 0)
+		{
+			while (SensorValue[sonicRight] > distance)
+			{
+				leftTrackSpeed = leftDriveOneSpeed;
+				leftTrackSpeed = leftDriveTwoSpeed;
+				rightTrackSpeed = rightDriveOneSpeed;
+				rightTrackSpeed = rightDriveTwoSpeed;
+			}
+		}
+
+		else
+		{
+			while (SensorValue[sonicRight] < distance)
+			{
+				leftTrackSpeed = leftDriveOneSpeed;
+				leftTrackSpeed = leftDriveTwoSpeed;
+				rightTrackSpeed = rightDriveOneSpeed;
+				rightTrackSpeed = rightDriveTwoSpeed;
+			}
+		}
+	}
+	
+	leftTrackSpeed = round(-(leftDriveOneSpeed)/driveBrakeConstant);
+	leftTrackSpeed = round(-(leftDriveTwoSpeed)/driveBrakeConstant);
+	rightTrackSpeed = round(-(rightDriveOneSpeed)/driveBrakeConstant);
+	rightTrackSpeed = round(-(rightDriveTwoSpeed)/driveBrakeConstant);
+	
+	wait1Msec(100);
+	
+	leftTrackSpeed = 0;
+	leftTrackSpeed = 0;
+	rightTrackSpeed = 0;
+	rightTrackSpeed = 0;
+}
+
+void setLift(int potRT,int speed)
+{
+	potRTarget = potRT;
+	liftTargetSpeed = speed;
+	liftPreset = 10;
+}
+
+void moveLiftAuton()
+{
+	if (liftPreset > -1)
+	{		
 		bool RLGoalReached = false;
 
 		if (SensorValue[rPot] < potRTarget)
@@ -88,44 +193,13 @@ void liftAutonMonitor()
 		{
 			liftDirection = "down";
 		}
-
-		if ((SensorValue[rPot]-30 < abs(potRTarget)) && (SensorValue[rPot]+30 > abs(potRTarget)))
-		{
-			leftLiftSpeed = 0;
-			rightLiftSpeed = 0;
-		}
-
-		else if ((potRTarget != 0) && (potLTarget != 0))
-		{
-			if (liftDirection == "down")
+		
+		if (liftDirection == "up")
+		{			
+			while (!(RLGoalReached) && (liftPreset > -1))
 			{
-				while (RLGoalReached == false)
-				{
-					proportionalSpeed = abs(potRTarget - SensorValue[rPot])/proportionalSpeedScaling + 0.1;
-
-					if (proportionalSpeed > 1)
-					{
-						proportionalSpeed = 1;
-					}
-					
-					if (SensorValue[rPot] > potRTarget)
-					{
-						leftLiftSpeed = round(liftTargetSpeed*proportionalSpeed);
-						rightLiftSpeed = round(liftTargetSpeed*proportionalSpeed);
-					}
-					else
-					{
-						RLGoalReached = true;
-						leftLiftSpeed = 0;
-						rightLiftSpeed = 0;
-					}
-				}
-			}
-
-			else if (liftDirection == "up")
-			{
-				proportionalSpeed = abs(potRTarget - SensorValue[rPot])/proportionalSpeedScaling + 0.1;
-
+				proportionalSpeed = abs(potRTarget - SensorValue[rPot])/proportionalSpeedScaling +0.3;
+				
 				if (proportionalSpeed > 1)
 				{
 					proportionalSpeed = 1;
@@ -133,21 +207,60 @@ void liftAutonMonitor()
 				
 				if (SensorValue[rPot] < potRTarget)
 				{
-					leftLiftSpeed = round(liftTargetSpeed*proportionalSpeed);
-					rightLiftSpeed = round(liftTargetSpeed*proportionalSpeed);
+					leftLiftSpeed = round(liftTargetSpeed * proportionalSpeed);
+					rightLiftSpeed = round(liftTargetSpeed * proportionalSpeed);
+					
+					liftCompensation();
 				}
 				else
 				{
 					RLGoalReached = true;
-					leftLiftSpeed = 0;
-					rightLiftSpeed = 0;
 				}
+				
+				wait1Msec(20);
 			}
+			
+			leftLiftSpeed = 0;
+			rightLiftSpeed = 0;
+			
+			liftPreset = -1;
+			}
+		else if (liftDirection == "down")
+		{
+			while (!(RLGoalReached) && (liftPreset > -1))
+			{
+				proportionalSpeed = abs(potRTarget - SensorValue[rPot])/proportionalSpeedScaling;
+				
+				if (proportionalSpeed > 1)
+				{
+					proportionalSpeed = 1;
+				}
+				
+				if (SensorValue[rPot] > potRTarget)
+				{
+					leftLiftSpeed = round(-liftTargetSpeed * proportionalSpeed);
+					rightLiftSpeed = round(-liftTargetSpeed * proportionalSpeed);
+					
+					liftCompensation();
+				}
+				else
+				{
+					RLGoalReached = true;
+				}
+				
+				wait1Msec(20);
+			}
+		
+			leftLiftSpeed = 0;
+			rightLiftSpeed = 0;
+			
+			liftPreset = -1;
 		}
+
 	}
 }
 
-void skyriseControl(int value, int threshold = 0, int delay = 500, bool fromDark = false)
+void skyriseControl(int value, int delay = 2000, int threshold = lightSensorThreshold, bool fromDark = false)
 {
 	if (fromDark)
 	{
@@ -167,67 +280,62 @@ void skyriseControl(int value, int threshold = 0, int delay = 500, bool fromDark
 	SensorValue[skyPiston] = value;
 }
 
-void lift(int potRT,int speed)
-{
-	potRTarget = potRT;
-	liftTargetSpeed = speed;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////
-//
-//                                 Autonomous Task
-//
-// This task is used to control your robot during the autonomous phase of a VEX Competition.
-// You must modify the code to add your own robot specific commands here.
-//
-/////////////////////////////////////////////////////////////////////////////////////////
-
-task liftListener()
-{
-
+task autonLiftProcessing()
 	while(true)
 	{
-		liftAutonMonitor();
-		EndTimeSlice();
-	}
-}
-
-task liftHandle()
-{
-	while(true)
-	{
-		liftCompensation();
-
+		moveLiftAuton(); //Has a while loop
 		liftTrim();
-
-		motor[rightLift1] = rightLiftSpeed;
-		motor[rightLift2] = rightLiftSpeed;
-		motor[leftLift1] = leftLiftSpeed;
-		motor[leftLift2] = leftLiftSpeed;
-
 		wait1Msec(20);
 	}
+
+task motorController()
+{
+	while(true)
+	{
+		motor[lDrive1] = leftTrackSpeed;
+		motor[lDrive2] = leftTrackSpeed;
+		motor[rDrive2] = rightTrackSpeed;
+		motor[rDrive1] = rightTrackSpeed;
+		
+		motor[leftLift1] = leftLiftSpeed;
+		motor[leftLift2] = leftLiftSpeed;
+		motor[leftLift3] = leftLiftSpeed;
+		motor[rightLift1] = rightLiftSpeed;
+		motor[rightLift2] = rightLiftSpeed;
+		motor[rightLift3] = rightLiftSpeed;
+		
+		wait1Msec(20);
+	}
+}
+
+task songPlayer()
+{
+	surprise();
+	StopTask(songPlayer);
 }
 
 task autonomous()
 {
 	//Initialise Autonomous
-	StartTask(liftListener);
-	StartTask(liftHandle);
+	StartTask(autonLiftProcessing);
+	StartTask(motorController);
+	StartTask(songPlayer);
 	
+	firstRun = false;
+	
+	//Deploy	
 	leftLiftSpeed = 127;
 	rightLiftSpeed = 127;
 	wait1Msec(500);
 	leftLiftSpeed = -127;
 	rightLiftSpeed = -127;
 	wait1Msec(200);
-	leftLiftSpeed = 127;
-	rightLiftSpeed = 127;
-	wait1Msec(700);
 	leftLiftSpeed = 0;
 	rightLiftSpeed = 0;
 	
-	skyriseControl(1,70);
-	lift(500,127);
+	//Start Autonomous
+	setLift(800,127);	//Release the rubber band
+	setLift(400,127);
+	skyriseControl(1);
 	
 }

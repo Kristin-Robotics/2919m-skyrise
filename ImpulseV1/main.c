@@ -1,15 +1,14 @@
 #pragma config(I2C_Usage, I2C1, i2cSensors)
 #pragma config(Sensor, in1,    rPot,           sensorPotentiometer)
-#pragma config(Sensor, in3,    lineInnerL,     sensorLineFollower)
-#pragma config(Sensor, in4,    lineInnerR,     sensorLineFollower)
-#pragma config(Sensor, in5,    lineOuterL,     sensorLineFollower)
 #pragma config(Sensor, in6,    turningGyro,    sensorGyro)
 #pragma config(Sensor, in7,    skyLight,       sensorReflection)
 #pragma config(Sensor, in8,    compensationMonitor, sensorPotentiometer)
 #pragma config(Sensor, dgtl1,  sonicLeft,      sensorSONAR_mm)
 #pragma config(Sensor, dgtl3,  sonicRight,     sensorSONAR_mm)
-#pragma config(Sensor, dgtl5,  needle,      sensorDigitalOut)
+#pragma config(Sensor, dgtl5,  needle,         sensorDigitalOut)
 #pragma config(Sensor, dgtl6,  skyPiston,      sensorDigitalOut)
+#pragma config(Sensor, dgtl7,  calibrateLight, sensorDigitalIn)
+#pragma config(Sensor, dgtl8,  needleSwitch,   sensorDigitalIn)
 #pragma config(Sensor, I2C_1,  en1,            sensorQuadEncoderOnI2CPort,    , AutoAssign)
 #pragma config(Sensor, I2C_2,  en2,            sensorQuadEncoderOnI2CPort,    , AutoAssign)
 #pragma config(Motor,  port1,           leftLift3,     tmotorVex393, openLoop, reversed)
@@ -31,9 +30,9 @@
 #pragma userControlDuration(120)
 
 // Include headers
-#include "/headers/definitions.h"
-
 #include "/headers/main.h"
+
+#include "/headers/definitions.h"
 
 #include "/headers/variables.h"
 

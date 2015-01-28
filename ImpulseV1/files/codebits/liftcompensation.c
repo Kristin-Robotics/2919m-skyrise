@@ -1,11 +1,27 @@
 void liftCompensation()
 {
-	if (compensation == -1)
+	if (compensation == 1)
 	{
-		leftLiftSpeed = round(leftLiftSpeed*compensationFactor);
+		if (leftLiftSpeed > 0)
+		{
+			leftLiftSpeed = round(leftLiftSpeed*compensationFactor);
+		}
+		else
+		{
+			rightLiftSpeed = round(rightLiftSpeed*compensationFactor);
+		}
 	}
-	else if (compensation == 1)
+	else if (compensation == -1)
 	{
-		rightLiftSpeed = round(rightLiftSpeed*compensationFactor);
+		if (leftLiftSpeed > 0)
+		{		
+			rightLiftSpeed = round(rightLiftSpeed*compensationFactor);
+		}
+		else
+		{
+			leftLiftSpeed = round(leftLiftSpeed*compensationFactor);
+		}
+	
+		
 	}
 }

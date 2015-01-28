@@ -88,8 +88,6 @@ task usercontrol()
 				}
 			}
 		}
-		
-		liftCompensation();
 
 		liftTrim();
 

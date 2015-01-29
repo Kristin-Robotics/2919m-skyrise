@@ -40,14 +40,22 @@ task motorController()
 		motor[lDrive2] += slopeLimiter(motor[lDrive2],leftTrackSpeed,20);
 		motor[rDrive2] += slopeLimiter(motor[rDrive2],rightTrackSpeed,20);
 		motor[rDrive1] += slopeLimiter(motor[rDrive1],rightTrackSpeed,20);
-		
+
+		if (compensation == -1)
+		{
+			rightLiftSpeed *= compensationFactor;
+		}
+		else if (compensation == 1)
+		{
+			leftLiftSpeed *= compensationFactor;
+		}
 		motor[leftLift1] = leftLiftSpeed;
 		motor[leftLift2] = leftLiftSpeed;
 		motor[leftLift3] = leftLiftSpeed;
 		motor[rightLift1] = rightLiftSpeed;
 		motor[rightLift2] = rightLiftSpeed;
 		motor[rightLift3] = rightLiftSpeed;
-		
+
 		wait1Msec(RAMPDELAYMS);
 	}
 }
@@ -58,13 +66,14 @@ task usercontrol()
 {
 	StartTask(liftProcessing);
 	StartTask(motorController);
+	setCompensation();
 	while(true)
-	
+
 	{
 		getButtonInput();
 
 		buttonResponse();
-		
+
 		if (arcadeDriveMode)
 		{
 			arcadeDrive();
@@ -78,7 +87,7 @@ task usercontrol()
 		{
 			leftLiftSpeed = (vexRT[Btn5U] - vexRT[Btn5D]) * 127;
 			rightLiftSpeed = (vexRT[Btn5U] - vexRT[Btn5D]) * 127;
-			
+
 			if (SensorValue[rPot] > 1800)
 			{
 				if ((leftLiftSpeed > 0) || (rightLiftSpeed > 0))

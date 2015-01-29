@@ -10,32 +10,32 @@ void getButtonInput()
 		potRTarget = rPotValues[0];
 		liftPreset = 0;
 	}
-	
+
 	if (vexRT[Btn7D] == 1)
 	{
 		driveModeButton = true;
 	}
-	
+
 	if  (vexRT[Btn6U] == 1)
 	{
 		skyClawButton = true;
 	}
-	
+
 	if  (vexRT[Btn6D] == 1)
 	{
 		needleButton = true;
 	}
-	
+
 	if ((vexRT[Btn5U] == 1)||(vexRT[Btn5D] == 1))
 	{
 		liftPreset = -1;
 		firstRun = false;
 	}
-	
-	if (SensorValue[needleSwitch] == 1)
+
+	/*if (SensorValue[needleSwitch] == 1)
 	{
 		needleButton = true;
-	}
+	}*/
 }
 
 void buttonResponse()
@@ -57,7 +57,7 @@ void buttonResponse()
 
 		}
 	}
-	
+
 	if (skyClawButton)
 	{
 		if (vexRT[Btn6U] == 0)
@@ -76,8 +76,8 @@ void buttonResponse()
 			}
 
 		}
-	}	
-	
+	}
+
 	if (needleButton)
 	{
 		if (vexRT[Btn6D] == 0)
@@ -96,5 +96,5 @@ void buttonResponse()
 			}
 
 		}
-	}	
+	}
 }

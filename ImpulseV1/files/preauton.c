@@ -1,6 +1,6 @@
 #include "main.h"
 
-/*void initialiseGyro()
+void initialiseGyro()
 {
 	SensorType[turningGyro] = sensorNone;
 	wait1Msec(500);
@@ -12,18 +12,18 @@
 
 void setCompensation()
 {
-	if ((SensorValue[compensationMonitor] > 0) && (SensorValue[compensationMonitor] <= 1500))
+	if ((SensorValue[compensationMonitor] > 0) && (SensorValue[compensationMonitor] <= 920))
 	{
 		compensation = -1;
 	}
-	else if ((SensorValue[compensationMonitor] > 1500) && (SensorValue[compensationMonitor] <= 3000))
+	else if ((SensorValue[compensationMonitor] > 1190) && (SensorValue[compensationMonitor] <= 2580))
 	{
 		compensation = 0;
 	}
 	else
 	{
 		compensation = 1;
-	}	
+	}
 }
 
 void calibrateLightSensor()
@@ -38,12 +38,12 @@ void calibrateLightSensor()
 		if ((calibrateLightButton) && (SensorValue[calibrateLight] == 0))
 		{
 			calibrateLightButton = false;
-			
+
 			if (calibrateLightButtonCount == 1)
 			{
 				PlayTone( 1175,   14); wait1Msec( 300);  // Calibration Mode
 				PlayTone( 1175,   14); wait1Msec( 300);  // Calibration Mode
-				
+
 				lightCalibrationValues[0] = SensorValue[skyLight];
 			}
 			else if (calibrateLightButtonCount == 2)
@@ -51,13 +51,13 @@ void calibrateLightSensor()
 				PlayTone( 1175,   14); wait1Msec( 300);  // Calibration Mode
 				PlayTone( 1175,   14); wait1Msec( 300);  // Calibration Mode
 				PlayTone( 1175,   14); wait1Msec( 300);  // Calibration Mode
-				
+
 				lightCalibrationValues[1] = SensorValue[skyLight];
-				
+
 				lightSensorThreshold = (lightCalibrationValues[1] + lightCalibrationValues[0])/2;
-				
+
 				calibrateLightButtonCount = 0;
-				
+
 				PlayTone(  784,   14); wait1Msec( 300);  // Exit Calibration
 			}
 		}
@@ -213,27 +213,22 @@ void surprise()
   PlayTone(  784,   54); wait1Msec( 600);  // Note(C6, Duration(Half))
   return;
 }
- 
+
 
 
 // preauton task
 void pre_auton()
 {
 	bStopTasksBetweenModes = true;
-	
+
 	//initialisation
 	initialiseGyro();
-	
+
 	PlayTone( 1175,   14); wait1Msec( 300);  // Initialisation Complete
-	
+
 	while(true)
 	{
 		setCompensation();
 		calibrateLightSensor();
 	}
-}*/
-
-void pre_auton()
-{
-
 }

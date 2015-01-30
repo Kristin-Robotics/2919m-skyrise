@@ -294,6 +294,16 @@ void needleControl(int value, int delay = 2000)
 	SensorValue[needle] = value;
 }
 
+void setSkyclawState(bool state)
+{
+	if (state)
+	{
+		SensorValue[skyPiston] = 1;
+		return;
+	}
+	SensorValue[skyPiston] = 0;
+}
+
 task autonLiftProcessing()
 {
 	while(true)
@@ -367,19 +377,19 @@ task autonomous()
 	wait1Msec(50);
 
 	//First Skyrise
-	SensorValue[skyPiston] = 1; //Grab Skyrise
+	setSkyclawState(true); //Grab Skyrise
 	setLift(550); //Lift skyrise out of autoloader
 	encoderMove(620,-90); //Drive back to base
 	waitForLift();
 	setLift(300,5); //Lower Skyrise into base
 	waitForLift();
-	SensorValue[skyPiston] = 0; //Drop Skyrise
+	setSkyclawState(false); //Drop Skyrise
 	setLift(500); //Lift above autoloader height
 	encoderMove(560,100) //Drive to autoloader
 	waitForLift();
 
 	//Second Skyrise
-	skyriseControl(1,200); //Grab Skyrise
+	setSkyclawState(true); //Grab Skyrise
 	setLift(550); //Lift skyrise out of autoloader
 	waitForLift();
 	setLift(50);
@@ -387,12 +397,12 @@ task autonomous()
 	waitForLift();
 	setLift(500,5); //Lower Skyrise into Skyrise
 	waitForLift();
-	SensorValue[skyPiston] = 0; //Drop Skyrise
+	setSkyclawState(false); //Drop Skyrise
 	encoderMove(560,100) //Drive to autoloader
 	waitForLift();
 
 	//Third Skyrise
-	skyriseControl(1,200); //Grab Skyrise
+	setSkyclawState(true); //Grab Skyrise
 	setLift(550); //Lift skyrise out of autoloader
 	waitForLift();
 	setLift(200);
@@ -400,13 +410,13 @@ task autonomous()
 	waitForLift();
 	setLift(700,5); //Lower Skyrise into Skyrise
 	waitForLift();
-	SensorValue[skyPiston] = 0; //Drop Skyrise
+	setSkyclawState(false); //Drop Skyrise
 	setLift(500); //Lower to autoloader height
 	encoderMove(560,100) //Drive to autoloader
 	waitForLift();
 
 	//Fourth Skyrise
-	skyriseControl(1,200); //Grab Skyrise
+	setSkyclawState(true); //Grab Skyrise
 	setLift(550); //Lift skyrise out of autoloader
 	waitForLift();
 	setLift(450);
@@ -414,13 +424,13 @@ task autonomous()
 	waitForLift();
 	setLift(850,5); //Lower Skyrise into Skyrise
 	waitForLift();
-	SensorValue[skyPiston] = 0; //Drop Skyrise
+	setSkyclawState(false); //Drop Skyrise
 	setLift(500); //Lower to autoloader height
 	encoderMove(560,100) //Drive to autoloader
 	waitForLift();
 
 	//Fifth Skyrise
-	skyriseControl(1,200); //Grab Skyrise
+	setSkyclawState(true); //Grab Skyrise
 	setLift(550); //Lift skyrise out of autoloader
 	waitForLift();
 	setLift(650);
@@ -428,13 +438,13 @@ task autonomous()
 	waitForLift();
 	setLift(1000,60); //Lower Skyrise into Skyrise
 	waitForLift();
-	SensorValue[skyPiston] = 0; //Drop Skyrise
+	setSkyclawState(false); //Drop Skyrise
 	setLift(500); //Lower to autoloader height
 	encoderMove(560,100) //Drive to autoloader
 	waitForLift();
 
 	//Sixth Skyrise
-	skyriseControl(1,200); //Grab Skyrise
+	setSkyclawState(true); //Grab Skyrise
 	setLift(550); //Lift skyrise out of autoloader
 	waitForLift();
 	setLift(800);
@@ -442,13 +452,13 @@ task autonomous()
 	waitForLift();
 	setLift(1150,60); //Lower Skyrise into Skyrise
 	waitForLift();
-	SensorValue[skyPiston] = 0; //Drop Skyrise
+	setSkyclawState(false); //Drop Skyrise
 	setLift(500); //Lower to autoloader height
 	encoderMove(560,100) //Drive to autoloader
 	waitForLift();
 
 	//Seventh Skyrise
-	skyriseControl(1,200); //Grab Skyrise
+	setSkyclawState(true); //Grab Skyrise
 	setLift(550); //Lift skyrise out of autoloader
 	waitForLift();
 	setLift(950);
@@ -456,7 +466,7 @@ task autonomous()
 	waitForLift();
 	setLift(1300,60); //Lower Skyrise into Skyrise
 	waitForLift();
-	SensorValue[skyPiston] = 0; //Drop Skyrise
+	setSkyclawState(false); //Drop Skyrise
 	setLift(500); //Lower to autoloader height
 	encoderMove(560,100) //Drive to autoloader
 	waitForLift();

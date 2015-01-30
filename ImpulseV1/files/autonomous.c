@@ -207,8 +207,8 @@ void moveLiftAuton()
 
 				if (SensorValue[rPot] < potRTarget)
 				{
-					leftLiftSpeed = round(liftTargetSpeed * proportionalSpeed);
-					rightLiftSpeed = round(liftTargetSpeed * proportionalSpeed);
+					leftLiftSpeed = round(liftTargetSpeed);
+					rightLiftSpeed = round(liftTargetSpeed);
 
 					liftCompensation();
 				}
@@ -238,8 +238,8 @@ void moveLiftAuton()
 
 				if (SensorValue[rPot] > potRTarget)
 				{
-					leftLiftSpeed = round(-liftTargetSpeed * proportionalSpeed);
-					rightLiftSpeed = round(-liftTargetSpeed * proportionalSpeed);
+					leftLiftSpeed = round(-liftTargetSpeed*proportionalSpeed);
+					rightLiftSpeed = round(-liftTargetSpeed*proportionalSpeed);
 
 					liftCompensation();
 				}
@@ -268,7 +268,7 @@ void waitForLift()
 	}
 }
 
-void skyriseControl(int value, int delay = 2000, int threshold = lightSensorThreshold, bool fromDark = false)
+void skyriseControl(int value, int delay, int threshold = lightSensorThreshold, bool fromDark = false)
 {
 	if (fromDark)
 	{
@@ -335,52 +335,112 @@ task autonomous()
 	//Initialise Autonomous
 	StartTask(autonLiftProcessing);
 	StartTask(autonMotorController);
-	StartTask(songPlayer);
+	//StartTask(songPlayer);
 
 	firstRun = false;
 
 	//Deploy
 	leftLiftSpeed = 127;
 	rightLiftSpeed = 127;
-	wait1Msec(500);
+	wait1Msec(200);
 	leftLiftSpeed = -127;
 	rightLiftSpeed = -127;
 	wait1Msec(200);
 	leftLiftSpeed = 0;
 	rightLiftSpeed = 0;
 
-	//Autonomous Selector
-	if (compensation == -1) //Claw on left
-	{
-	}
-	else if (compensation == 1) //claw on right
-	{
-	}
-	else //Got nothing
-	{
-	}
+	// Autonomous Selector
+	// if (compensation == -1) //Claw on left
+	// {
+	// }
+	// else if (compensation == 1) //claw on right
+	// {
+	// }
+	// else //Got nothing
+	// {
+	// }
 
 	//Most of this selection code is in pre-auton, look there
 
 	//Start Autonomous
-	setLift(800);	//Release the rubber band
-	setLift(600);
+	//setLift(600);	//Release the rubber band
+	//waitForLift();
+	setLift(500,127); //Lift to release rubber band
 	waitForLift();
 
-	SensorValue[skyPiston] = 1;//skyriseControl(1); //pick up
-	setLift(600);
+	//1
+	wait1Msec(50);
+	SensorValue[skyPiston] = 1; //Grab Skyrise
+	setLift(600); //Lift skyrise out of autoloader
 	waitForLift();
-	encoderMove(600,-60);
-	setLift(280);
+	encoderMove(400,-100);
+	encoderMove(160,-80); // Drive back to Skyrise base
+	encoderMove(60,-60);
+	setLift(300,5); //Lower Skyrise into base
 	waitForLift();
-	skyriseControl(0,500); //drop
-	setLift(600);
+	SensorValue[skyPiston] = 0;  //Drop Skyrise
+	setLift(500); //Lift above autoloader height
 	waitForLift();
-	encoderMove(600); //return
-	setLift(400,127);
-	waitForLift();
+	encoderMove(500,127);
+	encoderMove(60,100); //Drive back to autoloader
 
-	skyriseControl(1); //repeat
+	//2
+	skyriseControl(1,200); //Grab Skyrise
+	setLift(600); //Lift skyrise out of autoloader
+	waitForLift();
+	encoderMove(400,-100);
+	encoderMove(160,-80); // Drive back to Skyrise base
+	encoderMove(60,-60);
+	setLift(500,5); //Lower Skyrise into Skyrise
+	waitForLift();
+	SensorValue[skyPiston] = 0;  //Drop Skyrise
+	encoderMove(500,127);
+	encoderMove(60,100); //Drive back to autoloader
+
+	// 3
+	skyriseControl(1,200); //Grab Skyrise
+	setLift(800); //Lift skyrise out of autoloader
+	waitForLift();
+	encoderMove(400,-100);
+	encoderMove(160,-80); // Drive back to Skyrise base
+	encoderMove(60,-60);
+	setLift(700,5); //Lower Skyrise into Skyrise
+	waitForLift();
+	SensorValue[skyPiston] = 0;  //Drop Skyrise
+	setLift(500); //Lower to autoloader height
+	waitForLift();
+	encoderMove(500,127);
+	encoderMove(60,100); //Drive back to autoloader
+
+	// 4
+	skyriseControl(1,300); //Grab Skyrise
+	setLift(1000); //Lift skyrise out of autoloader
+	waitForLift();
+	encoderMove(400,-100);
+	encoderMove(160,-80); // Drive back to Skyrise base
+	encoderMove(60,-60);
+	setLift(850,5); //Lower Skyrise into Skyrise
+	waitForLift();
+	SensorValue[skyPiston] = 0;  //Drop Skyrise
+	setLift(500); //Lower to autoloader height
+	waitForLift();
+	encoderMove(500,127);
+	encoderMove(60,100); //Drive back to autoloader
+
+	// 5
+	// skyriseControl(1,1000); //repeat
+	// setLift(1200);
+	// waitForLift();
+	// encoderMove(600,-60);
+	// setLift(1100,60);
+	// waitForLift();
+	// SensorValue[skyPiston] = 0;  //drop
+	// setLift(600);
+	// waitForLift();
+	// encoderMove(580,60); //return
+	// setLift(500,90);
+	// waitForLift();
+
 
 
 }

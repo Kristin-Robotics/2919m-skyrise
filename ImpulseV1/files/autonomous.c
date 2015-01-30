@@ -369,82 +369,96 @@ task autonomous()
 	//First Skyrise
 	SensorValue[skyPiston] = 1; //Grab Skyrise
 	setLift(550); //Lift skyrise out of autoloader
-	//ADD FAST TO SLOW DRIVE FUNCTION HERE FOR VALUE 620
+	encoderMove(620,-90); //Drive back to base
+	waitForLift();
 	setLift(300,5); //Lower Skyrise into base
 	waitForLift();
 	SensorValue[skyPiston] = 0; //Drop Skyrise
 	setLift(500); //Lift above autoloader height
-	//ADD FAST TO SLOW DRIVE FUNCTION HERE FOR VALUE 560
+	encoderMove(560,100) //Drive to autoloader
+	waitForLift();
 
 	//Second Skyrise
 	skyriseControl(1,200); //Grab Skyrise
 	setLift(550); //Lift skyrise out of autoloader
 	waitForLift();
 	setLift(50);
-	//ADD FAST TO SLOW DRIVE FUNCTION HERE FOR VALUE 620
+	encoderMove(620,-90); //Drive back to base
+	waitForLift();
 	setLift(500,5); //Lower Skyrise into Skyrise
 	waitForLift();
 	SensorValue[skyPiston] = 0; //Drop Skyrise
-	//ADD FAST TO SLOW DRIVE FUNCTION HERE FOR VALUE 560
+	encoderMove(560,100) //Drive to autoloader
+	waitForLift();
 
 	//Third Skyrise
 	skyriseControl(1,200); //Grab Skyrise
 	setLift(550); //Lift skyrise out of autoloader
 	waitForLift();
 	setLift(200);
-	//ADD FAST TO SLOW DRIVE FUNCTION HERE FOR VALUE 620
+	encoderMove(620,-90); //Drive back to base
+	waitForLift();
 	setLift(700,5); //Lower Skyrise into Skyrise
 	waitForLift();
 	SensorValue[skyPiston] = 0; //Drop Skyrise
 	setLift(500); //Lower to autoloader height
-	//ADD FAST TO SLOW DRIVE FUNCTION HERE FOR VALUE 560
+	encoderMove(560,100) //Drive to autoloader
+	waitForLift();
 
 	//Fourth Skyrise
-	skyriseControl(1,300); //Grab Skyrise
+	skyriseControl(1,200); //Grab Skyrise
 	setLift(550); //Lift skyrise out of autoloader
 	waitForLift();
 	setLift(450);
-	//ADD FAST TO SLOW DRIVE FUNCTION HERE FOR VALUE 620
+	encoderMove(620,-90); //Drive back to base
+	waitForLift();
 	setLift(850,5); //Lower Skyrise into Skyrise
 	waitForLift();
 	SensorValue[skyPiston] = 0; //Drop Skyrise
 	setLift(500); //Lower to autoloader height
-	//ADD FAST TO SLOW DRIVE FUNCTION HERE FOR VALUE 560
+	encoderMove(560,100) //Drive to autoloader
+	waitForLift();
 
 	//Fifth Skyrise
-	skyriseControl(1,1000); //Grab Skyrise
-	setLift(550);
+	skyriseControl(1,200); //Grab Skyrise
+	setLift(550); //Lift skyrise out of autoloader
 	waitForLift();
 	setLift(650);
-	//ADD FAST TO SLOW DRIVE FUNCTION HERE FOR VALUE 620
-	setLift(1000,60);
+	encoderMove(620,-90); //Drive back to base
+	waitForLift();
+	setLift(1000,60); //Lower Skyrise into Skyrise
 	waitForLift();
 	SensorValue[skyPiston] = 0; //Drop Skyrise
-	setLift(500);
-	//ADD FAST TO SLOW DRIVE FUNCTION HERE FOR VALUE 560
+	setLift(500); //Lower to autoloader height
+	encoderMove(560,100) //Drive to autoloader
+	waitForLift();
 
 	//Sixth Skyrise
-	skyriseControl(1,1000); //Grab Skyrise
-	setLift(550);
+	skyriseControl(1,200); //Grab Skyrise
+	setLift(550); //Lift skyrise out of autoloader
 	waitForLift();
 	setLift(800);
-	//ADD FAST TO SLOW DRIVE FUNCTION HERE FOR VALUE 620
-	setLift(1150,60);
+	encoderMove(620,-90); //Drive back to base
+	waitForLift();
+	setLift(1150,60); //Lower Skyrise into Skyrise
 	waitForLift();
 	SensorValue[skyPiston] = 0; //Drop Skyrise
-	setLift(500);
-	//ADD FAST TO SLOW DRIVE FUNCTION HERE FOR VALUE 560
+	setLift(500); //Lower to autoloader height
+	encoderMove(560,100) //Drive to autoloader
+	waitForLift();
 
 	//Seventh Skyrise
-	skyriseControl(1,1000); //Grab Skyrise
-	setLift(550);
+	skyriseControl(1,200); //Grab Skyrise
+	setLift(550); //Lift skyrise out of autoloader
 	waitForLift();
 	setLift(950);
-	//ADD FAST TO SLOW DRIVE FUNCTION HERE FOR VALUE 620
-	setLift(1300,60);
+	encoderMove(620,-90); //Drive back to base
+	waitForLift();
+	setLift(1300,60); //Lower Skyrise into Skyrise
 	waitForLift();
 	SensorValue[skyPiston] = 0; //Drop Skyrise
-	setLift(500);
-	//ADD FAST TO SLOW DRIVE FUNCTION HERE FOR VALUE 560
+	setLift(500); //Lower to autoloader height
+	encoderMove(560,100) //Drive to autoloader
+	waitForLift();
 
 }

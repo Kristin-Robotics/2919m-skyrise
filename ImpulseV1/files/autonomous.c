@@ -388,6 +388,7 @@ task autonomous()
 	encoderMove(560,100) //Drive to autoloader
 	waitForLift();
 
+	/*
 	//Second Skyrise
 	setSkyclawState(true); //Grab Skyrise
 	setLift(550); //Lift skyrise out of autoloader
@@ -470,5 +471,5 @@ task autonomous()
 	setLift(500); //Lower to autoloader height
 	encoderMove(560,100) //Drive to autoloader
 	waitForLift();
-
+	*/
 }

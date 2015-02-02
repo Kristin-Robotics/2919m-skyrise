@@ -28,14 +28,14 @@ void setCompensation()
 
 void calibrateLightSensor()
 {
-	if (SensorValue[calibrateLight] == 1)
+	if (SensorValue[calibrateLight] == 0)
 	{
 		calibrateLightButton = true;
 		calibrateLightButtonCount++;
 	}
 	else
 	{
-		if ((calibrateLightButton) && (SensorValue[calibrateLight] == 0))
+		if (calibrateLightButton)
 		{
 			calibrateLightButton = false;
 

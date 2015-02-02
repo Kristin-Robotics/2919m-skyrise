@@ -26,10 +26,18 @@ task liftProcessing()
 {
 	while(true)
 	{
-		moveLiftPreset(); //Has a while loop
+		moveLiftAuton(); //Has a while loop
 		wait1Msec(50);
 	}
 }
+
+task driveProcessing()
+{
+	while(true)
+	{
+		buttonResponseXmitter2(); //Has a while loop
+		wait1Msec(50);
+	}
 
 //Controller for all motors
 task motorController()
@@ -41,14 +49,6 @@ task motorController()
 		motor[rDrive2] += slopeLimiter(motor[rDrive2],rightTrackSpeed,20);
 		motor[rDrive1] += slopeLimiter(motor[rDrive1],rightTrackSpeed,20);
 
-		if (compensation == -1)
-		{
-			rightLiftSpeed *= compensationFactor;
-		}
-		else if (compensation == 1)
-		{
-			leftLiftSpeed *= compensationFactor;
-		}
 		motor[leftLift1] = leftLiftSpeed;
 		motor[leftLift2] = leftLiftSpeed;
 		motor[leftLift3] = leftLiftSpeed;
@@ -60,46 +60,52 @@ task motorController()
 	}
 }
 
-
 //Controller interaction
 task usercontrol()
 {
 	StartTask(liftProcessing);
 	StartTask(motorController);
-	setCompensation();
+
 	while(true)
-
 	{
-		getButtonInput();
-
-		buttonResponse();
-
-		if (arcadeDriveMode)
+		if (autonUser)
 		{
-			arcadeDrive();
+			getButtonInputXmitter2();
 		}
 		else
 		{
-			tankDrive();
-		}
+			getButtonInput();
 
-		if (liftPreset == -1)
-		{
-			leftLiftSpeed = (vexRT[Btn5U] - vexRT[Btn5D]) * 127;
-			rightLiftSpeed = (vexRT[Btn5U] - vexRT[Btn5D]) * 127;
+			buttonResponse();
 
-			if (SensorValue[rPot] > 1800)
+			if (arcadeDriveMode)
 			{
-				if ((leftLiftSpeed > 0) || (rightLiftSpeed > 0))
+				arcadeDrive();
+			}
+			else
+			{
+				tankDrive();
+			}
+
+			if (liftPreset == -1)
+			{
+				leftLiftSpeed = (vexRT[Btn5U] - vexRT[Btn5D]) * 127;
+				rightLiftSpeed = (vexRT[Btn5U] - vexRT[Btn5D]) * 127;
+				setCompensation();
+
+				if (SensorValue[rPot] > 1800)
 				{
-					leftLiftSpeed = 0;
-					rightLiftSpeed = 0;
+					if ((leftLiftSpeed > 0) || (rightLiftSpeed > 0))
+					{
+						leftLiftSpeed = 0;
+						rightLiftSpeed = 0;
+					}
 				}
 			}
+
+			liftTrim();
+
+			wait1Msec(20);
 		}
-
-		liftTrim();
-
-		wait1Msec(20);
 	}
 }

@@ -1,14 +1,18 @@
 void getButtonInput()
 {
+	//Controller 1
+	
 	if (vexRT[Btn8U] == 1)
 	{
 		potRTarget = rPotValues[1];
 		liftPreset = 1;
+		liftTargetSpeed = 127;
 	}
 	if (vexRT[Btn8D] == 1)
 	{
 		potRTarget = rPotValues[0];
 		liftPreset = 0;
+		liftTargetSpeed = 127;
 	}
 
 	if (vexRT[Btn7D] == 1)
@@ -32,10 +36,17 @@ void getButtonInput()
 		firstRun = false;
 	}
 
-	/*if (SensorValue[needleSwitch] == 1)
+	if (SensorValue[needleSwitch] == 0)
 	{
 		needleButton = true;
-	}*/
+	}
+	
+	
+	//Controller 2
+	if  ((vexRT[Btn7LXmtr2] == 1) || (vexRT[Btn7RXmtr2] == 1) || (vexRT[Btn7UXmtr2] == 1) || (vexRT[Btn7DXmtr2] == 1) || (vexRT[Btn8LXmtr2] == 1) || (vexRT[Btn8RXmtr2] == 1) || (vexRT[Btn8UXmtr2] == 1 || vexRT[Btn8DXmtr2] == 1))
+	{
+		autonUser = true;
+	}
 }
 
 void buttonResponse()
@@ -80,7 +91,7 @@ void buttonResponse()
 
 	if (needleButton)
 	{
-		if (vexRT[Btn6D] == 0)
+		if ((vexRT[Btn6D] == 0) && SensorValue[needleSwitch] == 1)
 		{
 			if (needleState == 0)
 			{
@@ -97,4 +108,49 @@ void buttonResponse()
 
 		}
 	}
+}
+
+void getButtonInputXmitter2()
+{
+//Controller 1
+	if  ((vexRT[Btn7L] == 1) || (vexRT[Btn7R] == 1) || (vexRT[Btn7U] == 1) || (vexRT[Btn7] == 1) || (vexRT[Btn8L] == 1) || (vexRT[Btn8R] == 1) || (vexRT[Btn8U] == 1) || (vexRT[Btn8D] == 1) || (vexRT[Btn5U] == 1) || (vexRT[Btn5D] == 1) || (vexRT[Btn6U] == 1) || (vexRT[Btn6D] == 1) || (abs(vexRT[Ch1]) > 10) || (abs(vexRT[Ch2]) > 10) || (abs(vexRT[Ch3]) > 10) || (abs(vexRT[Ch4]) > 10))
+	{
+		StopTask(driveProcessing);
+		autonUser = false;
+		autonUserStep = -1;
+	}
+	else
+	{
+	//Controller 2
+		if (vexRT[Btn7LXmtr2] == 1)
+		{
+			autonUserStep = 0;
+			StartTask(driveProcessing);
+		}
+		if (vexRT[Btn7UXmtr2] == 1)
+		{
+			autonUserStep = 1;
+			StartTask(driveProcessing);
+		}
+	}
+}
+
+void buttonResponseXmitter2()
+{
+	//First Skyrise
+	while(autonUserStep == 0)
+	{
+		setSkyclawState(true); //Grab Skyrise
+		setLift(550); //Lift skyrise out of autoloader
+		encoderMove(620,-90); //Drive back to base
+		waitForLift();
+		setLift(300,5); //Lower Skyrise into base
+		waitForLift();
+		setSkyclawState(false); //Drop Skyrise
+		setLift(500); //Lift above autoloader height
+		encoderMove(560,100) //Drive to autoloader
+		waitForLift();
+	}
+	autonUserStep = -1;
+	StopTask(driveProcessing);
 }

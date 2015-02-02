@@ -207,8 +207,8 @@ void moveLiftAuton()
 
 				if (SensorValue[rPot] < potRTarget)
 				{
-					leftLiftSpeed = round(liftTargetSpeed);
-					rightLiftSpeed = round(liftTargetSpeed);
+					leftLiftSpeed = liftTargetSpeed;
+					rightLiftSpeed = liftTargetSpeed;
 
 					liftCompensation();
 				}

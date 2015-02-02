@@ -34,4 +34,7 @@ bool needleButton = false;
 bool calibrateLightButton = false;
 int calibrateLightButtonCount = 0;
 
+bool autonUser = false;
+int autonUserStep = -1;
+
 #endif VARIABLES_H

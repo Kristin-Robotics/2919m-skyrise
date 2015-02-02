@@ -26,8 +26,8 @@ void moveLiftPreset()
 				
 				if (SensorValue[rPot] < potRTarget)
 				{
-					leftLiftSpeed = round(127 * proportionalSpeed);
-					rightLiftSpeed = round(127 * proportionalSpeed);
+					leftLiftSpeed = liftTargetSpeed;
+					rightLiftSpeed = liftTargetSpeed;
 					liftCompensation();
 				}
 				else

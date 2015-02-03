@@ -15,7 +15,7 @@ int compensation = 0; //-1 left, 0 off, 1 right
 // preset values
 // structure: min, max
 const int rPotValues[] = {285, 1600};
-int lightSensorThreshold = 100;
+int lightSensorThreshold = 300;
 int lightCalibrationValues[] = {0,0};
 
 int liftPreset = -1;

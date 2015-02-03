@@ -28,7 +28,7 @@ void setCompensation()
 
 void calibrateLightSensor()
 {
-	if (SensorValue[calibrateLight] == 0)
+	if ((SensorValue[calibrateLight] == 0) && (calibrateLightButton == false))
 	{
 		calibrateLightButton = true;
 		calibrateLightButtonCount++;
@@ -226,9 +226,9 @@ void pre_auton()
 
 	PlayTone( 1175,   14); wait1Msec( 300);  // Initialisation Complete
 
-	while(true)
-	{
+	// while(true)
+	// {
 		setCompensation();
 		calibrateLightSensor();
-	}
+	// }
 }

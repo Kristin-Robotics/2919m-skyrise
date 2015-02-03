@@ -268,7 +268,7 @@ void waitForLift()
 	}
 }
 
-void skyriseControl(int value, int delay, int threshold = lightSensorThreshold, bool fromDark = false)
+void skyriseControl(int value, int delay, int threshold = lightSensorThreshold, bool fromDark = true)
 {
 	if (fromDark)
 	{
@@ -372,25 +372,26 @@ task autonomous()
 	Most of this selection code is in pre-auton, look there */
 
 	//Rubberband Deployment + Autoloader Height
-	setLift(500,127);
-	waitForLift();
-	wait1Msec(50);
+	wait1Msec(200)
+	setLift(550,127);
+	wait1Msec(600);
 
 	//First Skyrise
-	setSkyclawState(true); //Grab Skyrise
-	setLift(550); //Lift skyrise out of autoloader
+	SensorValue[skyPiston] = 1; //Grab Skyrise
+	waitForLift();
+	//setLift(550); //Lift skyrise out of autoloader
 	encoderMove(620,-90); //Drive back to base
 	waitForLift();
-	setLift(300,5); //Lower Skyrise into base
+	setLift(285,5); //Lower Skyrise into base
 	waitForLift();
-	setSkyclawState(false); //Drop Skyrise
-	setLift(500); //Lift above autoloader height
-	encoderMove(560,100) //Drive to autoloader
+	SensorValue[skyPiston] = 0; //Drop Skyrise
+	//setLift(300); //Lift above autoloader height
+	encoderMove(560,100); //Drive to autoloader
 	waitForLift();
 
 	/*
 	//Second Skyrise
-	setSkyclawState(true); //Grab Skyrise
+	skyriseControl(1,200); //Grab Skyrise
 	setLift(550); //Lift skyrise out of autoloader
 	waitForLift();
 	setLift(50);
@@ -403,7 +404,7 @@ task autonomous()
 	waitForLift();
 
 	//Third Skyrise
-	setSkyclawState(true); //Grab Skyrise
+	skyriseControl(1,200); //Grab Skyrise
 	setLift(550); //Lift skyrise out of autoloader
 	waitForLift();
 	setLift(200);
@@ -417,7 +418,7 @@ task autonomous()
 	waitForLift();
 
 	//Fourth Skyrise
-	setSkyclawState(true); //Grab Skyrise
+	skyriseControl(1,200); //Grab Skyrise
 	setLift(550); //Lift skyrise out of autoloader
 	waitForLift();
 	setLift(450);
@@ -431,7 +432,7 @@ task autonomous()
 	waitForLift();
 
 	//Fifth Skyrise
-	setSkyclawState(true); //Grab Skyrise
+	skyriseControl(1,200); //Grab Skyrise
 	setLift(550); //Lift skyrise out of autoloader
 	waitForLift();
 	setLift(650);
@@ -445,7 +446,7 @@ task autonomous()
 	waitForLift();
 
 	//Sixth Skyrise
-	setSkyclawState(true); //Grab Skyrise
+	skyriseControl(1,200);//Grab Skyrise
 	setLift(550); //Lift skyrise out of autoloader
 	waitForLift();
 	setLift(800);
@@ -459,7 +460,7 @@ task autonomous()
 	waitForLift();
 
 	//Seventh Skyrise
-	setSkyclawState(true); //Grab Skyrise
+	skyriseControl(1,200); //Grab Skyrise
 	setLift(550); //Lift skyrise out of autoloader
 	waitForLift();
 	setLift(950);

@@ -44,7 +44,7 @@ void encoderMove(int encoderDistance,int leftDriveOneSpeed = 127, int leftDriveT
 	rightTrackSpeed = round(-(rightDriveOneSpeed)/driveBrakeConstant);
 	rightTrackSpeed = round(-(rightDriveTwoSpeed)/driveBrakeConstant);
 
-	wait1Msec(100);
+	wait1Msec(150);
 
 	leftTrackSpeed = 0;
 	leftTrackSpeed = 0;
@@ -238,8 +238,8 @@ void moveLiftAuton()
 
 				if (SensorValue[rPot] > potRTarget)
 				{
-					leftLiftSpeed = round(-liftTargetSpeed*proportionalSpeed);
-					rightLiftSpeed = round(-liftTargetSpeed*proportionalSpeed);
+					leftLiftSpeed = round(liftTargetSpeed*proportionalSpeed);
+					rightLiftSpeed = round(liftTargetSpeed*proportionalSpeed);
 
 					liftCompensation();
 				}
@@ -268,7 +268,7 @@ void waitForLift()
 	}
 }
 
-void skyriseControl(int value, int delay, int threshold = lightSensorThreshold, bool fromDark = true)
+void skyriseControl(int value, int delay, int threshold = lightSensorThreshold, bool fromDark = false)
 {
 	if (fromDark)
 	{
@@ -348,7 +348,9 @@ task autonomous()
 	//StartTask(songPlayer);
 
 	firstRun = false;
-
+	// /*
+	lightCalibrationValues[0] = SensorValue[skyLight];
+	
 	//Claw Deployment
 	leftLiftSpeed = 127;
 	rightLiftSpeed = 127;
@@ -372,37 +374,55 @@ task autonomous()
 	Most of this selection code is in pre-auton, look there */
 
 	//Rubberband Deployment + Autoloader Height
-	wait1Msec(200)
-	setLift(550,127);
-	wait1Msec(600);
+	leftLiftSpeed = 127;
+	rightLiftSpeed = 127;
+	wait1Msec(270);
+	leftLiftSpeed = 0;
+	rightLiftSpeed = 0;
 
 	//First Skyrise
+	wait1Msec(500);
 	SensorValue[skyPiston] = 1; //Grab Skyrise
-	waitForLift();
+	leftLiftSpeed = 127;
+	rightLiftSpeed = 127;
+	lightCalibrationValues[1] = SensorValue[skyLight];
+	lightSensorThreshold = (lightCalibrationValues[1] + lightCalibrationValues[0])/2;
+	wait1Msec(200);
+	leftLiftSpeed = 0;
+	rightLiftSpeed = 0;
+	setLift(280,1);
 	//setLift(550); //Lift skyrise out of autoloader
-	encoderMove(620,-90); //Drive back to base
+	encoderMove(583,-90); //Drive back to base
+	leftLiftSpeed = 0;
+	rightLiftSpeed = 0;
+	SensorValue[skyPiston] = 0; //Drop Skyrise
+	leftLiftSpeed = 127;
+	rightLiftSpeed = 127;
+	wait1Msec(220);
+	leftLiftSpeed = 0;
+	rightLiftSpeed = 0;
+	//setLift(300); //Lift above autoloader height
+	encoderMove(585,100); //Drive to autoloader
 	waitForLift();
-	setLift(285,5); //Lower Skyrise into base
+/*
+	//Second Skyrise
+	skyriseControl(1,500); //Grab Skyrise
+	setLift(500,127);
+	lightCalibrationValues[1] = SensorValue[skyLight];
+	lightSensorThreshold = (lightCalibrationValues[1] + lightCalibrationValues[0])/2;
+	//setLift(550); //Lift skyrise out of autoloader
+	encoderMove(590,-90); //Drive back to base
+	wait1Msec(200);
+	waitForLift();
+	setLift(450,5); //Lower Skyrise into base
 	waitForLift();
 	SensorValue[skyPiston] = 0; //Drop Skyrise
+	setLift(430,5);
 	//setLift(300); //Lift above autoloader height
-	encoderMove(560,100); //Drive to autoloader
+	encoderMove(595,100); //Drive to autoloader
 	waitForLift();
-
-	/*
-	//Second Skyrise
-	skyriseControl(1,200); //Grab Skyrise
-	setLift(550); //Lift skyrise out of autoloader
-	waitForLift();
-	setLift(50);
-	encoderMove(620,-90); //Drive back to base
-	waitForLift();
-	setLift(500,5); //Lower Skyrise into Skyrise
-	waitForLift();
-	setSkyclawState(false); //Drop Skyrise
-	encoderMove(560,100) //Drive to autoloader
-	waitForLift();
-
+	*/
+/*
 	//Third Skyrise
 	skyriseControl(1,200); //Grab Skyrise
 	setLift(550); //Lift skyrise out of autoloader

@@ -29,6 +29,8 @@ task command1()
 	setSkyrise(0);
 	
 	autoSetLiftComp(1,127);
+	
+	StopTask(command1);
 
 }
 
@@ -36,6 +38,8 @@ task command2()
 {
 	waitForStep(1,6);
 	autoSetDrive(2,90);
+	
+	StopTask(command2);
 }
 
 task conditions1()
@@ -55,12 +59,17 @@ task conditions1()
 	autoEncoderCondition(1,583);
 	
 	autoTimeCondition(1,220);
+	
+	StopTask(conditions1);
 }
 
 task conditions2()
 {
 	waitForStep(1,6);
+	
 	autoEncoderCondition(2,585);
+	
+	StopTask(conditions2);
 }
 
 task autonomous()

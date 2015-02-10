@@ -91,20 +91,14 @@ void buttonResponse()
 
 	if (needleButton)
 	{
-		if (SensorValue[needleSwitch] == 1)
+		if (vexRT[Btn6D] == 0)
 		{
-			if (vexRT[Btn6D] == 1)
-			{
-				needleState = 1;
-				SensorValue[needle] = 1;
-				needleButton = false;
-			}
-			else
-			{
-				needleState = 0;
-				SensorValue[needle] = 0;
-				needleButton = false;
-			}
-		}		
+			SensorValue[needle] = 0;
+			needleButton = false;
+		}
+		else if (vexRT[Btn6D] == 1 || SensorValue[needleSwitch] == 1)
+		{
+			SensorValue[needle] = 1;
+		}
 	}
 }

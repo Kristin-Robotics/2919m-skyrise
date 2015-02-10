@@ -91,7 +91,7 @@ void buttonResponse()
 
 	if (needleButton)
 	{
-		if ((vexRT[Btn6D] == 0) && SensorValue[needleSwitch] == 1)
+		/*if ((vexRT[Btn6D] == 0) && SensorValue[needleSwitch] == 1)
 		{
 			if (needleState == 0)
 			{
@@ -106,6 +106,15 @@ void buttonResponse()
 				needleButton = false;
 			}
 
-		}
+		}*/
+		StartTask(needlePiston());
 	}
+}
+task needlePiston() 
+{
+	SensorValue[needle] = 1;
+	wait1Msec(1000);
+	SensorValue[needle] = 0;
+	needleButton = false;
+	StopTask(needlePiston());
 }

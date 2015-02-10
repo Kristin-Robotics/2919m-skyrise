@@ -1,32 +1,32 @@
 #include "main.h"
 
-//Drive modes for Driver
-#include "/codebits/drivemodes.c"
-
-//Fine Control for Driver
-#include "/codebits/finecontrol.c"
-
-//Buttons
-#include "/codebits/buttons.c"
-
-//Move the lift automatically
-#include "/codebits/moveliftpreset.c"
-
-//Slowly increase speed over speed/100 seconds
-#include "/codebits/motorramping.c"
-
 //Trim code
-#include "/codebits/lifttrim.c"
+#include "/userfunctions/lifttrim.c"
 
 //Compensation for skyrise weight code
-#include "/codebits/liftcompensation.c"
+#include "/userfunctions/liftcompensation.c"
+
+//Drive modes for Driver
+#include "/userfunctions/drivemodes.c"
+
+//Fine Control for Driver
+#include "/userfunctions/finecontrol.c"
+
+//Buttons
+#include "/userfunctions/buttons.c"
+
+//Move the lift automatically
+#include "/userfunctions/moveliftpreset.c"
+
+//Slowly increase speed over speed/100 seconds
+#include "/userfunctions/motorramping.c"
 
 //Processing for Lift
 task liftProcessing()
 {
 	while(true)
 	{
-		moveLiftAuton(); //Has a while loop
+		moveLiftPreset(); //Has a while loop
 		wait1Msec(50);
 	}
 }

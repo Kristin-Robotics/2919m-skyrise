@@ -7,10 +7,14 @@ bool arcadeDriveMode = true;
 const int driveBrakeConstant = 4; //auton drive
 const int fineControlValue = 5;
 const int proportionalSpeedScaling = 200;
-const float compensationFactor = 0.95;
+const float compensationFactor = 0.9;
 int liftTrimThreshold = 300;
 float proportionalSpeed = 1.0; //for lift
 int compensation = 0; //-1 left, 0 off, 1 right
+
+//Auton Task Schedulers
+bool stepComplete[] = {false,false,false};
+int step[] = {0,0,0};
 
 // preset values
 // structure: min, max

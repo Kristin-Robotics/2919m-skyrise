@@ -25,7 +25,7 @@ task command1()
 	//1.2 - 6
 	autoSetDriveFull(0,90);
 	
-	waitForStep(1,1)
+	waitForStep(1,1);
 	
 	autoSetSkyrise(0,1,700);
 	
@@ -72,14 +72,14 @@ task conditions1()
 	
 	wait1Msec(500);
 	
-	autoTimeCondition(600);
+	autoTimeCondition(0,600);
 
-	autoLightCondition(0)
+	autoLightCondition(0);
 	
 	//2
 	autoEncoderCondition(0,580);
 	
-	waitForStep(1,1)
+	waitForStep(1,1);
 	
 	autoLightCondition(0);
 	
@@ -89,9 +89,9 @@ task conditions1()
 	
 	wait1Msec(500);
 	
-	autoTimeCondition(300);
+	autoTimeCondition(0,300);
 
-	autoLightCondition(0)
+	autoLightCondition(0);
 	
 	StopTask(conditions1);
 }
@@ -116,7 +116,7 @@ task autonomous()
 	setLift(127,127,127,127,127,127);
 	wait1Msec(150);
 	setLift(-127,-127,-127,-127,-127,-127);
-	waut1Msec(150)
+	wait1Msec(150);
 	setLiftTrim();
 	
 	//Initialise Autonomous

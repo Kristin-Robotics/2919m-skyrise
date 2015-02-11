@@ -121,9 +121,9 @@ void autoSetLiftComp(int stepArray, int value)
 
 void autoSetDriveFull(int stepArray, int value)
 {
-	setDrive(value,value,value,value,value,value);
+	setDrive(value,value,value,value);
 	waitForStepStatus(stepArray,true);
-	softBrake(value,value,value,value,value,value);
+	softBrake(value,value,value,value);
 	nextStep(stepArray);
 	setStepStatus(stepArray,false);
 }

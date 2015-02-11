@@ -41,7 +41,7 @@ void getButtonInput()
 		ClearTimer(T1);
 		needleCtrlButton = true;
 		
-		if (needleState = 0)
+		if (needleState == 0)
 		{
 			needleState = 1;
 			SensorValue[needle] = 1;

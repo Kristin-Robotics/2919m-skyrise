@@ -7,134 +7,122 @@
 task command1()
 {
 	//auto for automatic code
-	autoSetLiftFull(1,127);
+	//1.1 - 0
+	autoSetLiftComp(0,127);
 	
-	autoSetLiftFull(1,-127);
+	autoSetSkyrise(0,1,700);
 	
-	autoSetLiftFull(1,127);
+	autoSetLiftComp(0,127);
 	
-	autoSetSkyrise(1,1);
+	autoSetDriveFull(0,-90);
 	
-	autoSetLiftComp(1,127);
+	wait1Msec(500);
 	
-	//manual code block with 2 actions for one condition
-	setLiftComp(-1);
-	setDrive(-90);
-	waitForStepStatus(1,true);
-	setLiftTrim();
-	softBrake(-90);
-	nextStep(1);
-	waitForStepStatus(1,false);
+	autoSetLiftComp(0,-30);
 	
-	setSkyrise(0);
+	autoSetSkyrise(0,0,0);
 	
-	autoSetLiftComp(1,127);
+	//1.2 - 6
+	autoSetDriveFull(0,90);
 	
+	waitForStep(1,1)
+	
+	autoSetSkyrise(0,1,700);
+	
+	autoSetDriveFull(0,-90);
+	
+	waitForStep(1,2);
+	
+	wait1Msec(500);
+	
+	autoSetLiftComp(0,-30);
+	
+	autoSetSkyrise(0,0,0);
+	
+	//End
 	StopTask(command1);
 
 }
 
 task command2()
 {
-	waitForStep(1,6);
-	autoSetDrive(2,90);
+	//2.2 - 0
+	waitForStep(0,6);
+		
+	autoSetLiftComp(0,127);
+	
+	//2.2 - 1	
+	waitForStep(0,8);
+	
+	autoSetLiftComp(0,127);
 	
 	StopTask(command2);
 }
 
 task conditions1()
 {
-	autoTimeCondition(1,200);
+	//1	
+	autoPotentiometerCondition(0,610);
 	
-	autoTimeCondition(1,200);
+	autoLightCondition(0);
 	
-	autoTimeCondition(1,270);
+	autoPotentiometerCondition(0,900);
 	
-	autoTimeCondition(1,500);
+	autoEncoderCondition(0,580);
 	
-	autoTimeCondition(1,200);
+	wait1Msec(500);
 	
-	autoPotentiometerCondition(1,280);
+	autoTimeCondition(600);
+
+	autoLightCondition(0)
 	
-	autoEncoderCondition(1,583);
+	//2
+	autoEncoderCondition(0,580);
 	
-	autoTimeCondition(1,220);
+	waitForStep(1,1)
+	
+	autoLightCondition(0);
+	
+	autoEncoderCondition(0,580);
+	
+	waitForStep(1,2);
+	
+	wait1Msec(500);
+	
+	autoTimeCondition(300);
+
+	autoLightCondition(0)
 	
 	StopTask(conditions1);
 }
 
 task conditions2()
 {
-	waitForStep(1,6);
+	//2
+	waitForStep(0,6);
 	
-	autoEncoderCondition(2,585);
+	autoPotentiometerCondition(0,610);
+	
+	waitForStep(0,8);
+	
+	autoPotentiometerCondition(0,900);
 	
 	StopTask(conditions2);
 }
 
 task autonomous()
 {
+	//Deployment
+	setLift(127,127,127,127,127,127);
+	wait1Msec(150);
+	setLift(-127,-127,-127,-127,-127,-127);
+	waut1Msec(150)
+	setLiftTrim();
+	
 	//Initialise Autonomous
 	StartTask(command1);
 	StartTask(command2);
 	StartTask(conditions1);
 	StartTask(conditions2);
 	wait1Msec(90000);
-	
-	lightCalibrationValues[0] = SensorValue[skyLight];
-	/*
-	//Claw Deployment
-	leftLiftSpeed = 127;
-	rightLiftSpeed = 127;
-	wait1Msec(200);
-	leftLiftSpeed = -127;
-	rightLiftSpeed = -127;
-	wait1Msec(200);
-	leftLiftSpeed = 0;
-	rightLiftSpeed = 0;
-
-	Autonomous Selector
-	if (compensation == -1) //Claw on left
-	{
-	}
-	else if (compensation == 1) //claw on right
-	{
-	}
-	else //Got nothing
-	{
-	}
-	Most of this selection code is in pre-auton, look there
-
-	//Rubberband Deployment + Autoloader Height
-	leftLiftSpeed = 127;
-	rightLiftSpeed = 127;
-	wait1Msec(270);
-	leftLiftSpeed = 0;
-	rightLiftSpeed = 0;
-
-	//First Skyrise
-	wait1Msec(500);
-	SensorValue[skyPiston] = 1; //Grab Skyrise
-	leftLiftSpeed = 127;
-	rightLiftSpeed = 127;
-	lightCalibrationValues[1] = SensorValue[skyLight];
-	lightSensorThreshold = (lightCalibrationValues[1] + lightCalibrationValues[0])/2;
-	wait1Msec(200);
-	leftLiftSpeed = 0;
-	rightLiftSpeed = 0;
-	setLift(280,1);
-	//setLift(550); //Lift skyrise out of autoloader
-	encoderMove(583,-90); //Drive back to base
-	leftLiftSpeed = 0;
-	rightLiftSpeed = 0;
-	SensorValue[skyPiston] = 0; //Drop Skyrise
-	leftLiftSpeed = 127;
-	rightLiftSpeed = 127;
-	wait1Msec(220);
-	leftLiftSpeed = 0;
-	rightLiftSpeed = 0;
-	//setLift(300); //Lift above autoloader height
-	encoderMove(585,100); //Drive to autoloader
-	waitForLift();
-	*/
 }

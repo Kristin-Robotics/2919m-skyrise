@@ -69,19 +69,24 @@ void hardBrake(int LD1 = 127, int RD1 = LD1, int LD2 = LD1, int RD2 = RD1)
 
 void softBrake(int LD1 = 127, int RD1 = LD1, int LD2 = LD1, int RD2 = RD1)
 {
-	setDrive(LD1/(driveBrakeConstant*2), RD1/(driveBrakeConstant*2), LD2/(driveBrakeConstant*2), RD2/(driveBrakeConstant*2));
+	LD1 = round(-(LD1)/(driveBrakeConstant*2));
+	LD2 = round(-(LD2)/(driveBrakeConstant*2));
+	RD1 = round(-(RD1)/(driveBrakeConstant*2));
+	RD2 = round(-(RD2)/(driveBrakeConstant*2));
+	
+	setDrive(LD1,RD1,LD2,RD2);
 
-	wait1Msec(20);
+	wait1Msec(200);
 
-	setDrive(0);
+	setDrive(0,0,0,0);
 	
-	wait1Msec(20);
+	// wait1Msec(50);
 	
-	setDrive(LD1/(driveBrakeConstant*2), RD1/(driveBrakeConstant*2), LD2/(driveBrakeConstant*2), RD2/(driveBrakeConstant*2));
+	// setDrive(LD1,RD1,LD2,RD2);
 	
-	wait1Msec(20);
+	// wait1Msec(50);
 	
-	setDrive(0);
+	// setDrive(0);
 }
 
 void setLiftTrim()
@@ -91,66 +96,71 @@ void setLiftTrim()
 
 void nextStep(int stepArray)
 {
-	int value = step[stepArray]++;
+	int value = step[stepArray] + 1;
 	
 	step[stepArray] = value;
 }
 
 void autoSetLiftFull(int stepArray, int value)
 {
-	setLift(value);
+	setLift(value,value,value,value,value,value);
 	waitForStepStatus(stepArray,true);
 	setLiftTrim();
 	nextStep(stepArray);
-	waitForStepStatus(stepArray,false);
+	setStepStatus(stepArray,false);
 }
 
 void autoSetLiftComp(int stepArray, int value)
 {
-	setLiftComp(value);
+	setLiftComp(value,value,value,value,value,value);
 	waitForStepStatus(stepArray,true);
 	setLiftTrim();
 	nextStep(stepArray);
-	waitForStepStatus(stepArray,false);
+	setStepStatus(stepArray,false);
 }
 
-void autoSetDrive(int stepArray, int value)
+void autoSetDriveFull(int stepArray, int value)
 {
-	setDrive(value);
+	setDrive(value,value,value,value,value,value);
 	waitForStepStatus(stepArray,true);
-	softBrake(value);
+	softBrake(value,value,value,value,value,value);
 	nextStep(stepArray);
-	waitForStepStatus(stepArray,false);
+	setStepStatus(stepArray,false);
 }
 
-void autoSetSkyrise(int stepArray, int value)
+void autoSetSkyrise(int stepArray, int value, int delay = 0)
 {
 	waitForStepStatus(stepArray,true);
+	wait1Msec(delay);
 	setSkyrise(value);
 	nextStep(stepArray);
-	waitForStepStatus(stepArray,false);
+	setStepStatus(stepArray,false);
 }
 
 void autoTimeCondition(int stepArray, int value)
 {
-	setStepStatus(stepArray,false);
 	timeCondition(value);
 	setStepStatus(stepArray,true);
-	waitForStep(stepArray);
+	waitForStepStatus(stepArray,false);
+}
+
+void autoLightCondition(int stepArray)
+{
+	lightCondition();
+	setStepStatus(stepArray,true);
+	waitForStepStatus(stepArray,false);
 }
 
 void autoPotentiometerCondition(int stepArray, int value)
 {
-	setStepStatus(stepArray,false);
 	potentiometerCondition(value);
 	setStepStatus(stepArray,true);
-	waitForStep(stepArray);
+	waitForStepStatus(stepArray,false);
 }
 
 void autoEncoderCondition(int stepArray, int encoderL, int encoderR = encoderL)
 {
-	setStepStatus(stepArray,false);
 	encoderCondition(encoderL,encoderR);
 	setStepStatus(stepArray,true);
-	waitForStep(stepArray);
+	waitForStepStatus(stepArray,false);
 }

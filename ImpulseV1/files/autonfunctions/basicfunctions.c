@@ -1,5 +1,5 @@
 //motors
-void setDrive(int LD1 = 127, int RD1 = LD1, int LD2 = LD1, int RD2 = RD1)
+void setDrive(int LD1 = 127, int RD1 = LD1, int LD2 = LD1, int RD2 = LD1)
 {
 	motor[lDrive1] = LD1;
 	motor[rDrive1] = RD1;
@@ -7,7 +7,7 @@ void setDrive(int LD1 = 127, int RD1 = LD1, int LD2 = LD1, int RD2 = RD1)
 	motor[rDrive2] = RD2;
 }
 
-void setLift(int LL1 = 10, int RL1 = 10, int LL2 = LL1, int RL2 = RL1, int LL3 = LL1, int RL3 = RL1)
+void setLift(int LL1 = 10, int RL1 = 10, int LL2 = LL1, int RL2 = LL1, int LL3 = LL1, int RL3 = LL1)
 {
 	motor[leftLift1] = LL1;
 	motor[leftLift2] = LL2;
@@ -39,20 +39,18 @@ void potentiometerCondition(int value)
 {
 	value = abs(value);
 	
-	if (SensorValue[rPot] > value)
+	if (SensorValue[rPot] < value)
 	{
 		liftDirection = "up";
-		while (SensorValue[rPot] > value)
-		{
-			wait1Msec(10);
-		}
-	}
-	else if (SensorValue[rPot] < value)
-	{
-		liftDirection = "down";
 		while (SensorValue[rPot] < value)
 		{
-			wait1Msec(10);
+		}
+	}
+	else
+	{
+		liftDirection = "down";
+		while (SensorValue[rPot] > value)
+		{
 		}
 	}
 }
@@ -61,7 +59,7 @@ void encoderCondition(int encoderL, int encoderR = encoderL)
 	encoderL = abs(encoderL);
 	encoderR = abs(encoderR);
 	
-	setEncoders();
+	setEncoders(0,0);
 
 	bool driveLBGoalReached = false;
 	bool driveRBGoalReached = false;
@@ -77,8 +75,6 @@ void encoderCondition(int encoderL, int encoderR = encoderL)
 		{
 			driveRBGoalReached=true;
 		}
-		
-		wait1Msec(10);
 	}
 }
 
@@ -138,7 +134,7 @@ void setStep(int stepArray, int value = step[stepArray]++)
 
 void waitForStepStatus(int stepArray, bool stepStatus)
 {
-	while(stepComplete[stepArray] == false)
+	while(stepComplete[stepArray] != stepStatus)
 	{
 		wait1Msec(10);
 	}

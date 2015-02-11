@@ -38,7 +38,14 @@ void getButtonInput()
 
 	if  (vexRT[Btn6D] == 1)
 	{
+		ClearTimer(T1);
 		needleCtrlButton = true;
+		
+		if (needleState = 0)
+		{
+			needleState = 1;
+			SensorValue[needle] = 1;
+		}
 	}
 
 	if ((vexRT[Btn5U] == 1)||(vexRT[Btn5D] == 1))
@@ -122,21 +129,11 @@ void buttonResponse()
 
 	if (needleCtrlButton)
 	{
-		if ((vexRT[Btn6D] == 0) && (needleButton == false))
+		if ((vexRT[Btn6D] == 0) && (needleButton == false) && (needleState == 1) && (time1[T1] > 300))
 		{
-			if (needleState == 0)
-			{
-				needleState = 1;
-				SensorValue[needle] = 1;
-				needleButton = false;
-			}
-			else
-			{
-				needleState = 0;
-				SensorValue[needle] = 0;
-				needleButton = false;
-			}
-
+			needleState = 0;
+			SensorValue[needle] = 0;
+			needleCtrlButton = false;
 		}
 	}
 	

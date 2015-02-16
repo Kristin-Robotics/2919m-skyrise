@@ -91,10 +91,19 @@ task usercontrol()
 
 			if (liftPreset == -1)
 			{
-				leftLiftSpeed = (vexRT[Btn5U] - vexRT[Btn5D]) * 127;
-				rightLiftSpeed = (vexRT[Btn5U] - vexRT[Btn5D]) * 127;
-				setCompensation();
-
+				if (firstrun)
+				{
+					leftLiftSpeed = (vexRT[Btn5U]*127) - (vexRT[Btn5D]*20);
+					rightLiftSpeed = (vexRT[Btn5U]*127) - (vexRT[Btn5D]*20);
+					setCompensation();
+				}
+				else
+				{
+					leftLiftSpeed = (vexRT[Btn5U] - vexRT[Btn5D]) * 127;
+					rightLiftSpeed = (vexRT[Btn5U] - vexRT[Btn5D]) * 127;
+					setCompensation();
+				}
+				
 				if (SensorValue[rPot] > rPotValues[1])
 				{
 					if ((leftLiftSpeed > 0) || (rightLiftSpeed > 0))

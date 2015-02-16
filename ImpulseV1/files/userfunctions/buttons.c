@@ -40,6 +40,7 @@ void getButtonInput()
 	{
 		ClearTimer(T1);
 		needleCtrlButton = true;
+		firstRun = false;
 		
 		if (needleState == 0)
 		{
@@ -51,7 +52,6 @@ void getButtonInput()
 	if ((vexRT[Btn5U] == 1)||(vexRT[Btn5D] == 1))
 	{
 		liftPreset = -1;
-		firstRun = false;
 	}
 
 	if (SensorValue[needleSwitch] == 0)

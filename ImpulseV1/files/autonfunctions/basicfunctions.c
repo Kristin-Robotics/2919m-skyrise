@@ -61,7 +61,7 @@ void encoderCondition(int encoderL, int encoderR = encoderL)
 	encoderL = abs(encoderL);
 	encoderR = abs(encoderR);
 	
-	setEncoders(0,0);
+	setEncoders();
 
 	bool driveLBGoalReached = false;
 	bool driveRBGoalReached = false;

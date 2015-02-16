@@ -4,7 +4,7 @@
 // configuration constants
 bool firstRun = true;
 bool arcadeDriveMode = true;
-const int driveBrakeConstant = 4; //auton drive
+const int driveBrakeConstant = 8; //auton drive
 const int fineControlValue = 5;
 const int proportionalSpeedScaling = 200;
 const float compensationFactor = 0.55;
@@ -24,6 +24,7 @@ int lightSensorThreshold = 250;
 int lightCalibrationValues[] = {0,0};
 
 int liftPreset = -1;
+int liftTime = 0;
 int skyriseCounter = 0;
 int potRTarget = 0;
 int skyClawState = 0;

@@ -214,13 +214,94 @@ void surprise()
   return;
 }
 
+void DarudeSandstorm()
+{
+  //        200 = Tempo
+  //          6 = Default octave
+  //     Eighth = Default note length
+  //        10% = Break between notes
+  //
+  PlayTone( 1481,   27); wait1Msec( 300);  // Note(B)
+  PlayTone(    0,   14); wait1Msec( 150);  // Note(Rest, Duration(16th))
+  PlayTone( 1481,   27); wait1Msec( 300);  // Note(B)
+  PlayTone(    0,   14); wait1Msec( 150);  // Note(Rest, Duration(16th))
+  PlayTone( 1481,   27); wait1Msec( 300);  // Note(B)
+  PlayTone(    0,   14); wait1Msec( 150);  // Note(Rest, Duration(16th))
+  PlayTone( 1481,   27); wait1Msec( 300);  // Note(B)
+  PlayTone(    0,   14); wait1Msec( 150);  // Note(Rest, Duration(16th))
+  PlayTone( 1481,   27); wait1Msec( 300);  // Note(B)
+  PlayTone(    0,   14); wait1Msec( 150);  // Note(Rest, Duration(16th))
+  PlayTone( 1481,   41); wait1Msec( 450);  // Note(B, Duration(Eighth .))
+  /*
+  PlayTone(    0,    7); wait1Msec(  75);  // Note(Rest, Duration(32th))
+  PlayTone( 1318,   41); wait1Msec( 450);  // Note(E7, Duration(Eighth .))
+  PlayTone( 1318,   41); wait1Msec( 450);  // Note(E7, Duration(Eighth .))
+  PlayTone( 1318,   41); wait1Msec( 450);  // Note(E7, Duration(Eighth .))
+  PlayTone( 1174,   41); wait1Msec( 450);  // Note(D7, Duration(Eighth .))
+  PlayTone( 1174,   41); wait1Msec( 450);  // Note(D7, Duration(Eighth .))
+  PlayTone( 1320,   41); wait1Msec( 450);  // Note(A, Duration(Eighth .))
+  PlayTone(    0,    7); wait1Msec(  75);  // Note(Rest, Duration(32th))
+  PlayTone( 1481,   27); wait1Msec( 300);  // Note(B)
+  PlayTone(    0,   14); wait1Msec( 150);  // Note(Rest, Duration(16th))
+  PlayTone( 1481,   27); wait1Msec( 300);  // Note(B)
+  PlayTone(    0,   14); wait1Msec( 150);  // Note(Rest, Duration(16th))
+  PlayTone( 1481,   27); wait1Msec( 300);  // Note(B)
+  PlayTone(    0,   14); wait1Msec( 150);  // Note(Rest, Duration(16th))
+  PlayTone( 1481,   27); wait1Msec( 300);  // Note(B)
+  PlayTone(    0,   14); wait1Msec( 150);  // Note(Rest, Duration(16th))
+  PlayTone( 1481,   41); wait1Msec( 450);  // Note(B, Duration(Eighth .))
+  PlayTone(    0,    7); wait1Msec(  75);  // Note(Rest, Duration(32th))
+  PlayTone( 1318,   41); wait1Msec( 450);  // Note(E7, Duration(Eighth .))
+  PlayTone( 1481,   27); wait1Msec( 300);  // Note(B)
+  PlayTone(    0,   14); wait1Msec( 150);  // Note(Rest, Duration(16th))
+  PlayTone( 1481,   27); wait1Msec( 300);  // Note(B)
+  PlayTone(    0,   14); wait1Msec( 150);  // Note(Rest, Duration(16th))
+  PlayTone( 1481,   27); wait1Msec( 300);  // Note(B)
+  PlayTone(    0,   14); wait1Msec( 150);  // Note(Rest, Duration(16th))
+  PlayTone( 1481,   27); wait1Msec( 300);  // Note(B)
+  PlayTone(    0,   14); wait1Msec( 150);  // Note(Rest, Duration(16th))
+  PlayTone( 1481,   41); wait1Msec( 450);  // Note(B, Duration(Eighth .))
+  PlayTone(    0,    7); wait1Msec(  75);  // Note(Rest, Duration(32th))
+  PlayTone( 1175,   41); wait1Msec( 450);  // Note(G, Duration(Eighth .))
+  PlayTone( 1481,   27); wait1Msec( 300);  // Note(B)
+  PlayTone(    0,   14); wait1Msec( 150);  // Note(Rest, Duration(16th))
+  PlayTone( 1481,   27); wait1Msec( 300);  // Note(B)
+  PlayTone(    0,   14); wait1Msec( 150);  // Note(Rest, Duration(16th))
+  PlayTone( 1481,   27); wait1Msec( 300);  // Note(B)
+  PlayTone(    0,   14); wait1Msec( 150);  // Note(Rest, Duration(16th))
+  PlayTone( 1481,   27); wait1Msec( 300);  // Note(B)
+  PlayTone(    0,   14); wait1Msec( 150);  // Note(Rest, Duration(16th))
+  PlayTone( 1481,   27); wait1Msec( 300);  // Note(B)
+  PlayTone(    0,   14); wait1Msec( 150);  // Note(Rest, Duration(16th))
+  PlayTone( 1481,   41); wait1Msec( 450);  // Note(B, Duration(Eighth .))
+  PlayTone(    0,    7); wait1Msec(  75);  // Note(Rest, Duration(32th))
+  PlayTone( 1318,   41); wait1Msec( 450);  // Note(E7, Duration(Eighth .))
+  PlayTone( 1318,   41); wait1Msec( 450);  // Note(E7, Duration(Eighth .))
+  PlayTone( 1318,   41); wait1Msec( 450);  // Note(E7, Duration(Eighth .))
+  PlayTone( 1174,   41); wait1Msec( 450);  // Note(D7, Duration(Eighth .))
+  PlayTone( 1174,   41); wait1Msec( 450);  // Note(D7, Duration(Eighth .))
+  PlayTone(    0,    7); wait1Msec(  75);  // Note(Rest, Duration(32th))
+  PlayTone( 1320,   41); wait1Msec( 450);  // Note(A, Duration(Eighth .))
+  PlayTone( 1481,   27); wait1Msec( 300);  // Note(B)
+  PlayTone(    0,   14); wait1Msec( 150);  // Note(Rest, Duration(16th))
+  PlayTone( 1481,   27); wait1Msec( 300);  // Note(B)
+  PlayTone(    0,   14); wait1Msec( 150);  // Note(Rest, Duration(16th))
+  PlayTone( 1481,   27); wait1Msec( 300);  // Note(B)
+  PlayTone(    0,   14); wait1Msec( 150);  // Note(Rest, Duration(16th))
+  PlayTone( 1481,   27); wait1Msec( 300);  // Note(B)
+  PlayTone(    0,   14); wait1Msec( 150);  // Note(Rest, Duration(16th))
+  PlayTone( 1481,   41); wait1Msec( 450);  // Note(B, Duration(Eighth .))
+  PlayTone(    0,    7); wait1Msec(  75);  // Note(Rest, Duration(32th))
+  PlayTone( 1318,   41); wait1Msec( 450);  // Note(E7, Duration(Eighth .))*/
+  return;
+}
+ 
 
 
 // preauton task
 void pre_auton()
 {
 	bStopTasksBetweenModes = true;
-
 	//initialisation
 	initialiseGyro();
 

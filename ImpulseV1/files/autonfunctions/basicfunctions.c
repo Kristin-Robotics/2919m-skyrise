@@ -44,6 +44,7 @@ void potentiometerCondition(int value)
 		liftDirection = "up";
 		while (SensorValue[rPot] < value)
 		{
+			wait1Msec(10);
 		}
 	}
 	else
@@ -51,6 +52,7 @@ void potentiometerCondition(int value)
 		liftDirection = "down";
 		while (SensorValue[rPot] > value)
 		{
+			wait1Msec(10);
 		}
 	}
 }

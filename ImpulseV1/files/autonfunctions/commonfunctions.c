@@ -91,7 +91,7 @@ void softBrake(int LD1 = 127, int RD1 = LD1, int LD2 = LD1, int RD2 = RD1)
 
 void setLiftTrim()
 {
-	setLift();
+	setLift(10,10,10,10,10,10);
 }
 
 void nextStep(int stepArray)

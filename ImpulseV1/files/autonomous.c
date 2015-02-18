@@ -1,128 +1,411 @@
 #include "main.h"
 
+//Trim code
+#include "/userfunctions/lifttrim.c"
+
+//Compensation for skyrise weight code
+#include "/userfunctions/liftcompensation.c"
+
 #include "/autonfunctions/basicfunctions.c"
 
 #include "/autonfunctions/commonfunctions.c"
 
-task command1()
-{
-	//auto for automatic code
-	//1.1 - 0
-	autoSetLiftComp(0,127);
-	
-	autoSetSkyrise(0,1,700);
-	
-	autoSetLiftComp(0,127);
-	
-	autoSetDriveFull(0,-90);
-	
-	wait1Msec(500);
-	
-	autoSetLiftComp(0,-30);
-	
-	autoSetSkyrise(0,0,0);
-	
-	//1.2 - 6
-	autoSetDriveFull(0,90);
-	
-	waitForStep(1,1);
-	
-	autoSetSkyrise(0,1,700);
-	
-	autoSetDriveFull(0,-90);
-	
-	waitForStep(1,2);
-	
-	wait1Msec(500);
-	
-	autoSetLiftComp(0,-30);
-	
-	autoSetSkyrise(0,0,0);
-	
-	//End
-	StopTask(command1);
+//Autonomous functions
 
+void clearEncoders()
+{
+	nMotorEncoder[lDrive2] = 0;
+	nMotorEncoder[rDrive2] = 0;
 }
 
-task command2()
+void encoderMove(int encoderDistance,int leftDriveOneSpeed = 127, int leftDriveTwoSpeed = leftDriveOneSpeed, int rightDriveOneSpeed = leftDriveOneSpeed, int rightDriveTwoSpeed = leftDriveOneSpeed)
 {
-	//2.2 - 0
-	waitForStep(0,6);
+	clearEncoders();
+
+	bool driveLBGoalReached = false;
+	bool driveRBGoalReached = false;
+
+	while (((driveLBGoalReached == false)||(driveRBGoalReached == false)))
+	{
+		leftTrackSpeed = leftDriveOneSpeed;
+		leftTrackSpeed = leftDriveTwoSpeed;
+		rightTrackSpeed = rightDriveOneSpeed;
+		rightTrackSpeed = rightDriveTwoSpeed;
+
+		if (abs(nMotorEncoder[lDrive2]) > encoderDistance)
+		{
+			driveLBGoalReached=true;
+		}
+
+		if (abs(nMotorEncoder[rDrive2]) > encoderDistance)
+		{
+			driveRBGoalReached=true;
+		}
+	}
+
+	leftTrackSpeed = round(-(leftDriveOneSpeed)/driveBrakeConstant);
+	leftTrackSpeed = round(-(leftDriveTwoSpeed)/driveBrakeConstant);
+	rightTrackSpeed = round(-(rightDriveOneSpeed)/driveBrakeConstant);
+	rightTrackSpeed = round(-(rightDriveTwoSpeed)/driveBrakeConstant);
+
+	wait1Msec(200);
+
+	leftTrackSpeed = 0;
+	leftTrackSpeed = 0;
+	rightTrackSpeed = 0;
+	rightTrackSpeed = 0;
+}
+
+void gyroMove(int degrees,int leftDriveOneSpeed = 127, int leftDriveTwoSpeed = leftDriveOneSpeed, int rightDriveOneSpeed = leftDriveOneSpeed, int rightDriveTwoSpeed = leftDriveOneSpeed)
+{
+	degrees = abs(degrees*10);
+
+	while (((abs(SensorValue[turningGyro]) > degrees - 50) && (abs(SensorValue[turningGyro]) > degrees + 50)) || ((abs(SensorValue[turningGyro]) < degrees - 50) && (abs(SensorValue[turningGyro]) < degrees + 50))) //not within 100 of set angle
+	{
+		leftTrackSpeed = leftDriveOneSpeed;
+		leftTrackSpeed = leftDriveTwoSpeed;
+		rightTrackSpeed = rightDriveOneSpeed;
+		rightTrackSpeed = rightDriveTwoSpeed;
+	}
+
+	leftTrackSpeed = round(-(leftDriveOneSpeed)/driveBrakeConstant);
+	leftTrackSpeed = round(-(leftDriveTwoSpeed)/driveBrakeConstant);
+	rightTrackSpeed = round(-(rightDriveOneSpeed)/driveBrakeConstant);
+	rightTrackSpeed = round(-(rightDriveTwoSpeed)/driveBrakeConstant);
+
+	wait1Msec(100);
+
+	leftTrackSpeed = 0;
+	leftTrackSpeed = 0;
+	rightTrackSpeed = 0;
+	rightTrackSpeed = 0;
+}
+
+void ultrasonicMove(int distance, int leftDriveOneSpeed = 127, int leftDriveTwoSpeed = leftDriveOneSpeed, int rightDriveOneSpeed = leftDriveOneSpeed, int rightDriveTwoSpeed = leftDriveOneSpeed, bool LS = true, bool RS = true)
+{
+	if (LS && RS)
+	{
+		bool lSonicComplete = false;
+		bool rSonicComplete = false;
+
+		while (!lSonicComplete && !rSonicComplete)
+		{
+			if ((distance - SensorValue[sonicLeft]) < 0)
+			{
+				while(SensorValue[sonicLeft] > distance)
+				{
+					leftTrackSpeed = leftDriveOneSpeed;
+					leftTrackSpeed = leftDriveTwoSpeed;
+					rightTrackSpeed = rightDriveOneSpeed;
+					rightTrackSpeed = rightDriveTwoSpeed;
+				}
+			}
+
+			else
+			{
+				while (SensorValue[sonicLeft] < distance)
+				{
+					leftTrackSpeed = leftDriveOneSpeed;
+					leftTrackSpeed = leftDriveTwoSpeed;
+					rightTrackSpeed = rightDriveOneSpeed;
+					rightTrackSpeed = rightDriveTwoSpeed;
+				}
+			}
+		}
+	}
+	else if (LS)
+	{
+		if ((distance - SensorValue[sonicLeft]) < 0)
+		{
+			while (SensorValue[sonicLeft] > distance)
+			{
+				leftTrackSpeed = leftDriveOneSpeed;
+				leftTrackSpeed = leftDriveTwoSpeed;
+				rightTrackSpeed = rightDriveOneSpeed;
+				rightTrackSpeed = rightDriveTwoSpeed;
+			}
+		}
+
+		else
+		{
+			while (SensorValue[sonicLeft] < distance)
+			{
+				leftTrackSpeed = leftDriveOneSpeed;
+				leftTrackSpeed = leftDriveTwoSpeed;
+				rightTrackSpeed = rightDriveOneSpeed;
+				rightTrackSpeed = rightDriveTwoSpeed;
+			}
+		}
+	}
+
+	else if (RS)
+	{
+		if ((distance - SensorValue[sonicRight]) < 0)
+		{
+			while (SensorValue[sonicRight] > distance)
+			{
+				leftTrackSpeed = leftDriveOneSpeed;
+				leftTrackSpeed = leftDriveTwoSpeed;
+				rightTrackSpeed = rightDriveOneSpeed;
+				rightTrackSpeed = rightDriveTwoSpeed;
+			}
+		}
+
+		else
+		{
+			while (SensorValue[sonicRight] < distance)
+			{
+				leftTrackSpeed = leftDriveOneSpeed;
+				leftTrackSpeed = leftDriveTwoSpeed;
+				rightTrackSpeed = rightDriveOneSpeed;
+				rightTrackSpeed = rightDriveTwoSpeed;
+			}
+		}
+	}
+
+	leftTrackSpeed = round(-(leftDriveOneSpeed)/driveBrakeConstant);
+	leftTrackSpeed = round(-(leftDriveTwoSpeed)/driveBrakeConstant);
+	rightTrackSpeed = round(-(rightDriveOneSpeed)/driveBrakeConstant);
+	rightTrackSpeed = round(-(rightDriveTwoSpeed)/driveBrakeConstant);
+
+	wait1Msec(100);
+
+	leftTrackSpeed = 0;
+	leftTrackSpeed = 0;
+	rightTrackSpeed = 0;
+	rightTrackSpeed = 0;
+}
+
+void setLift(int potRT = 280,int speed = 127)
+{
+	potRTarget = potRT;
+	liftTargetSpeed = speed;
+	liftPreset = 10;
+}
+
+void setLiftTime(int time,int speed = 127)
+{
+	liftTime = time;
+	liftTargetSpeed = speed;
+	liftPreset = 10;
+}
+
+void moveLiftAuton()
+{
+	if (liftPreset > -1)
+	{
+		bool RLGoalReached = false;
 		
-	autoSetLiftComp(0,127);
+		liftTargetSpeed = abs(liftTargetSpeed);
+
+		if (SensorValue[rPot] < potRTarget)
+		{
+			liftDirection = "up";
+		}
+		if (SensorValue[rPot] > potRTarget)
+		{
+			liftDirection = "down";
+		}
+
+		if (liftDirection == "up")
+		{
+			while (!(RLGoalReached) && (liftPreset > -1))
+			{
+				proportionalSpeed = abs(potRTarget - SensorValue[rPot])/proportionalSpeedScaling +0.3;
+
+				if (proportionalSpeed > 1)
+				{
+					proportionalSpeed = 1;
+				}
+
+				if (SensorValue[rPot] < potRTarget)
+				{
+					leftLiftSpeed = liftTargetSpeed;
+					rightLiftSpeed = liftTargetSpeed;
+
+					liftCompensation();
+				}
+				else
+				{
+					RLGoalReached = true;
+				}
+
+				wait1Msec(10);
+			}
+		}
+		else if (liftDirection == "down")
+		{
+			while (!(RLGoalReached) && (liftPreset > -1))
+			{
+				proportionalSpeed = abs(potRTarget - SensorValue[rPot])/proportionalSpeedScaling;
+
+				if (proportionalSpeed > 1)
+				{
+					proportionalSpeed = 1;
+				}
+
+				if (SensorValue[rPot] > potRTarget)
+				{
+					leftLiftSpeed = round(liftTargetSpeed*proportionalSpeed);
+					rightLiftSpeed = round(liftTargetSpeed*proportionalSpeed);
+
+					liftCompensation();
+				}
+				else
+				{
+					RLGoalReached = true;
+				}
+
+				wait1Msec(10);
+			}
+
+
+		}
+		leftLiftSpeed = 0;
+		rightLiftSpeed = 0;
+
+		liftPreset = -1;
+
+	}
 	
-	//2.2 - 1	
-	waitForStep(0,8);
-	
-	autoSetLiftComp(0,127);
-	
-	StopTask(command2);
+	else if (liftTime > 0)
+	{
+		leftLiftSpeed = liftTargetSpeed;
+		rightLiftSpeed = liftTargetSpeed;
+		liftCompensation();
+		wait1Msec(liftTime);
+		leftLiftSpeed = 0;
+		rightLiftSpeed = 0;
+		liftTime = 0;
+	}
 }
 
-task conditions1()
+void waitForLift()
 {
-	//1	
-	autoPotentiometerCondition(0,610);
+	while (liftPreset > -1)
+	{
+		wait1Msec(10);
+	}
 	
-	autoLightCondition(0);
-	
-	autoPotentiometerCondition(0,900);
-	
-	autoEncoderCondition(0,580);
-	
-	wait1Msec(500);
-	
-	autoTimeCondition(0,600);
-
-	autoLightCondition(0);
-	
-	//2
-	autoEncoderCondition(0,580);
-	
-	waitForStep(1,1);
-	
-	autoLightCondition(0);
-	
-	autoEncoderCondition(0,580);
-	
-	waitForStep(1,2);
-	
-	wait1Msec(500);
-	
-	autoTimeCondition(0,300);
-
-	autoLightCondition(0);
-	
-	StopTask(conditions1);
+	while(liftTime > 0)
+	{
+		wait1Msec(10);
+	}
 }
 
-task conditions2()
+void skyriseControl(int value, int delay, int threshold = lightSensorThreshold, bool fromDark = false)
 {
-	//2
-	waitForStep(0,6);
-	
-	autoPotentiometerCondition(0,610);
-	
-	waitForStep(0,8);
-	
-	autoPotentiometerCondition(0,900);
-	
-	StopTask(conditions2);
+	if (fromDark)
+	{
+		while(SensorValue[skyLight] > threshold)
+		{
+			wait1Msec(10);
+		}
+	}
+	else
+	{
+		while(SensorValue[skyLight] < threshold)
+		{
+			wait1Msec(10);
+		}
+	}
+	wait1Msec(delay);
+	SensorValue[skyPiston] = value;
+}
+
+void needleControl(int value, int delay = 2000)
+{
+	wait1Msec(delay);
+	SensorValue[needle] = value;
+}
+
+void setSkyclawState(bool state)
+{
+	if (state)
+	{
+		SensorValue[skyPiston] = 1;
+		return;
+	}
+	SensorValue[skyPiston] = 0;
+}
+
+task autonLiftProcessing()
+{
+	while(true)
+	{
+		moveLiftAuton(); //Has a while loop
+		liftTrim();
+		wait1Msec(10);
+	}
+}
+
+task autonMotorController()
+{
+	while(true)
+	{
+		motor[lDrive1] = leftTrackSpeed;
+		motor[lDrive2] = leftTrackSpeed;
+		motor[rDrive2] = rightTrackSpeed;
+		motor[rDrive1] = rightTrackSpeed;
+
+		motor[leftLift1] = leftLiftSpeed;
+		motor[leftLift2] = leftLiftSpeed;
+		motor[leftLift3] = leftLiftSpeed;
+		motor[rightLift1] = rightLiftSpeed;
+		motor[rightLift2] = rightLiftSpeed;
+		motor[rightLift3] = rightLiftSpeed;
+
+		wait1Msec(10);
+	}
+}
+
+task songPlayer()
+{
+	surprise();
+	StopTask(songPlayer);
 }
 
 task autonomous()
 {
-	//Deployment
-	setLift(127,127,127,127,127,127);
-	wait1Msec(150);
-	setLift(-127,-127,-127,-127,-127,-127);
-	wait1Msec(150);
-	setLiftTrim();
-	
 	//Initialise Autonomous
-	StartTask(command1);
-	StartTask(command2);
-	StartTask(conditions1);
-	StartTask(conditions2);
-	wait1Msec(90000);
+	StartTask(autonLiftProcessing);
+	StartTask(autonMotorController);
+	//StartTask(songPlayer);
+
+	lightCalibrationValues[0] = SensorValue[skyLight];
+	
+	//Claw Deployment
+	setLiftTime(200,127);
+	waitForLift();
+	setLiftTime(200,-127);
+	if ((compensation == -1) || (compensation == 1) ) //Claw on left
+	{
+		//First Skyrise
+		setLift(520);
+		
+		skyriseControl(1,700,100);
+		
+		lightCalibrationValues[1] = SensorValue[skyLight];
+		lightSensorThreshold = (lightCalibrationValues[1] + lightCalibrationValues[0])/2;
+		
+		setLift(800);
+		
+		waitForLift();
+		
+		encoderMove(580,-90); //Drive back to base
+
+		skyriseControl(0,500);
+		
+		setLiftTime(400,-30);
+		
+		waitForLift();
+
+		encoderMove(580,90); //Drive to autoloader
+	}
+	else
+	{
+		setLift(1000);
+		waitForLift();
+		encoderMove(580,127);
+	}
 }

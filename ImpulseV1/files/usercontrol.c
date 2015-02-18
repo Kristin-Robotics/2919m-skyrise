@@ -12,6 +12,15 @@
 //Fine Control for Driver
 #include "/userfunctions/finecontrol.c"
 
+task driveProcessing()
+{
+	while(true)
+	{
+		buttonResponseXmitter2(); //Has a while loop
+		wait1Msec(20);
+	}
+}
+
 //Buttons
 #include "/userfunctions/buttons.c"
 
@@ -27,20 +36,10 @@ task liftProcessing()
 	while(true)
 	{
 		moveLiftPreset(); //Has a while loop
-		wait1Msec(50);
+		wait1Msec(20);
 	}
 }
 
-/* task driveProcessing()
-{
-	while(true)
-	{
-		buttonResponseXmitter2(); //Has a while loop
-		wait1Msec(50);
-	}
-}
-
-*/
 //Controller for all motors
 task motorController()
 {
@@ -72,7 +71,7 @@ task usercontrol()
 	{
 		if (autonUser)
 		{
-			//getButtonInputXmitter2();
+			getButtonInputXmitter2();
 		}
 		else
 		{
@@ -91,10 +90,19 @@ task usercontrol()
 
 			if (liftPreset == -1)
 			{
-				leftLiftSpeed = (vexRT[Btn5U] - vexRT[Btn5D]) * 127;
-				rightLiftSpeed = (vexRT[Btn5U] - vexRT[Btn5D]) * 127;
-				setCompensation();
-
+				if (firstrun)
+				{
+					leftLiftSpeed = (vexRT[Btn5U]*127) - (vexRT[Btn5D]*20);
+					rightLiftSpeed = (vexRT[Btn5U]*127) - (vexRT[Btn5D]*20);
+					setCompensation();
+				}
+				else
+				{
+					leftLiftSpeed = (vexRT[Btn5U] - vexRT[Btn5D]) * 127;
+					rightLiftSpeed = (vexRT[Btn5U] - vexRT[Btn5D]) * 127;
+					setCompensation();
+				}
+				
 				if (SensorValue[rPot] > rPotValues[1])
 				{
 					if ((leftLiftSpeed > 0) || (rightLiftSpeed > 0))

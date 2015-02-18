@@ -44,6 +44,7 @@ void potentiometerCondition(int value)
 		liftDirection = "up";
 		while (SensorValue[rPot] < value)
 		{
+			wait1Msec(10);
 		}
 	}
 	else
@@ -51,6 +52,7 @@ void potentiometerCondition(int value)
 		liftDirection = "down";
 		while (SensorValue[rPot] > value)
 		{
+			wait1Msec(10);
 		}
 	}
 }
@@ -59,7 +61,7 @@ void encoderCondition(int encoderL, int encoderR = encoderL)
 	encoderL = abs(encoderL);
 	encoderR = abs(encoderR);
 	
-	setEncoders(0,0);
+	setEncoders();
 
 	bool driveLBGoalReached = false;
 	bool driveRBGoalReached = false;

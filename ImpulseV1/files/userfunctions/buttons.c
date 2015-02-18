@@ -40,6 +40,7 @@ void getButtonInput()
 	{
 		ClearTimer(T1);
 		needleCtrlButton = true;
+		firstRun = false;
 		
 		if (needleState == 0)
 		{
@@ -51,7 +52,6 @@ void getButtonInput()
 	if ((vexRT[Btn5U] == 1)||(vexRT[Btn5D] == 1))
 	{
 		liftPreset = -1;
-		firstRun = false;
 	}
 
 	if (SensorValue[needleSwitch] == 0)
@@ -148,7 +148,7 @@ void buttonResponse()
 				skyriseCounter = 1;
 			}
 			
-			potRTarget = 510 + 250 * skyriseCounter;
+			potRTarget = 500 + 250 * skyriseCounter;
 			liftPreset = 90;
 			liftTargetSpeed = 127;
 			skyriseLiftButton = false;
@@ -156,7 +156,6 @@ void buttonResponse()
 	}
 }
 
-/*
 void getButtonInputXmitter2()
 {
 //Controller 1
@@ -171,13 +170,19 @@ void getButtonInputXmitter2()
 	//Controller 2
 		if (vexRT[Btn7LXmtr2] == 1)
 		{
-			autonUserStep = 0;
-			StartTask(driveProcessing);
+			if (autonUserStep < 0)
+			{
+				autonUserStep = 0;
+				StartTask(driveProcessing);
+			}
 		}
 		if (vexRT[Btn7UXmtr2] == 1)
 		{
-			autonUserStep = 1;
-			StartTask(driveProcessing);
+			if (autonUserStep < 0)
+			{
+				autonUserStep = 1;
+				StartTask(driveProcessing);
+			}
 		}
 	}
 }
@@ -187,18 +192,29 @@ void buttonResponseXmitter2()
 	//First Skyrise
 	while(autonUserStep == 0)
 	{
-		setSkyclawState(true); //Grab Skyrise
-		setLift(550); //Lift skyrise out of autoloader
-		encoderMove(620,-90); //Drive back to base
+		//First Skyrise
+		setLift(520);
+		
+		skyriseControl(1,700,100);
+		
+		lightCalibrationValues[1] = SensorValue[skyLight];
+		lightSensorThreshold = (lightCalibrationValues[1] + lightCalibrationValues[0])/2;
+		
+		setLift(800);
+		
 		waitForLift();
-		setLift(300,5); //Lower Skyrise into base
+		
+		encoderMove(580,-90); //Drive back to base
+
+		skyriseControl(0,500);
+		
+		setLiftTime(400,-30);
+		
 		waitForLift();
-		setSkyclawState(false); //Drop Skyrise
-		setLift(500); //Lift above autoloader height
-		encoderMove(560,100) //Drive to autoloader
-		waitForLift();
+
+		encoderMove(580,90); //Drive to autoloader
+		
+		autonUserStep = -1;
 	}
-	autonUserStep = -1;
 	StopTask(driveProcessing);
 }
-*/

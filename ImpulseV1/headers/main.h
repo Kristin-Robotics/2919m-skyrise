@@ -1,6 +1,6 @@
 #ifndef MAIN_H
 #define MAIN_H
 
-// currently empty
+void buttonResponseXmitter2();
 
 #endif MAIN_H

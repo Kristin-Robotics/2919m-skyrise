@@ -7,7 +7,7 @@ bool arcadeDriveMode = true;
 const int driveBrakeConstant = 4; //auton drive
 const int fineControlValue = 5;
 const int proportionalSpeedScaling = 200;
-const float compensationFactor = 0.7;
+const float compensationFactor = 0.9;
 int liftTrimThreshold = 300;
 float proportionalSpeed = 1.0; //for lift
 int compensation = 0; //-1 left, 0 off, 1 right
@@ -18,7 +18,7 @@ int step[] = {0,0,0};
 
 // preset values
 // structure: min, max , autoloader
-const int rPotValues[] = {400, 2200, 500};
+const int rPotValues[] = {510, 2300, 610};
 
 int lightSensorThreshold = 250;
 int lightCalibrationValues[] = {0,0};

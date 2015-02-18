@@ -148,7 +148,7 @@ void buttonResponse()
 				skyriseCounter = 1;
 			}
 			
-			potRTarget = 500 + 250 * skyriseCounter;
+			potRTarget = 510 + 250 * skyriseCounter;
 			liftPreset = 90;
 			liftTargetSpeed = 127;
 			skyriseLiftButton = false;

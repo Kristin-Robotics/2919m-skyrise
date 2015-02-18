@@ -6,8 +6,6 @@
 
 task command1()
 {
-	if ((compensation == -1) || (compensation == 1) ) //Claw on left
-	{
 	//auto for automatic code
 	//1.1 - 0
 	autoSetLiftComp(0,127);
@@ -40,11 +38,7 @@ task command1()
 	autoSetLiftComp(0,-30);
 	
 	autoSetSkyrise(0,0,0);
-	}
-	else
-	{
-		autoSetLiftComp(0,127);
-	}
+	
 	//End
 	StopTask(command1);
 
@@ -52,8 +46,6 @@ task command1()
 
 task command2()
 {
-	if ((compensation == -1) || (compensation == 1) ) //Claw on left
-	{
 	//2.2 - 0
 	waitForStep(0,6);
 		
@@ -63,23 +55,18 @@ task command2()
 	waitForStep(0,8);
 	
 	autoSetLiftComp(0,127);
-
-	}
 	
 	StopTask(command2);
-	
 }
 
 task conditions1()
 {
-	if ((compensation == -1) || (compensation == 1) ) //Claw on left
-	{
 	//1	
-	autoPotentiometerCondition(0,510);
+	autoPotentiometerCondition(0,610);
 	
 	autoLightCondition(0);
 	
-	autoPotentiometerCondition(0,700);
+	autoPotentiometerCondition(0,900);
 	
 	autoEncoderCondition(0,580);
 	
@@ -105,36 +92,22 @@ task conditions1()
 	autoTimeCondition(0,300);
 
 	autoLightCondition(0);
-	}
-	else
-	{
-		autoPotentiometerCondition(0,1000);
-	}
 	
 	StopTask(conditions1);
 }
 
 task conditions2()
 {
-	if ((compensation == -1) || (compensation == 1) ) //Claw on left
-	{
 	//2
 	waitForStep(0,6);
 	
-	autoPotentiometerCondition(1,450);
+	autoPotentiometerCondition(0,610);
 	
 	waitForStep(0,8);
 	
-	autoPotentiometerCondition(1,700);
-	}
+	autoPotentiometerCondition(0,900);
 	
 	StopTask(conditions2);
-}
-
-task songPlayer()
-{
-	MissionImpossible();
-	StopTask(songPlayer);
 }
 
 task autonomous()
@@ -151,6 +124,5 @@ task autonomous()
 	StartTask(command2);
 	StartTask(conditions1);
 	StartTask(conditions2);
-	StartTask(songPlayer);
 	wait1Msec(90000);
 }

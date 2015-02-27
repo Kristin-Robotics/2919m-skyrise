@@ -42,5 +42,7 @@
 #include "/files/preauton.c"
 
 #include "/files/autonomous.c"
+#include "/files/autonutils.c"
+#include "/files/realauton.c"
 
 #include "/files/usercontrol.c"

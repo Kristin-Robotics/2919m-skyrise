@@ -32,8 +32,7 @@ void skyriseScore() {
 
 task autonomous()
 {
-	auton = SensorValue[compensationMonitor] / 682;
-	
+	// Deploy lift
 	StartTask(secondaryControl);
 	mots[LIF] = 100;
 	wait1Msec(550);
@@ -41,13 +40,33 @@ task autonomous()
 	
 	wait1Msec(500);
 	
-	armVal = AUTOLOADER_HEIGHT;
-	waitForArmVal();
+	// For movement of the arm do either
+	// manualLift = true;
+	// mots[LIF] = 100; <- That's the motor power
+	// or
+	// armVal = 100; <- That's the potentiometer value
+	// waitForArmVal();
 	
-	skyriseScore();
-	driveEncoder(450, 60);
-	wait1Msec(2000);
-	skyriseScore();
+	// For the movmeent of the wheels do either
+	// driveTime(miliseconds, leftPower, rightPower (optional))
+	// or
+	// driveEncoder(distance, leftPower, rightPower (optional))
 	
-	while (true) { };
+	if (compensation == 0)
+	{
+		// The "not skyrise" auton
+	}
+	else
+	{
+		// For getting those skyrises
+		armVal = AUTOLOADER_HEIGHT;
+		waitForArmVal();
+		
+		skyriseScore();
+		driveEncoder(450, 60);
+		
+		//If the second deployment is iffy, delete these two lines below
+		wait1Msec(2000);
+		skyriseScore();
+	}
 }
